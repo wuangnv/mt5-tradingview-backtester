@@ -73,7 +73,7 @@ from .retained import AIInvalidRequest, DataContractError, PropProfileValidation
 from .connector_ledger import ConnectorIdempotencyConflict, ConnectorLedgerError
 from .notion_oauth import NotionOAuthConfig, NotionOAuthError, NotionOAuthService, is_loopback_host
 from .project_session import build_local_demo_session_status
-from .store import PostgresStore, PropIdempotencyConflict, PropPersistenceConflict
+from .store import PostgresStore, PropIdempotencyConflict, PropPersistenceConflict, StoredContractUntrusted
 
 
 class ConnectorConnectionCreateRequest(BaseModel):
@@ -252,8 +252,15 @@ def create_app(
                 downloads.stop()
             if market_runtime:
                 market_runtime.stop()
+            store.close()
 
     app = FastAPI(title="Trading Workspace Foundation v2", version=CONTRACT_VERSION, lifespan=lifespan)
+
+    @app.exception_handler(StoredContractUntrusted)
+    @app.exception_handler(ValidationError)
+    async def reject_untrusted_stored_contract(request: Request, exc: ValidationError):
+        from fastapi.responses import JSONResponse
+        return JSONResponse(status_code=503, content={"detail": "stored_contract_untrusted"})
     app.state.store = store
     app.state.service = service
     app.state.ingest = ingest

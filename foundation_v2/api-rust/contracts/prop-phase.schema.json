@@ -1,0 +1,161 @@
+{
+  "additionalProperties": false,
+  "properties": {
+    "workspace_id": {
+      "maxLength": 128,
+      "minLength": 1,
+      "title": "Workspace Id",
+      "type": "string"
+    },
+    "session_id": {
+      "maxLength": 128,
+      "minLength": 1,
+      "title": "Session Id",
+      "type": "string"
+    },
+    "attempt_id": {
+      "maxLength": 128,
+      "minLength": 1,
+      "title": "Attempt Id",
+      "type": "string"
+    },
+    "profile_hash": {
+      "maxLength": 128,
+      "minLength": 8,
+      "title": "Profile Hash",
+      "type": "string"
+    },
+    "phase_index": {
+      "minimum": 1,
+      "title": "Phase Index",
+      "type": "integer"
+    },
+    "initial_balance": {
+      "anyOf": [
+        {
+          "type": "number"
+        },
+        {
+          "pattern": "^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$",
+          "type": "string"
+        }
+      ],
+      "title": "Initial Balance"
+    },
+    "balance": {
+      "anyOf": [
+        {
+          "type": "number"
+        },
+        {
+          "pattern": "^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$",
+          "type": "string"
+        }
+      ],
+      "title": "Balance"
+    },
+    "floating_pl": {
+      "anyOf": [
+        {
+          "type": "number"
+        },
+        {
+          "pattern": "^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$",
+          "type": "string"
+        }
+      ],
+      "title": "Floating Pl"
+    },
+    "equity": {
+      "anyOf": [
+        {
+          "type": "number"
+        },
+        {
+          "pattern": "^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$",
+          "type": "string"
+        }
+      ],
+      "title": "Equity"
+    },
+    "high_water_mark": {
+      "anyOf": [
+        {
+          "type": "number"
+        },
+        {
+          "pattern": "^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$",
+          "type": "string"
+        }
+      ],
+      "title": "High Water Mark"
+    },
+    "daily_anchor": {
+      "anyOf": [
+        {
+          "type": "number"
+        },
+        {
+          "pattern": "^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$",
+          "type": "string"
+        }
+      ],
+      "title": "Daily Anchor"
+    },
+    "qualifying_days": {
+      "default": 0,
+      "minimum": 0,
+      "title": "Qualifying Days",
+      "type": "integer"
+    },
+    "virtual_time_utc": {
+      "format": "date-time",
+      "title": "Virtual Time Utc",
+      "type": "string"
+    },
+    "last_event_sequence": {
+      "default": 0,
+      "minimum": 0,
+      "title": "Last Event Sequence",
+      "type": "integer"
+    },
+    "open_positions": {
+      "default": 0,
+      "minimum": 0,
+      "title": "Open Positions",
+      "type": "integer"
+    },
+    "pending_orders": {
+      "default": 0,
+      "minimum": 0,
+      "title": "Pending Orders",
+      "type": "integer"
+    },
+    "evaluation_quality": {
+      "enum": [
+        "full_for_declared_model",
+        "approximate",
+        "insufficient"
+      ],
+      "title": "Evaluation Quality",
+      "type": "string"
+    }
+  },
+  "required": [
+    "workspace_id",
+    "session_id",
+    "attempt_id",
+    "profile_hash",
+    "phase_index",
+    "initial_balance",
+    "balance",
+    "floating_pl",
+    "equity",
+    "high_water_mark",
+    "daily_anchor",
+    "virtual_time_utc",
+    "evaluation_quality"
+  ],
+  "title": "PhaseStateSnapshot",
+  "type": "object"
+}

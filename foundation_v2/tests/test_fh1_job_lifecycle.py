@@ -73,6 +73,7 @@ class FH1JobLifecycleTests(unittest.TestCase):
         )
 
     def tearDown(self):
+        self.store.close()
         self.temp.cleanup()
 
     def create_job(self):
@@ -88,7 +89,7 @@ class FH1JobLifecycleTests(unittest.TestCase):
             conn.execute(
                 """
                 UPDATE research_jobs
-                SET lease_expires_at_utc=CURRENT_TIMESTAMP - INTERVAL '1 second'
+                SET lease_expires_at_utc=CURRENT_TIMESTAMP - INTERVAL '1 second', retry_base_seconds=0
                 WHERE workspace_id='tenant-a' AND job_id=%s
                 """,
                 (job_id,),

@@ -1,7 +1,7 @@
 # Foundation v2 — PATH-2 development
 
 This is the current development foundation approved by PATH-2. It started with
-the F6 reference slice and now contains the FastAPI/PostgreSQL services, research
+the F6 reference slice and now contains the Axum/PostgreSQL API, Python domain/research workers,
 engine integration and React WMReplay UI. The legacy Flask runtime remains a
 reference for capability and semantic comparison, not the development entrypoint.
 See the [root README](../README.md) for setup, current UI gates and the canonical
@@ -10,8 +10,32 @@ workspace plans. The capability notes below do not claim full product acceptance
 Following the owner's authorization to choose and replace the API platform,
 the selected target is Rust/Axum (09/10/2026); see
 [the API platform decision](docs/API-STACK-DECISION-20261009.md)
-and [the experiment](experiments/api-stack/README.md). The running product still
-uses FastAPI: the benchmark is not an implemented or accepted product migration.
+and [the experiment](experiments/api-stack/README.md). The public local listener
+is now implemented in Axum; Python retains validated domain functions and uses
+FastAPI metadata internally at worker bootstrap, without an HTTP/ASGI proxy.
+See [runtime and guarded cutover](docs/API-PLATFORM-RUNTIME.md) and
+[integration evidence](evidence/api-platform-implementation-20261009/RECEIPT.md).
+
+The implemented flow is `React -> Axum -> scoped PostgreSQL reads / durable
+commands -> Python domain worker -> PostgreSQL + immutable Parquet/results`.
+Research runs in a separate bounded worker. Workspace SSE supplies current
+download/research snapshots; reconnect reads current state, not historical events.
+HTTP JSON/OpenAPI remains the public contract. WebSocket and gRPC are conditional
+future transports, with no unused services installed.
+
+Connection pools, queue admission, leases/fencing, mutation idempotency receipts,
+checksum migrations and owned-process shutdown are bounded. Browser navigation
+preserves the shell; stale readers cancel and healthy SSE replaces repeated
+progress polling. Financial algorithms are not duplicated in Rust. Some report
+reads still build the full financial ledger before pagination, and strategy/profit
+dashboard filters can request all session details; those are explicit remaining
+read-model limitations, not claims of SQL source pagination or unlimited scale.
+
+The checked-in workflow runs locked Rust/web builds, schema drift guards and
+focused state/transport tests. Real PostgreSQL/socket/browser acceptance is
+reproducible with `foundation_v2/scripts/api_platform_acceptance.py` on this
+Windows fixture profile. The workflow definition is not a claim that GitHub CI
+has already completed a run.
 
 The first slice proves one complete local workflow:
 

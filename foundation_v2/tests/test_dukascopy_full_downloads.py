@@ -5,7 +5,8 @@ import tempfile
 import threading
 import shutil
 import unittest
-from contextlib import contextmanager
+from contextlib import contextmanager, nullcontext
+from copy import deepcopy
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
 from types import SimpleNamespace
@@ -27,12 +28,53 @@ class MemoryStore:
     def ensure_workspace(self, workspace):
         pass
 
-    def put_dataset(self, manifest):
+    def put_dataset(self, manifest, *, conn=None):
         self.datasets[(manifest.workspace_id, manifest.dataset_id)] = manifest
 
     @contextmanager
     def connect(self):
-        yield SimpleNamespace(execute=lambda sql, args: SimpleNamespace(fetchone=lambda: {'owned':True, 'active':False}), commit=lambda:None)
+        yield SimpleNamespace(execute=lambda sql, args: SimpleNamespace(fetchone=lambda: {'owned':True, 'active':False}), commit=lambda:None, transaction=nullcontext)
+
+    def dedicated_connection(self):
+        return self.connect()
+
+
+class MemoryDownloadJobs:
+    """Test-owned fake; production always uses PostgreSQL authority."""
+    def __init__(self):
+        self.rows = {}
+        self.project = lambda job: {key:value for key,value in job.items() if key != 'workspace_id'}
+
+    def source(self, snapshot):
+        self.source_snapshot = deepcopy(snapshot)
+
+    def read(self, workspace, job_id):
+        try:
+            return deepcopy(self.rows[(workspace,job_id)])
+        except KeyError:
+            raise ValueError('download_not_found')
+
+    def save(self, job, snapshot, key, *, adopt=False, conn=None):
+        identity = (job['workspace_id'],job['job_id'])
+        current = self.rows.get(identity)
+        if adopt and current:
+            return False
+        if current and current['revision'] != job.get('revision'):
+            raise RuntimeError('download_revision_conflict')
+        job['revision'] = (current or {}).get('revision',0)+1
+        self.rows[identity] = deepcopy(job)
+        return True
+
+    def list(self, workspace, limit=20):
+        rows = sorted((row for (scope,_),row in self.rows.items() if scope==workspace),
+                      key=lambda row:(row['created_at_utc'],row['job_id']),reverse=True)
+        return [self.project(deepcopy(row)) for row in rows[:limit]]
+
+    def matching(self, workspace, symbol, start, end, parent, full_start):
+        return [self.project(deepcopy(row)) for (scope,_),row in self.rows.items()
+                if scope==workspace and (row['instrument_id'],row['from_date'],row['to_date'],
+                    row.get('parent_dataset_id'),row.get('full_from_date'))==(symbol,start,end,parent,full_start)
+                and row['status'] not in {'cancelled','failed'}]
 
 
 def source(start, end):
@@ -61,6 +103,8 @@ class FullDownloadTests(unittest.TestCase):
         self.service.process = None
         self.service.advisory_key = 123
         self.service.ingest = DataIngestService(self.store, self.artifacts)
+        self.service.jobs = MemoryDownloadJobs()
+        self.service.jobs.project = self.service._public
         self.service._start = lambda job:setattr(self.service,'active',(job['workspace_id'],job['job_id']))
         self.yesterday = datetime.now(timezone.utc).date()-timedelta(days=1)
 
@@ -487,7 +531,7 @@ await download(process.argv[2],{sleepFn:async()=>{}});
         @contextmanager
         def denied_lock():
             yield SimpleNamespace(execute=lambda sql,args:SimpleNamespace(fetchone=lambda:{'owned':False}),commit=lambda:None)
-        with patch.object(self.store,'connect',denied_lock):
+        with patch.object(self.store,'dedicated_connection',denied_lock):
             with self.assertRaisesRegex(RuntimeError,'download_busy'):
                 self.service.cancel('a',job['job_id'])
         self.assertEqual(self.service._read('a',job['job_id'])['status'],'running')

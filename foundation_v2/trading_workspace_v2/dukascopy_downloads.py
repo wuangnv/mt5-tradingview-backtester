@@ -18,6 +18,7 @@ from .data_ingest import DataImportError, DataIngestService, preview_csv
 from .market_sync import atomic_json
 from .artifacts import sha256_file
 from .contracts import DatasetManifest
+from .download_job_store import DownloadJobStore, public_download_snapshot
 
 
 PACING_LEVELS = ((3, 1000), (2, 2000), (1, 4000), (1, 8000), (1, 16000), (1, 30000))
@@ -28,7 +29,7 @@ class DukascopyDownloads:
     library = 'dukascopy-node@1.50.0'
     price = 'bid'
 
-    def __init__(self, store, artifacts, catalog, authorization, *, node=None, worker=None):
+    def __init__(self, store, artifacts, catalog, authorization, *, node=None, worker=None, jobs=None):
         self.store, self.artifacts, self.catalog, self.authorization = store, artifacts, catalog, authorization
         self.root = artifacts.root / 'dukascopy'
         self.root.mkdir(parents=True, exist_ok=True)
@@ -53,6 +54,8 @@ class DukascopyDownloads:
             except (OSError, ValueError, KeyError, subprocess.TimeoutExpired):
                 pass
         self.ingest = DataIngestService(store, artifacts)
+        self.jobs = jobs or DownloadJobStore(store, self.provider)
+        self._save_source()
 
     def availability(self):
         return {'available': bool(self.meta), 'provider': self.provider, 'supported_instruments': sorted(self.meta),
@@ -64,7 +67,7 @@ class DukascopyDownloads:
         with self.lock:
             if self.active or self.stopping:
                 raise RuntimeError('download_busy')
-            with self.store.connect() as owner:
+            with self.store.dedicated_connection() as owner:
                 claimed = owner.execute('SELECT pg_try_advisory_lock(%s) AS owned', (self.advisory_key,)).fetchone()['owned']
                 if not claimed:
                     raise RuntimeError('download_busy')
@@ -139,18 +142,61 @@ class DukascopyDownloads:
         return root
 
     def _read(self, workspace, job_id):
-        try:
-            job = json.loads((self._folder(workspace, job_id) / 'job.json').read_text(encoding='utf-8'))
-            if job['workspace_id'] != workspace or job['job_id'] != job_id:
-                raise ValueError('download_not_found')
-            return job
-        except (OSError, KeyError, json.JSONDecodeError) as exc:
-            raise ValueError('download_not_found') from exc
+        self._folder(workspace, job_id)
+        return self.jobs.read(workspace, job_id)
 
-    def _save(self, job):
+    def _save(self, job, *, conn=None):
         folder = self._folder(job['workspace_id'], job['job_id'])
         folder.mkdir(parents=True, exist_ok=True)
+        self.jobs.save(job, self._snapshot(job), self._job_key(job), conn=conn)
         atomic_json(folder / 'job.json', job)
+
+    def _save_source(self):
+        self.jobs.source({**self.availability(), 'supports_pause': self.provider == 'Dukascopy',
+                          'supports_cancel': self.provider == 'Dukascopy',
+                          'cooldown_until': self._source_policy().get('until', 0)})
+
+    @contextmanager
+    def _admission(self, workspace):
+        key = int.from_bytes(hashlib.sha256(f'{self.advisory_key}:{workspace}:admission'.encode()).digest()[:8], 'big', signed=True)
+        with self.store.dedicated_connection() as conn:
+            conn.execute('SELECT pg_advisory_lock(%s)', (key,))
+            yield
+
+    @contextmanager
+    def _recovery_owner(self, job):
+        # Exception handling runs after the executor's source lock closed. Another
+        # process may already have resumed the job; never overwrite its progress.
+        with self.store.dedicated_connection() as conn:
+            owned = conn.execute('SELECT pg_try_advisory_lock(%s) AS owned', (self._job_key(job),)).fetchone()['owned']
+            yield owned
+
+    def adopt_legacy(self, workspace):
+        """Explicit import under the same locks used by old and new executors."""
+        self.authorization.authorize(workspace)
+        with self.lock, self.store.dedicated_connection() as owner:
+            if self.active or self.stopping or not owner.execute(
+                    'SELECT pg_try_advisory_lock(%s) AS owned', (self.advisory_key,)).fetchone()['owned']:
+                raise RuntimeError('download_busy')
+            imported = 0
+            for path in sorted(self._folder(workspace).glob('*/job.json')):
+                try:
+                    self._folder(workspace, path.parent.name)
+                    job = json.loads(path.read_text(encoding='utf-8'))
+                    if job['workspace_id'] != workspace or job['job_id'] != path.parent.name:
+                        raise ValueError('download_not_found')
+                    key = self._job_key(job)
+                    if not owner.execute('SELECT pg_try_advisory_lock(%s) AS owned', (key,)).fetchone()['owned']:
+                        raise RuntimeError('download_busy')
+                    try:
+                        if job['status'] in {'queued', 'running', 'pausing'}:
+                            job.update(status='paused', error='download_interrupted')
+                        imported += self.jobs.save(job, self._snapshot(job), key, adopt=True)
+                    finally:
+                        owner.execute('SELECT pg_advisory_unlock(%s)', (key,))
+                except (OSError, KeyError, ValueError, TypeError):
+                    continue
+            return imported
 
     def _source_policy(self):
         path = self.root / 'cooldown.json'
@@ -171,6 +217,7 @@ class DukascopyDownloads:
         delay = max(retry_seconds, 300 * 2 ** (level - 1))
         until = max(policy.get('until', 0), time.time() + delay)
         atomic_json(self.root / 'cooldown.json', {'until':until, 'rate_limit_level':level})
+        self._save_source()
         return until
 
     def _record_source_success(self):
@@ -180,9 +227,13 @@ class DukascopyDownloads:
             # before publication so policy I/O can never turn a published job into paused.
             atomic_json(self.root / 'cooldown.json',
                         {'until':0, 'rate_limit_level':policy['rate_limit_level'] - 1})
+            self._save_source()
+
+    def _snapshot(self, job):
+        return public_download_snapshot(job)
 
     def _public(self, job):
-        result = {key: value for key, value in job.items() if key != 'workspace_id'}
+        result = self._snapshot(job)
         if job['status'] in {'running', 'queued', 'pausing'} and self.active != (job['workspace_id'], job['job_id']) and not self._remote_owner(job):
             result.update(status='paused', error=None if job['status'] == 'pausing' else 'download_interrupted')
         retry_at = max(job.get('retry_at', 0), self._source_policy().get('until', 0)) if result['status'] in {'paused','failed'} else job.get('retry_at', 0)
@@ -201,13 +252,7 @@ class DukascopyDownloads:
 
     def list_jobs(self, workspace):
         with self.lock:
-            jobs = []
-            for path in self._folder(workspace).glob('*/job.json'):
-                try:
-                    jobs.append(self._public(self._read(workspace, path.parent.name)))
-                except ValueError:
-                    continue
-            return {'available': bool(self.meta), 'supports_pause': True, 'items': sorted(jobs, key=lambda item: item['created_at_utc'], reverse=True)[:20]}
+            return {'available': bool(self.meta), 'supports_pause': True, 'items': self.jobs.list(workspace)}
 
     def request(self, workspace, instrument_id, from_date, to_date):
         return self._request(workspace, instrument_id, from_date, to_date, range_limit=366)
@@ -230,8 +275,8 @@ class DukascopyDownloads:
         if (days < 1 or (range_limit is not None and days > range_limit) or end >= datetime.now(timezone.utc).date()
                 or start < date.fromisoformat(meta['startDayForMinuteCandles'][:10])):
             raise ValueError('invalid_date_range')
-        with self.lock:
-            for old in self.list_jobs(workspace)['items']:
+        with self.lock, self._admission(workspace):
+            for old in self.jobs.matching(workspace, symbol, from_date, to_date, parent_dataset_id, full_from_date):
                 if (old['instrument_id'], old['from_date'], old['to_date'], old.get('parent_dataset_id'), old.get('full_from_date')) == (symbol, from_date, to_date, parent_dataset_id, full_from_date) and old['status'] not in {'cancelled', 'failed'}:
                     if old['status'] == 'completed' and self.store.get_dataset(workspace, old.get('dataset_id')) is None:
                         continue
@@ -301,7 +346,7 @@ class DukascopyDownloads:
                 return interrupt_owned()
             job = self._read(workspace, job_id)
             # Remote owners hold this lock for progress and publication. Never overwrite their job journal.
-            with self.store.connect() as owner:
+            with self.store.dedicated_connection() as owner:
                 claimed = owner.execute('SELECT pg_try_advisory_lock(%s) AS owned', (self._job_key(job),)).fetchone()['owned']
                 if not claimed:
                     raise RuntimeError('download_busy')
@@ -315,7 +360,7 @@ class DukascopyDownloads:
         try:
             self.authorization.authorize(workspace)
             # One public-data worker across API processes connected to this database.
-            with self.store.connect() as owner:
+            with self.store.dedicated_connection() as owner:
                 claimed = owner.execute('SELECT pg_try_advisory_lock(%s) AS owned', (self.advisory_key,)).fetchone()['owned']
                 if not claimed:
                     raise RuntimeError('download_busy')
@@ -375,8 +420,9 @@ class DukascopyDownloads:
             known = {'source_access_challenge','source_rate_limited','source_unavailable','invalid_source_data','empty_range','download_busy',
                      'worker_unavailable','download_interrupted','download_cancelled','quality_rejected','invalid_date_range','instrument_not_supported','dataset_not_supported'}
             error = str(exc) if str(exc) in known else 'quality_rejected' if isinstance(exc, DataImportError) else 'download_interrupted'
-            with self.lock:
-                if self._read(workspace, job_id)['status'] not in {'cancelled', 'pausing'} and not (error == 'download_busy' and self._remote_owner(job)):
+            with self.lock, self._recovery_owner(job) as owned:
+                job = self._read(workspace, job_id)
+                if owned and job['status'] not in {'completed', 'cancelled', 'pausing'}:
                     job.update(status='paused' if error in {'source_access_challenge','source_rate_limited','source_unavailable','download_busy','download_interrupted'} else 'failed',
                                error=error, retry_at=0 if error == 'source_access_challenge' else retry_at if retry_at is not None else time.time()+cooldown)
                     self._save(job)
@@ -389,10 +435,11 @@ class DukascopyDownloads:
                     self.process.stdout.close()
                 self.process = None
                 try:
-                    latest = self._read(workspace, job_id)
-                    if latest['status'] == 'pausing':
-                        latest.update(status='paused', error=None)
-                        self._save(latest)
+                    with self._recovery_owner(job) as owned:
+                        latest = self._read(workspace, job_id)
+                        if owned and latest['status'] == 'pausing':
+                            latest.update(status='paused', error=None)
+                            self._save(latest)
                 finally:
                     self.active = None
 
@@ -447,9 +494,10 @@ class DukascopyDownloads:
             # Cancellation and final registration are serialized; long parsing stays outside this lock.
             with self.lock:
                 check()
-                yield
-                job.update(status='completed', dataset_id=preview['dataset_id'], error=None, quality=preview['quality']['disposition'])
-                self._save(job)
+                with self.store.connect() as conn, conn.transaction():
+                    yield conn
+                    job.update(status='completed', dataset_id=preview['dataset_id'], error=None, quality=preview['quality']['disposition'])
+                    self._save(job, conn=conn)
         if manifest is None:
             self.ingest.import_csv(workspace_id=workspace, path=csv, source=source, instrument=symbol,
                 timeframe_seconds=60, requested_range=requested_range, continue_check=check,

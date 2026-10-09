@@ -1,0 +1,6 @@
+{
+  "cases": 60,
+  "exit_code": 0,
+  "output": "\nrunning 1 test\n60 native catalog HTTP contract cases matched Python reference\ntest native_catalog_matches_python_http_contract ... ok\n\ntest result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.27s\n\n   Compiling trading-workspace-api v0.1.0 (D:\\ANNAM\\TradingWorkspace\\projects\\mt5-tradingview-backtester\\foundation_v2\\api-rust)\n    Finished `test` profile [unoptimized + debuginfo] target(s) in 13.63s\n     Running tests\\catalog_parity.rs (target\\debug\\deps\\catalog_parity-01fa95f4973409dc.exe)\n",
+  "user_database_touched": false
+}

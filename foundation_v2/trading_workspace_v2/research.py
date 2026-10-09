@@ -8,6 +8,8 @@ from copy import deepcopy
 from decimal import Decimal
 from uuid import uuid4
 
+import psycopg
+
 from .artifacts import ArtifactStore, canonical_json_bytes
 from .contracts import DatasetManifest, DatasetSource, EngineResearchResult, OOSResearchResult, ResearchResult, utc_now_iso
 from .research_engine import (
@@ -947,6 +949,11 @@ class ResearchService:
             return None
         try:
             return self.execute_claimed(job)
+        except psycopg.OperationalError:
+            # Lost DB access is retryable; deterministic engine/protocol errors
+            # below must not be retried as if they were network failures.
+            self.store.retry_job(job, "WORKER_DATABASE_UNAVAILABLE")
+            raise
         except Exception:
             self.store.fail_job(job, "WORKER_EXECUTION_FAILED")
             raise

@@ -1,0 +1,492 @@
+[
+  {
+    "method": "GET",
+    "path": "/health",
+    "handler": "health"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v2/session/status",
+    "handler": "get_project_session_status"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v2/overview",
+    "handler": "get_overview"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v2/replay/trades",
+    "handler": "get_replay_trades"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v2/connectors/notion/oauth/status",
+    "handler": "notion_oauth_status"
+  },
+  {
+    "method": "POST",
+    "path": "/api/v2/connectors/notion/oauth/start",
+    "handler": "notion_oauth_start"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v2/connectors/notion/oauth/callback",
+    "handler": "notion_oauth_callback"
+  },
+  {
+    "method": "POST",
+    "path": "/api/v2/connectors/notion/oauth/disconnect",
+    "handler": "notion_oauth_disconnect"
+  },
+  {
+    "method": "POST",
+    "path": "/api/v2/connectors/notion/connections",
+    "handler": "create_notion_connection"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v2/connectors/notion/connections",
+    "handler": "list_notion_connections"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v2/connectors/notion/connections/{connection_id}",
+    "handler": "get_notion_connection"
+  },
+  {
+    "method": "PATCH",
+    "path": "/api/v2/connectors/notion/connections/{connection_id}",
+    "handler": "update_notion_connection"
+  },
+  {
+    "method": "POST",
+    "path": "/api/v2/connectors/notion/intents",
+    "handler": "create_notion_intent"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v2/connectors/notion/intents",
+    "handler": "list_notion_intents"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v2/connectors/notion/intents/{intent_id}",
+    "handler": "get_notion_intent"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v2/connectors/notion/intents/{intent_id}/receipt",
+    "handler": "get_notion_receipt"
+  },
+  {
+    "method": "PATCH",
+    "path": "/api/v2/connectors/notion/intents/{intent_id}/receipt",
+    "handler": "update_notion_receipt"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v2/learn/overview",
+    "handler": "get_learn_overview"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v2/learn/glossary",
+    "handler": "get_learn_glossary"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v2/learn/resources/{resource_id}",
+    "handler": "get_learn_resource"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v2/data/datasets",
+    "handler": "list_datasets"
+  },
+  {
+    "method": "DELETE",
+    "path": "/api/v2/data/datasets/{dataset_id}",
+    "handler": "delete_local_dataset"
+  },
+  {
+    "method": "POST",
+    "path": "/api/v2/data/catalog/refresh",
+    "handler": "refresh_instrument_catalog"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v2/data/downloads",
+    "handler": "list_offline_downloads"
+  },
+  {
+    "method": "POST",
+    "path": "/api/v2/data/downloads",
+    "handler": "request_offline_download"
+  },
+  {
+    "method": "POST",
+    "path": "/api/v2/data/downloads/full",
+    "handler": "request_full_offline_download"
+  },
+  {
+    "method": "POST",
+    "path": "/api/v2/data/downloads/{job_id}/resume",
+    "handler": "resume_offline_download"
+  },
+  {
+    "method": "POST",
+    "path": "/api/v2/data/downloads/{job_id}/pause",
+    "handler": "pause_offline_download"
+  },
+  {
+    "method": "POST",
+    "path": "/api/v2/data/downloads/{job_id}/cancel",
+    "handler": "cancel_offline_download"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v2/data/market-assets",
+    "handler": "market_assets"
+  },
+  {
+    "method": "POST",
+    "path": "/api/v2/data/market-assets/update",
+    "handler": "update_market_assets"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v2/live/status",
+    "handler": "live_read_status"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v2/data/providers",
+    "handler": "list_data_providers"
+  },
+  {
+    "method": "POST",
+    "path": "/api/v2/data/csv/preview",
+    "handler": "preview_csv_payload"
+  },
+  {
+    "method": "POST",
+    "path": "/api/v2/data/csv/import",
+    "handler": "import_csv_payload"
+  },
+  {
+    "method": "POST",
+    "path": "/api/v2/data/instruments/validate",
+    "handler": "validate_instrument"
+  },
+  {
+    "method": "POST",
+    "path": "/api/v2/data/cost-preview",
+    "handler": "preview_cost"
+  },
+  {
+    "method": "POST",
+    "path": "/api/v2/data/news/visible",
+    "handler": "get_visible_news"
+  },
+  {
+    "method": "POST",
+    "path": "/api/v2/analytics/prop/evaluate",
+    "handler": "evaluate_prop"
+  },
+  {
+    "method": "POST",
+    "path": "/api/v2/prop/sessions",
+    "handler": "create_prop_session"
+  },
+  {
+    "method": "POST",
+    "path": "/api/v2/prop/session-bundles",
+    "handler": "create_prop_session_bundle"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v2/prop/sessions",
+    "handler": "list_prop_sessions"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v2/prop/sessions/{session_id}",
+    "handler": "get_prop_session"
+  },
+  {
+    "method": "PUT",
+    "path": "/api/v2/prop/sessions/{session_id}",
+    "handler": "update_prop_session"
+  },
+  {
+    "method": "POST",
+    "path": "/api/v2/prop/sessions/{session_id}/attempts",
+    "handler": "create_prop_attempt"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v2/prop/sessions/{session_id}/attempts",
+    "handler": "list_prop_attempts"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v2/prop/sessions/{session_id}/attempts/{attempt_id}",
+    "handler": "get_prop_attempt"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v2/prop/sessions/{session_id}/attempts/{attempt_id}/report",
+    "handler": "get_prop_attempt_report"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v2/prop/sessions/{session_id}/attempts/{attempt_id}/report.csv",
+    "handler": "export_prop_attempt_report"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v2/prop/reports",
+    "handler": "list_prop_reports"
+  },
+  {
+    "method": "POST",
+    "path": "/api/v2/prop/sessions/{session_id}/attempts/{attempt_id}/transitions",
+    "handler": "transition_prop_attempt"
+  },
+  {
+    "method": "PUT",
+    "path": "/api/v2/prop/sessions/{session_id}/attempts/{attempt_id}/resume",
+    "handler": "save_prop_resume"
+  },
+  {
+    "method": "POST",
+    "path": "/api/v2/research/jobs",
+    "handler": "create_research_job"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v2/research/engines",
+    "handler": "research_engines"
+  },
+  {
+    "method": "POST",
+    "path": "/api/v2/research/engine-jobs",
+    "handler": "create_engine_research_job"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v2/research/jobs/{job_id}",
+    "handler": "get_research_job"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v2/research/jobs/{job_id}/analytics",
+    "handler": "get_research_analytics"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v2/research/jobs/{job_id}/analytics.csv",
+    "handler": "export_research_analytics"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v2/research/jobs/{job_id}/checkpoint",
+    "handler": "get_research_checkpoint"
+  },
+  {
+    "method": "POST",
+    "path": "/api/v2/research/jobs/{job_id}/cancel",
+    "handler": "cancel_research_job"
+  },
+  {
+    "method": "POST",
+    "path": "/api/v2/replay/sessions",
+    "handler": "create_replay"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v2/replay/sessions",
+    "handler": "list_replay_sessions"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v2/replay/sessions/{session_id}",
+    "handler": "get_replay"
+  },
+  {
+    "method": "POST",
+    "path": "/api/v2/replay/sessions/{session_id}/activity",
+    "handler": "record_replay_activity"
+  },
+  {
+    "method": "POST",
+    "path": "/api/v2/replay/sessions/{session_id}/asset",
+    "handler": "select_replay_asset"
+  },
+  {
+    "method": "PATCH",
+    "path": "/api/v2/replay/sessions/{session_id}",
+    "handler": "update_replay_metadata"
+  },
+  {
+    "method": "POST",
+    "path": "/api/v2/replay/sessions/{session_id}/delete",
+    "handler": "delete_replay_session"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v2/replay/sessions/{session_id}/analytics",
+    "handler": "get_replay_analytics"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v2/replay/sessions/{session_id}/analytics.csv",
+    "handler": "export_replay_analytics"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v2/replay/sessions/{session_id}/analytics/experiments",
+    "handler": "get_replay_analytics_experiments"
+  },
+  {
+    "method": "POST",
+    "path": "/api/v2/replay/sessions/{session_id}/execution",
+    "handler": "initialize_replay_execution"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v2/replay/sessions/{session_id}/tick-data",
+    "handler": "replay_tick_options"
+  },
+  {
+    "method": "POST",
+    "path": "/api/v2/replay/sessions/{session_id}/orders/market",
+    "handler": "queue_replay_market_order"
+  },
+  {
+    "method": "POST",
+    "path": "/api/v2/replay/sessions/{session_id}/orders/protection",
+    "handler": "change_replay_protection_route"
+  },
+  {
+    "method": "POST",
+    "path": "/api/v2/replay/sessions/{session_id}/step",
+    "handler": "step_replay"
+  },
+  {
+    "method": "POST",
+    "path": "/api/v2/replay/sessions/{session_id}/branch",
+    "handler": "branch_replay"
+  },
+  {
+    "method": "POST",
+    "path": "/api/v2/replay/sessions/{replay_session_id}/prop/sessions/{prop_session_id}/attempts/{parent_attempt_id}/branch",
+    "handler": "branch_replay_prop_attempt"
+  },
+  {
+    "method": "POST",
+    "path": "/api/v2/replay/sessions/{replay_session_id}/prop/sessions/{prop_session_id}/attempts/{attempt_id}/feed",
+    "handler": "feed_replay_prop_lifecycle"
+  },
+  {
+    "method": "POST",
+    "path": "/api/v2/playbooks",
+    "handler": "create_playbook"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v2/playbooks",
+    "handler": "list_playbooks"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v2/playbooks/{record_id}",
+    "handler": "get_playbook"
+  },
+  {
+    "method": "POST",
+    "path": "/api/v2/playbooks/{record_id}/revisions",
+    "handler": "revise_playbook"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v2/playbooks/{record_id}/revisions",
+    "handler": "list_playbook_revisions"
+  },
+  {
+    "method": "POST",
+    "path": "/api/v2/playbooks/{record_id}/freeze",
+    "handler": "freeze_playbook"
+  },
+  {
+    "method": "POST",
+    "path": "/api/v2/playbooks/{record_id}/fork",
+    "handler": "fork_playbook"
+  },
+  {
+    "method": "POST",
+    "path": "/api/v2/journal",
+    "handler": "create_journal"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v2/journal",
+    "handler": "list_journal"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v2/journal/{record_id}",
+    "handler": "get_journal"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v2/journal/{record_id}/revisions",
+    "handler": "list_journal_revisions"
+  },
+  {
+    "method": "POST",
+    "path": "/api/v2/journal/{record_id}/revisions",
+    "handler": "revise_journal"
+  },
+  {
+    "method": "POST",
+    "path": "/api/v2/chart/annotations",
+    "handler": "create_annotation"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v2/chart/annotations",
+    "handler": "list_annotations"
+  },
+  {
+    "method": "POST",
+    "path": "/api/v2/chart/annotations/{record_id}/revisions",
+    "handler": "revise_annotation"
+  },
+  {
+    "method": "POST",
+    "path": "/api/v2/chart/annotations/{record_id}/delete",
+    "handler": "delete_annotation"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v2/ai/status",
+    "handler": "ai_status"
+  },
+  {
+    "method": "POST",
+    "path": "/api/v2/ai/request",
+    "handler": "ai_request"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v2/execution/capabilities",
+    "handler": "execution_capabilities"
+  },
+  {
+    "method": "POST",
+    "path": "/api/v2/execution/intents",
+    "handler": "execution_intent"
+  }
+]

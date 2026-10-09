@@ -6,9 +6,14 @@ from dataclasses import dataclass
 from contextlib import contextmanager
 from datetime import datetime, timezone
 from uuid import uuid4
+from threading import Lock, BoundedSemaphore
+import weakref
 
 import psycopg
 from psycopg.rows import dict_row
+from psycopg_pool import ConnectionPool, PoolTimeout
+
+from .migrations import MIGRATION_DIRECTORY, apply_migrations
 
 from .contracts import DatasetManifest, ResearchJobView, utc_now_iso
 from .connector_ledger import (
@@ -246,248 +251,7 @@ def _oos_cancellation_state(row: dict) -> tuple[dict, dict] | None:
     return terminal_checkpoint, terminal_progress
 
 
-SCHEMA_SQL = """
-CREATE TABLE IF NOT EXISTS workspaces (
-    workspace_id text PRIMARY KEY,
-    created_at_utc text NOT NULL
-);
-
-CREATE TABLE IF NOT EXISTS datasets (
-    workspace_id text NOT NULL REFERENCES workspaces(workspace_id),
-    dataset_id text NOT NULL,
-    manifest_json jsonb NOT NULL,
-    artifact_sha256 text NOT NULL,
-    created_at_utc text NOT NULL,
-    PRIMARY KEY (workspace_id, dataset_id)
-);
-
-CREATE TABLE IF NOT EXISTS research_jobs (
-    workspace_id text NOT NULL,
-    job_id text NOT NULL,
-    dataset_id text NOT NULL,
-    strategy_version text NOT NULL,
-    starting_balance double precision NOT NULL CHECK (starting_balance > 0),
-    status text NOT NULL CHECK (status IN ('queued','running','completed','failed','canceled')),
-    cancel_requested boolean NOT NULL DEFAULT false,
-    attempt_no integer NOT NULL DEFAULT 0,
-    lease_owner text,
-    lease_token text,
-    lease_expires_at_utc timestamptz,
-    result_path text,
-    result_sha256 text,
-    error_code text,
-    created_at_utc text NOT NULL,
-    updated_at_utc text NOT NULL,
-    PRIMARY KEY (workspace_id, job_id),
-    FOREIGN KEY (workspace_id, dataset_id)
-        REFERENCES datasets(workspace_id, dataset_id)
-);
-
-CREATE INDEX IF NOT EXISTS idx_research_jobs_status
-    ON research_jobs(status, created_at_utc);
-
-ALTER TABLE research_jobs ADD COLUMN IF NOT EXISTS cancel_requested boolean NOT NULL DEFAULT false;
-ALTER TABLE research_jobs ADD COLUMN IF NOT EXISTS attempt_no integer NOT NULL DEFAULT 0;
-ALTER TABLE research_jobs ADD COLUMN IF NOT EXISTS lease_owner text;
-ALTER TABLE research_jobs ADD COLUMN IF NOT EXISTS lease_token text;
-ALTER TABLE research_jobs ADD COLUMN IF NOT EXISTS lease_expires_at_utc timestamptz;
-ALTER TABLE research_jobs ADD COLUMN IF NOT EXISTS protocol_json jsonb;
-ALTER TABLE research_jobs ADD COLUMN IF NOT EXISTS protocol_sha256 text;
-ALTER TABLE research_jobs ADD COLUMN IF NOT EXISTS checkpoint_json jsonb;
-ALTER TABLE research_jobs ADD COLUMN IF NOT EXISTS progress_json jsonb;
-ALTER TABLE research_jobs DROP CONSTRAINT IF EXISTS research_jobs_status_check;
-ALTER TABLE research_jobs ADD CONSTRAINT research_jobs_status_check
-    CHECK (status IN ('queued','running','completed','failed','canceled'));
-
-CREATE INDEX IF NOT EXISTS idx_research_jobs_lease_expiry
-    ON research_jobs(status, lease_expires_at_utc);
-
-CREATE TABLE IF NOT EXISTS prop_sessions (
-    workspace_id text NOT NULL REFERENCES workspaces(workspace_id),
-    session_id text NOT NULL,
-    current_revision integer NOT NULL CHECK (current_revision >= 1),
-    snapshot_json jsonb NOT NULL,
-    created_at_utc text NOT NULL,
-    updated_at_utc text NOT NULL,
-    PRIMARY KEY (workspace_id, session_id)
-);
-
-CREATE TABLE IF NOT EXISTS prop_session_revisions (
-    workspace_id text NOT NULL,
-    session_id text NOT NULL,
-    revision integer NOT NULL CHECK (revision >= 1),
-    snapshot_json jsonb NOT NULL,
-    created_at_utc text NOT NULL,
-    PRIMARY KEY (workspace_id, session_id, revision),
-    FOREIGN KEY (workspace_id, session_id)
-        REFERENCES prop_sessions(workspace_id, session_id)
-);
-
-CREATE TABLE IF NOT EXISTS prop_attempts (
-    workspace_id text NOT NULL,
-    session_id text NOT NULL,
-    attempt_id text NOT NULL,
-    current_revision integer NOT NULL CHECK (current_revision >= 1),
-    snapshot_json jsonb NOT NULL,
-    phase_json jsonb NOT NULL,
-    resume_json jsonb NOT NULL DEFAULT '{}'::jsonb,
-    created_at_utc text NOT NULL,
-    updated_at_utc text NOT NULL,
-    PRIMARY KEY (workspace_id, session_id, attempt_id),
-    FOREIGN KEY (workspace_id, session_id)
-        REFERENCES prop_sessions(workspace_id, session_id)
-);
-
-CREATE INDEX IF NOT EXISTS idx_prop_attempts_session_updated
-    ON prop_attempts(workspace_id, session_id, updated_at_utc DESC, attempt_id);
-
-CREATE TABLE IF NOT EXISTS prop_attempt_revisions (
-    workspace_id text NOT NULL,
-    session_id text NOT NULL,
-    attempt_id text NOT NULL,
-    revision integer NOT NULL CHECK (revision >= 1),
-    snapshot_json jsonb NOT NULL,
-    phase_json jsonb NOT NULL,
-    resume_json jsonb NOT NULL DEFAULT '{}'::jsonb,
-    created_at_utc text NOT NULL,
-    PRIMARY KEY (workspace_id, session_id, attempt_id, revision),
-    FOREIGN KEY (workspace_id, session_id, attempt_id)
-        REFERENCES prop_attempts(workspace_id, session_id, attempt_id)
-);
-
-CREATE TABLE IF NOT EXISTS prop_mutation_receipts (
-    workspace_id text NOT NULL,
-    session_id text NOT NULL,
-    attempt_id text NOT NULL DEFAULT '',
-    operation_id text NOT NULL,
-    fingerprint text NOT NULL,
-    entity_revision integer NOT NULL CHECK (entity_revision >= 1),
-    created_at_utc text NOT NULL,
-    PRIMARY KEY (workspace_id, session_id, attempt_id, operation_id),
-    FOREIGN KEY (workspace_id, session_id)
-        REFERENCES prop_sessions(workspace_id, session_id)
-);
-
-CREATE TABLE IF NOT EXISTS workspace_records (
-    workspace_id text NOT NULL REFERENCES workspaces(workspace_id),
-    kind text NOT NULL CHECK (kind IN ('playbook','journal','annotation','replay')),
-    record_id text NOT NULL,
-    source_key text,
-    current_revision integer NOT NULL CHECK (current_revision >= 1),
-    created_at_utc text NOT NULL,
-    updated_at_utc text NOT NULL,
-    PRIMARY KEY (workspace_id, kind, record_id),
-    UNIQUE (workspace_id, kind, source_key)
-);
-
-CREATE TABLE IF NOT EXISTS workspace_record_revisions (
-    workspace_id text NOT NULL,
-    kind text NOT NULL,
-    record_id text NOT NULL,
-    revision integer NOT NULL CHECK (revision >= 1),
-    payload_json jsonb NOT NULL,
-    deleted boolean NOT NULL DEFAULT false,
-    created_at_utc text NOT NULL,
-    PRIMARY KEY (workspace_id, kind, record_id, revision),
-    FOREIGN KEY (workspace_id, kind, record_id)
-        REFERENCES workspace_records(workspace_id, kind, record_id)
-);
-
-CREATE INDEX IF NOT EXISTS idx_workspace_records_kind_updated
-    ON workspace_records(workspace_id, kind, updated_at_utc DESC);
-
-CREATE TABLE IF NOT EXISTS replay_activity_intervals (
-    workspace_id text NOT NULL,
-    kind text NOT NULL DEFAULT 'replay' CHECK (kind = 'replay'),
-    session_id text NOT NULL,
-    event_id uuid NOT NULL,
-    started_at_utc timestamptz NOT NULL,
-    ended_at_utc timestamptz NOT NULL,
-    PRIMARY KEY (workspace_id, session_id, event_id),
-    CHECK (ended_at_utc > started_at_utc AND ended_at_utc <= started_at_utc + interval '30 seconds'),
-    FOREIGN KEY (workspace_id, kind, session_id)
-        REFERENCES workspace_records(workspace_id, kind, record_id) ON DELETE CASCADE
-);
-CREATE INDEX IF NOT EXISTS idx_replay_activity_start
-    ON replay_activity_intervals(workspace_id, session_id, started_at_utc);
-
-ALTER TABLE workspace_records DROP CONSTRAINT IF EXISTS workspace_records_kind_check;
-ALTER TABLE workspace_records ADD CONSTRAINT workspace_records_kind_check
-    CHECK (kind IN ('playbook','journal','annotation','replay'));
-
--- Connector state is an application-owned ledger, not a provider client.
--- These tables intentionally contain opaque references and sanitized
--- PREP_ONLY payloads only; OAuth credentials and broker/account data never
--- belong here.
-CREATE TABLE IF NOT EXISTS connector_connections (
-    workspace_id text NOT NULL REFERENCES workspaces(workspace_id),
-    connector text NOT NULL CHECK (connector = 'notion'),
-    connection_id text NOT NULL,
-    request_id text NOT NULL,
-    idempotency_key text NOT NULL,
-    fingerprint text NOT NULL,
-    account_ref text,
-    scopes_json jsonb NOT NULL,
-    metadata_json jsonb NOT NULL DEFAULT '{}'::jsonb,
-    status text NOT NULL CHECK (status IN ('pending','unknown','succeeded','failed','revoked','cancelled')),
-    revision integer NOT NULL CHECK (revision >= 1),
-    error_code text,
-    created_at_utc text NOT NULL,
-    updated_at_utc text NOT NULL,
-    PRIMARY KEY (workspace_id, connector, connection_id),
-    UNIQUE (workspace_id, connector, idempotency_key)
-);
-
-CREATE TABLE IF NOT EXISTS connector_intents (
-    workspace_id text NOT NULL REFERENCES workspaces(workspace_id),
-    connector text NOT NULL CHECK (connector = 'notion'),
-    intent_id text NOT NULL,
-    request_id text NOT NULL,
-    idempotency_key text NOT NULL,
-    fingerprint text NOT NULL,
-    connection_id text,
-    source_revision_json jsonb NOT NULL,
-    source_content_sha256 text NOT NULL,
-    destination_ref text,
-    intent_json jsonb NOT NULL,
-    status text NOT NULL CHECK (status IN ('pending','unknown','succeeded','failed','revoked','cancelled')),
-    mode text NOT NULL CHECK (mode = 'PREP_ONLY'),
-    error_code text,
-    created_at_utc text NOT NULL,
-    updated_at_utc text NOT NULL,
-    PRIMARY KEY (workspace_id, connector, intent_id),
-    UNIQUE (workspace_id, connector, idempotency_key)
-);
-
-CREATE INDEX IF NOT EXISTS idx_connector_intents_workspace_updated
-    ON connector_intents(workspace_id, connector, updated_at_utc DESC, intent_id);
-
-CREATE TABLE IF NOT EXISTS connector_receipts (
-    workspace_id text NOT NULL REFERENCES workspaces(workspace_id),
-    connector text NOT NULL CHECK (connector = 'notion'),
-    receipt_id text NOT NULL,
-    intent_id text NOT NULL,
-    status text NOT NULL CHECK (status IN ('pending','unknown','succeeded','failed','revoked','cancelled')),
-    revision integer NOT NULL DEFAULT 1 CHECK (revision >= 1),
-    source_revision_json jsonb NOT NULL,
-    source_content_sha256 text NOT NULL,
-    external_id text,
-    remote_revision text,
-    response_json jsonb NOT NULL DEFAULT '{}'::jsonb,
-    error_code text,
-    created_at_utc text NOT NULL,
-    updated_at_utc text NOT NULL,
-    PRIMARY KEY (workspace_id, connector, receipt_id),
-    UNIQUE (workspace_id, connector, intent_id),
-    FOREIGN KEY (workspace_id, connector, intent_id)
-        REFERENCES connector_intents(workspace_id, connector, intent_id)
-);
-
-CREATE INDEX IF NOT EXISTS idx_connector_receipts_workspace_updated
-    ON connector_receipts(workspace_id, connector, updated_at_utc DESC, receipt_id);
-
-ALTER TABLE connector_receipts ADD COLUMN IF NOT EXISTS revision integer NOT NULL DEFAULT 1;
-"""
+SCHEMA_SQL = (MIGRATION_DIRECTORY / "0001_baseline.sql").read_text(encoding="utf-8")
 
 
 @dataclass(frozen=True)
@@ -516,6 +280,26 @@ class PropIdempotencyConflict(PropPersistenceConflict):
     pass
 
 
+class JobIdempotencyConflict(RuntimeError):
+    pass
+
+
+class StoredContractUntrusted(RuntimeError):
+    def __init__(self):
+        super().__init__("stored_contract_untrusted")
+
+
+def _stored_prop_snapshot(model, payload, workspace_id, session_id, attempt_id=None):
+    if not isinstance(payload, dict) or payload.get("workspace_id") != workspace_id or payload.get("session_id") != session_id:
+        raise StoredContractUntrusted()
+    if attempt_id is not None and payload.get("attempt_id") != attempt_id:
+        raise StoredContractUntrusted()
+    try:
+        return model.model_validate(payload)
+    except ValueError as exc:
+        raise StoredContractUntrusted() from exc
+
+
 _TERMINAL_PROP_ATTEMPT_STATUSES = {"completed_pass", "failed_breach", "expired", "abandoned"}
 
 
@@ -528,16 +312,62 @@ def _payload_fingerprint(payload: dict) -> str:
 
 
 class PostgresStore:
-    def __init__(self, dsn: str):
+    def __init__(self, dsn: str, *, pool_size: int = 8, pool_timeout: float = 5,
+                 dedicated_size: int = 8):
+        if pool_size < 1 or dedicated_size < 1 or pool_timeout <= 0:
+            raise ValueError("pool size and timeout must be positive")
         self.dsn = dsn
+        self._pool_size = pool_size
+        self._pool_timeout = pool_timeout
+        self._pool = None
+        self._pool_lock = Lock()
+        self._dedicated_slots = BoundedSemaphore(dedicated_size)
+        self._closed = False
 
+    @contextmanager
     def connect(self):
-        return psycopg.connect(self.dsn, row_factory=dict_row)
+        with self._pool_lock:
+            if self._closed:
+                raise RuntimeError("PostgresStore is closed")
+            if self._pool is None:
+                self._pool = ConnectionPool(
+                    self.dsn, min_size=0, max_size=self._pool_size,
+                    timeout=self._pool_timeout, max_waiting=64, num_workers=1,
+                    kwargs={"row_factory": dict_row, "connect_timeout": max(1, int(self._pool_timeout))},
+                    open=True,
+                )
+                weakref.finalize(self, self._pool.close)
+            pool = self._pool
+        # The pool context commits on success and rolls back on failure, just as
+        # the previous psycopg connection context did. A borrower never owns close().
+        with pool.connection() as conn:
+            yield conn
+
+    @contextmanager
+    def dedicated_connection(self):
+        """Session locks must be released by closing their own physical session."""
+        if self._closed:
+            raise RuntimeError("PostgresStore is closed")
+        if not self._dedicated_slots.acquire(timeout=self._pool_timeout):
+            raise PoolTimeout("dedicated PostgreSQL connection capacity exhausted")
+        try:
+            if self._closed:
+                raise RuntimeError("PostgresStore is closed")
+            with psycopg.connect(self.dsn, row_factory=dict_row, autocommit=True,
+                                connect_timeout=max(1, int(self._pool_timeout))) as conn:
+                yield conn
+        finally:
+            self._dedicated_slots.release()
+
+    def close(self) -> None:
+        with self._pool_lock:
+            self._closed = True
+            if self._pool is not None:
+                self._pool.close()
 
     def initialize(self) -> None:
         with self.connect() as conn:
-            conn.execute(SCHEMA_SQL)
-            conn.commit()
+            apply_migrations(conn)
 
     def ensure_workspace(self, workspace_id: str) -> None:
         now = utc_now_iso()
@@ -908,7 +738,7 @@ class PostgresStore:
     @contextmanager
     def dataset_mutation(self, workspace_id, dataset_id):
         key = int.from_bytes(hashlib.sha256(f'dataset-mutation:{workspace_id}:{dataset_id}'.encode()).digest()[:8], 'big', signed=True)
-        with self.connect() as conn:
+        with self.dedicated_connection() as conn:
             conn.execute('SELECT pg_advisory_lock(%s)', (key,))
             try:
                 yield
@@ -953,22 +783,24 @@ class PostgresStore:
         for dataset_id in sorted(identifiers):
             PostgresStore._lock_replay_dataset(conn, workspace_id, 'replay', {'dataset_id': dataset_id})
 
-    def put_dataset(self, manifest: DatasetManifest) -> None:
-        with self.connect() as conn:
-            conn.execute(
-                """
-                INSERT INTO datasets(workspace_id,dataset_id,manifest_json,artifact_sha256,created_at_utc)
-                VALUES(%s,%s,%s::jsonb,%s,%s)
-                """,
-                (
-                    manifest.workspace_id,
-                    manifest.dataset_id,
-                    json.dumps(manifest.model_dump(mode="json"), sort_keys=True),
-                    manifest.artifact_sha256,
-                    manifest.created_at_utc,
-                ),
-            )
-            conn.commit()
+    def put_dataset(self, manifest: DatasetManifest, *, conn=None) -> None:
+        if conn is None:
+            with self.connect() as owned:
+                self.put_dataset(manifest, conn=owned)
+            return
+        conn.execute(
+            """
+            INSERT INTO datasets(workspace_id,dataset_id,manifest_json,artifact_sha256,created_at_utc)
+            VALUES(%s,%s,%s::jsonb,%s,%s)
+            """,
+            (
+                manifest.workspace_id,
+                manifest.dataset_id,
+                json.dumps(manifest.model_dump(mode="json"), sort_keys=True),
+                manifest.artifact_sha256,
+                manifest.created_at_utc,
+            ),
+        )
 
     def get_dataset(self, workspace_id: str, dataset_id: str) -> DatasetManifest | None:
         with self.connect() as conn:
@@ -986,18 +818,26 @@ class PostgresStore:
             ).fetchall()
         return [DatasetManifest.model_validate(row["manifest_json"]) for row in rows]
 
-    def create_job(self, workspace_id: str, dataset_id: str, strategy_version: str, starting_balance: float) -> ResearchJobView:
+    def create_job(self, workspace_id: str, dataset_id: str, strategy_version: str, starting_balance: float,
+                   *, idempotency_key: str | None = None) -> ResearchJobView:
         job_id = uuid4().hex
         now = utc_now_iso()
+        fingerprint = self._job_request_fingerprint(idempotency_key, {
+            "dataset_id": dataset_id, "strategy_version": strategy_version,
+            "starting_balance": starting_balance,
+        })
         with self.connect() as conn:
             conn.execute(
                 """
                 INSERT INTO research_jobs(
-                    workspace_id,job_id,dataset_id,strategy_version,starting_balance,status,created_at_utc,updated_at_utc
-                ) VALUES(%s,%s,%s,%s,%s,'queued',%s,%s)
+                    workspace_id,job_id,dataset_id,strategy_version,starting_balance,status,created_at_utc,updated_at_utc,
+                    idempotency_key,request_fingerprint
+                ) VALUES(%s,%s,%s,%s,%s,'queued',%s,%s,%s,%s) ON CONFLICT DO NOTHING
                 """,
-                (workspace_id, job_id, dataset_id, strategy_version, starting_balance, now, now),
+                (workspace_id, job_id, dataset_id, strategy_version, starting_balance, now, now,
+                 idempotency_key, fingerprint),
             )
+            job_id = self._job_idempotency_result(conn, workspace_id, job_id, idempotency_key, fingerprint)
             conn.commit()
         return self.get_job(workspace_id, job_id)
 
@@ -1008,16 +848,21 @@ class PostgresStore:
         starting_balance: float,
         protocol: dict,
         protocol_sha256: str,
+        *, idempotency_key: str | None = None,
     ) -> ResearchJobView:
         job_id = uuid4().hex
         now = utc_now_iso()
+        fingerprint = self._job_request_fingerprint(idempotency_key, {
+            "dataset_id": dataset_id, "strategy_version": "bar-breakout-v1",
+            "starting_balance": starting_balance, "protocol": protocol, "protocol_sha256": protocol_sha256,
+        })
         with self.connect() as conn:
             conn.execute(
                 """
                 INSERT INTO research_jobs(
                     workspace_id,job_id,dataset_id,strategy_version,starting_balance,status,
-                    protocol_json,protocol_sha256,created_at_utc,updated_at_utc
-                ) VALUES(%s,%s,%s,'bar-breakout-v1',%s,'queued',%s::jsonb,%s,%s,%s)
+                    protocol_json,protocol_sha256,created_at_utc,updated_at_utc,idempotency_key,request_fingerprint
+                ) VALUES(%s,%s,%s,'bar-breakout-v1',%s,'queued',%s::jsonb,%s,%s,%s,%s,%s) ON CONFLICT DO NOTHING
                 """,
                 (
                     workspace_id,
@@ -1028,10 +873,31 @@ class PostgresStore:
                     protocol_sha256,
                     now,
                     now,
+                    idempotency_key,
+                    fingerprint,
                 ),
             )
+            job_id = self._job_idempotency_result(conn, workspace_id, job_id, idempotency_key, fingerprint)
             conn.commit()
         return self.get_job(workspace_id, job_id)
+
+    @staticmethod
+    def _job_request_fingerprint(idempotency_key, payload):
+        if idempotency_key is None:
+            return None
+        if not isinstance(idempotency_key, str) or not idempotency_key.strip() or len(idempotency_key) > 200:
+            raise ValueError("job idempotency key must contain 1 to 200 characters")
+        return _payload_fingerprint(payload)
+
+    @staticmethod
+    def _job_idempotency_result(conn, workspace_id, job_id, idempotency_key, fingerprint):
+        if idempotency_key is None:
+            return job_id
+        row = conn.execute("SELECT job_id,request_fingerprint FROM research_jobs WHERE workspace_id=%s AND idempotency_key=%s",
+                           (workspace_id, idempotency_key)).fetchone()
+        if row is None or row["request_fingerprint"] != fingerprint:
+            raise JobIdempotencyConflict("job idempotency key was reused with different content")
+        return row["job_id"]
 
     def get_job(self, workspace_id: str, job_id: str) -> ResearchJobView | None:
         with self.connect() as conn:
@@ -1120,7 +986,14 @@ class PostgresStore:
         return conn.execute(
             """
             UPDATE research_jobs
-            SET status=CASE WHEN cancel_requested THEN 'canceled' ELSE 'queued' END,
+            SET status=CASE WHEN cancel_requested THEN 'canceled'
+                            WHEN attempt_no >= max_attempts THEN 'failed' ELSE 'queued' END,
+                error_code=CASE WHEN cancel_requested THEN NULL
+                                WHEN attempt_no >= max_attempts THEN 'LEASE_RETRY_EXHAUSTED'
+                                ELSE 'LEASE_EXPIRED' END,
+                available_at_utc=CURRENT_TIMESTAMP + (
+                    LEAST(300.0,retry_base_seconds * power(2.0,LEAST(attempt_no - 1,16)))
+                    * (0.8 + random() * 0.4) * INTERVAL '1 second'),
                 lease_owner=NULL,
                 lease_token=NULL,
                 lease_expires_at_utc=NULL,
@@ -1190,6 +1063,7 @@ class PostgresStore:
                        protocol_json,protocol_sha256
                 FROM research_jobs
                 WHERE status='queued' AND cancel_requested=false
+                  AND attempt_no < max_attempts AND available_at_utc <= CURRENT_TIMESTAMP
                 ORDER BY created_at_utc, job_id
                 FOR UPDATE SKIP LOCKED
                 LIMIT 1
@@ -1408,6 +1282,30 @@ class PostgresStore:
             conn.commit()
         return True
 
+    def retry_job(self, job: ClaimedJob, error_code: str) -> bool:
+        """Schedule only a caller-classified transient failure of the current attempt.
+
+        Deterministic validation/execution failures retain fail_job's terminal
+        semantics. A lease token fences both scheduling and final exhaustion.
+        """
+        with self.connect() as conn:
+            updated = conn.execute(
+                """UPDATE research_jobs
+                   SET status=CASE WHEN cancel_requested THEN 'canceled'
+                                   WHEN attempt_no >= max_attempts THEN 'failed' ELSE 'queued' END,
+                       error_code=CASE WHEN cancel_requested THEN NULL ELSE %s END,
+                       available_at_utc=CURRENT_TIMESTAMP + (
+                           LEAST(300.0,retry_base_seconds * power(2.0,LEAST(attempt_no - 1,16)))
+                           * (0.8 + random() * 0.4) * INTERVAL '1 second'),
+                       lease_owner=NULL,lease_token=NULL,lease_expires_at_utc=NULL,updated_at_utc=%s
+                   WHERE workspace_id=%s AND job_id=%s AND status='running'
+                     AND attempt_no=%s AND lease_owner=%s AND lease_token=%s
+                     AND lease_expires_at_utc > CURRENT_TIMESTAMP""",
+                (error_code, utc_now_iso(), job.workspace_id, job.job_id,
+                 job.attempt_no, job.lease_owner, job.lease_token),
+            )
+        return updated.rowcount == 1
+
     def record_replay_activity(self, workspace_id, session_id, event_id, start, end):
         # Share the record lock with delete; never resurrect a deleted session.
         with self.connect() as conn:
@@ -1557,12 +1455,21 @@ class PostgresStore:
 
     def list_records(self, workspace_id: str, kind: str) -> list[dict]:
         with self.connect() as conn:
-            ids = conn.execute(
-                "SELECT record_id FROM workspace_records WHERE workspace_id=%s AND kind=%s ORDER BY updated_at_utc DESC,record_id",
+            rows = conn.execute(
+                """SELECT r.record_id,r.source_key,r.current_revision,r.created_at_utc,r.updated_at_utc,
+                          v.payload_json,v.deleted
+                   FROM workspace_records r
+                   JOIN workspace_record_revisions v
+                     ON v.workspace_id=r.workspace_id AND v.kind=r.kind AND v.record_id=r.record_id
+                    AND v.revision=r.current_revision
+                   WHERE r.workspace_id=%s AND r.kind=%s AND v.deleted=false
+                   ORDER BY r.updated_at_utc DESC,r.record_id""",
                 (workspace_id, kind),
             ).fetchall()
-        records = [self.get_record(workspace_id, kind, row["record_id"]) for row in ids]
-        return [record for record in records if record and not record["deleted"]]
+        return [{"record_id": row["record_id"], "source_key": row["source_key"],
+                 "revision": int(row["current_revision"]), "payload": row["payload_json"],
+                 "deleted": bool(row["deleted"]), "created_at_utc": row["created_at_utc"],
+                 "updated_at_utc": row["updated_at_utc"]} for row in rows]
 
     def list_record_revisions(self, workspace_id: str, kind: str, record_id: str) -> list[dict]:
         with self.connect() as conn:
@@ -1793,19 +1700,19 @@ class PostgresStore:
                 "SELECT snapshot_json FROM prop_sessions WHERE workspace_id=%s AND session_id=%s",
                 (workspace_id, session_id),
             ).fetchone()
-        return PropSessionSnapshot.model_validate(row["snapshot_json"]) if row else None
+        return _stored_prop_snapshot(PropSessionSnapshot, row["snapshot_json"], workspace_id, session_id) if row else None
 
     def list_prop_sessions(self, workspace_id: str) -> list[PropSessionSnapshot]:
         with self.connect() as conn:
             rows = conn.execute(
                 """
-                SELECT snapshot_json FROM prop_sessions
+                SELECT session_id,snapshot_json FROM prop_sessions
                 WHERE workspace_id=%s
                 ORDER BY updated_at_utc DESC,session_id
                 """,
                 (workspace_id,),
             ).fetchall()
-        return [PropSessionSnapshot.model_validate(row["snapshot_json"]) for row in rows]
+        return [_stored_prop_snapshot(PropSessionSnapshot, row["snapshot_json"], workspace_id, row["session_id"]) for row in rows]
 
     def update_prop_session(
         self,
@@ -2698,19 +2605,19 @@ class PostgresStore:
                 """,
                 (workspace_id, session_id, attempt_id),
             ).fetchone()
-        return ChallengeAttemptSnapshot.model_validate(row["snapshot_json"]) if row else None
+        return _stored_prop_snapshot(ChallengeAttemptSnapshot, row["snapshot_json"], workspace_id, session_id, attempt_id) if row else None
 
     def list_prop_attempts(self, workspace_id: str, session_id: str) -> list[ChallengeAttemptSnapshot]:
         with self.connect() as conn:
             rows = conn.execute(
                 """
-                SELECT snapshot_json FROM prop_attempts
+                SELECT attempt_id,snapshot_json FROM prop_attempts
                 WHERE workspace_id=%s AND session_id=%s
                 ORDER BY created_at_utc,attempt_id
                 """,
                 (workspace_id, session_id),
             ).fetchall()
-        return [ChallengeAttemptSnapshot.model_validate(row["snapshot_json"]) for row in rows]
+        return [_stored_prop_snapshot(ChallengeAttemptSnapshot, row["snapshot_json"], workspace_id, session_id, row["attempt_id"]) for row in rows]
 
     def get_prop_resume_state(self, workspace_id: str, session_id: str, attempt_id: str) -> dict | None:
         with self.connect() as conn:
@@ -2727,10 +2634,15 @@ class PostgresStore:
             ).fetchone()
         if row is None:
             return None
+        session = _stored_prop_snapshot(PropSessionSnapshot, row["session_json"], workspace_id, session_id)
+        attempt = _stored_prop_snapshot(ChallengeAttemptSnapshot, row["attempt_json"], workspace_id, session_id, attempt_id)
+        phase = _stored_prop_snapshot(PhaseStateSnapshot, row["phase_json"], workspace_id, session_id, attempt_id)
+        if session.profile.profile_hash != attempt.profile_hash or attempt.profile_hash != phase.profile_hash:
+            raise StoredContractUntrusted()
         return {
-            "session": PropSessionSnapshot.model_validate(row["session_json"]),
-            "attempt": ChallengeAttemptSnapshot.model_validate(row["attempt_json"]),
-            "phase": PhaseStateSnapshot.model_validate(row["phase_json"]),
+            "session": session,
+            "attempt": attempt,
+            "phase": phase,
             "resume_state": row["resume_json"],
         }
 
@@ -2764,8 +2676,8 @@ class PostgresStore:
             raise PropPersistenceConflict("idempotency receipt points to a missing attempt revision")
         return {
             "fingerprint": receipt["fingerprint"],
-            "attempt": ChallengeAttemptSnapshot.model_validate(revision["snapshot_json"]),
-            "phase": PhaseStateSnapshot.model_validate(revision["phase_json"]),
+            "attempt": _stored_prop_snapshot(ChallengeAttemptSnapshot, revision["snapshot_json"], workspace_id, session_id, attempt_id),
+            "phase": _stored_prop_snapshot(PhaseStateSnapshot, revision["phase_json"], workspace_id, session_id, attempt_id),
             "resume_state": revision["resume_json"],
         }
 

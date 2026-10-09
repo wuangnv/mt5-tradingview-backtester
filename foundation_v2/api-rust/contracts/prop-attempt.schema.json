@@ -1,0 +1,140 @@
+{
+  "additionalProperties": false,
+  "properties": {
+    "contract_version": {
+      "const": "prop-session-v1",
+      "default": "prop-session-v1",
+      "title": "Contract Version",
+      "type": "string"
+    },
+    "workspace_id": {
+      "maxLength": 128,
+      "minLength": 1,
+      "title": "Workspace Id",
+      "type": "string"
+    },
+    "session_id": {
+      "maxLength": 128,
+      "minLength": 1,
+      "title": "Session Id",
+      "type": "string"
+    },
+    "attempt_id": {
+      "maxLength": 128,
+      "minLength": 1,
+      "title": "Attempt Id",
+      "type": "string"
+    },
+    "mode": {
+      "const": "simulation",
+      "default": "simulation",
+      "title": "Mode",
+      "type": "string"
+    },
+    "profile_id": {
+      "maxLength": 128,
+      "minLength": 1,
+      "title": "Profile Id",
+      "type": "string"
+    },
+    "terms_version": {
+      "maxLength": 128,
+      "minLength": 1,
+      "title": "Terms Version",
+      "type": "string"
+    },
+    "profile_hash": {
+      "maxLength": 128,
+      "minLength": 8,
+      "title": "Profile Hash",
+      "type": "string"
+    },
+    "data_version": {
+      "maxLength": 256,
+      "minLength": 1,
+      "title": "Data Version",
+      "type": "string"
+    },
+    "cost_version": {
+      "maxLength": 128,
+      "minLength": 1,
+      "title": "Cost Version",
+      "type": "string"
+    },
+    "engine_version": {
+      "maxLength": 128,
+      "minLength": 1,
+      "title": "Engine Version",
+      "type": "string"
+    },
+    "status": {
+      "default": "ready",
+      "enum": [
+        "ready",
+        "running",
+        "paused",
+        "phase_passed",
+        "next_phase_ready",
+        "completed_pass",
+        "failed_breach",
+        "expired",
+        "abandoned"
+      ],
+      "title": "Status",
+      "type": "string"
+    },
+    "revision": {
+      "default": 1,
+      "minimum": 1,
+      "title": "Revision",
+      "type": "integer"
+    },
+    "parent_attempt_id": {
+      "anyOf": [
+        {
+          "maxLength": 128,
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Parent Attempt Id"
+    },
+    "branch_kind": {
+      "default": "clean",
+      "enum": [
+        "clean",
+        "hindsight_exploratory"
+      ],
+      "title": "Branch Kind",
+      "type": "string"
+    },
+    "virtual_start_utc": {
+      "format": "date-time",
+      "title": "Virtual Start Utc",
+      "type": "string"
+    },
+    "virtual_cutoff_utc": {
+      "format": "date-time",
+      "title": "Virtual Cutoff Utc",
+      "type": "string"
+    }
+  },
+  "required": [
+    "workspace_id",
+    "session_id",
+    "attempt_id",
+    "profile_id",
+    "terms_version",
+    "profile_hash",
+    "data_version",
+    "cost_version",
+    "engine_version",
+    "virtual_start_utc",
+    "virtual_cutoff_utc"
+  ],
+  "title": "ChallengeAttemptSnapshot",
+  "type": "object"
+}

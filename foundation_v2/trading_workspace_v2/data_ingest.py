@@ -412,10 +412,13 @@ class DataIngestService:
                 created_at_utc=utc_now_iso(),
             )
             try:
-                with publication_guard if publication_guard is not None else nullcontext():
+                with publication_guard if publication_guard is not None else nullcontext() as publication_conn:
                     if continue_check is not None:
                         continue_check()
-                    self.store.put_dataset(manifest)
+                    if publication_conn is None:
+                        self.store.put_dataset(manifest)
+                    else:
+                        self.store.put_dataset(manifest, conn=publication_conn)
             except BaseException:
                 if self.store.get_dataset(workspace_id, dataset_id) is None:
                     for relative_path in (raw_path, artifact_path):

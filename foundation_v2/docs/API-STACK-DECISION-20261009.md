@@ -1,6 +1,6 @@
 # API platform direction — 09/10/2026
 
-Status: **owner-approved target architecture; product migration not executed**.
+Status: **owner-approved architecture; local Axum cutover verified on 09/10/2026**.
 
 The owner explicitly prefers choosing a durable API platform during development
 and authorizes replacing the incumbent, rather than keeping FastAPI by default.
@@ -12,8 +12,9 @@ the canonical Product Completion Plan remains the scope/status entrypoint.
 On 09/10/2026 the owner confirmed this selection and requested an audit of queue,
 storage, observability and remaining scale-related gaps. The source audit is in
 [the platform gap receipt](../evidence/api-platform-gap-audit-20261009/RECEIPT.md).
-It adds operational requirements; it does not establish runtime migration or
-production acceptance.
+It adds operational requirements. The subsequent implementation and local cutover
+are recorded in [the integration receipt](../evidence/api-platform-implementation-20261009/RECEIPT.md);
+production acceptance remains separate.
 
 ## Selected platform
 
@@ -36,9 +37,9 @@ gRPC-Web is not selected as the browser interface: it adds generated clients and
 transport integration without a measured benefit for these workflows. Neither
 protocol is declared inherently slower; their relevant use cases are different.
 
-The architecture target is Axum, not a permanent public FastAPI gateway in front
-of Axum. During migration, FastAPI remains the **currently running implementation**
-until each replacement passes its contract tests. Python remains a deliberate
+Axum now serves the local public HTTP API on port 8010. FastAPI is retained only
+inside the Python worker to extract the existing typed handler metadata at startup;
+it is not a listening HTTP server or an ASGI proxy. Python remains a deliberate
 worker choice, not a legacy layer to remove indiscriminately.
 
 ## Main data/state flow
@@ -175,6 +176,45 @@ the selected public/storage/job boundaries usable without preinstalling every
 scaling tool.
 
 ## Migration boundary and verification
+
+### Implemented local platform, 09/10/2026
+
+The native crate in `api-rust` now serves the entire frozen public domain route
+inventory: catalog/status/job reads are native PostgreSQL handlers; remaining
+domain operations enter `api_commands` and invoke existing typed Python functions
+in a supervised worker. This is not an HTTP/ASGI proxy. FastAPI remains an internal
+bootstrap/validation dependency so financial semantics have one implementation.
+All 98 registered domain contracts are frozen; focused parity proves selected
+valid/corrupt flows, not every possible journey across all 98 endpoints.
+
+PostgreSQL owns research, command and download state. Python is the sole SQL
+migration writer; Axum verifies all embedded migration hashes before starting.
+Dedicated session locks are kept outside reusable pools. Admission is bounded;
+expired mutations produce an unknown-outcome receipt rather than an automatic
+retry. Frontend Idempotency-Key receipts persist bounded hashes/IDs in session
+storage and reconcile pending commands without another mutation. OAuth payloads
+are scrubbed after completion and are not persisted as browser command receipts.
+
+The current local defaults are an 8-connection Rust pool, each Python store's
+8-connection pool and up to 8 dedicated lock sessions, 4 command threads, 1
+research job, 128 admitted HTTP requests, 128 active commands globally/32 per
+workspace and 8 SSE bodies/workspace/64 per process. These per-process budgets
+must be added across replicas before increasing deployment capacity. Structured
+request logs omit payloads and use bounded route templates; token-protected
+Prometheus metrics include latency and Rust pool pressure. Hosted identity/TLS,
+fleet telemetry/exporters and production capacity remain deployment acceptance.
+
+Parquet reads retain full-file SHA256 checks and prune/project row groups; local
+backup/restore is checked. S3 is an optional injected backup adapter with 64 MiB
+objects, not an enabled cloud store or a remote Parquet range-read implementation.
+React keeps the shell mounted across ordinary pages, deduplicates scoped readers,
+and shares SSE with disconnect polling fallback. Indexed trade/journal projection
+is installed; full-ledger pagination and dashboard filter fanout still require
+separate measured read-model work.
+
+Real-process evidence, latency fixture limits and local cutover status are recorded
+in `evidence/api-platform-implementation-20261009/RECEIPT.md`. The previous stack
+benchmark is research evidence; it is not this implementation's whole-app speedup.
 
 There are 98 decorated routes in the current `trading_workspace_v2/api.py`
 snapshot (see the recorded route inventory); dynamically registered routes and

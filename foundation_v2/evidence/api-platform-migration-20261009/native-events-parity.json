@@ -1,0 +1,7 @@
+{
+  "cases": 16,
+  "exit_code": 0,
+  "output": "\nrunning 1 test\n16 job/checkpoint parity cases + startup migration missing/mismatch/future/absent fail-closed + SSE HTTP scope, durable updates, reconnect, checksum, 8/64 limits and disconnect release passed\ntest native_jobs_and_sse_durable_http_contract ... ok\n\ntest result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 2.89s\n\n    Blocking waiting for file lock on build directory\n   Compiling trading-workspace-api v0.1.0 (D:\\ANNAM\\TradingWorkspace\\projects\\mt5-tradingview-backtester\\foundation_v2\\api-rust)\n    Finished `test` profile [unoptimized + debuginfo] target(s) in 20.46s\n     Running tests\\events_pg.rs (target\\debug\\deps\\events_pg-70e1b390c9f5041b.exe)\n",
+  "user_database_touched": false,
+  "real_socket_http": true
+}

@@ -10,7 +10,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 from trading_workspace_v2.artifacts import ArtifactStore
 from trading_workspace_v2.qdm_cli import QdmCatalog, QdmCli, cli_error
 from trading_workspace_v2.qdm_downloads import QdmDownloads, normalize_export
-from test_dukascopy_full_downloads import MemoryStore
+from test_dukascopy_full_downloads import MemoryStore, MemoryDownloadJobs
 
 
 class FixtureCli:
@@ -56,7 +56,8 @@ class QdmTests(unittest.TestCase):
         self.catalog = QdmCatalog(self.cli)
         self.store = MemoryStore()
         self.artifacts = ArtifactStore(self.root / 'artifacts')
-        self.service = QdmDownloads(self.store, self.artifacts, self.catalog, SimpleNamespace(authorize=lambda workspace: None))
+        self.service = QdmDownloads(self.store, self.artifacts, self.catalog, SimpleNamespace(authorize=lambda workspace: None), jobs=MemoryDownloadJobs())
+        self.service.jobs.project = self.service._public
         self.service._start = lambda job: setattr(self.service, 'active', (job['workspace_id'], job['job_id']))
 
     def test_cli_zero_exit_is_not_enough_for_busy_or_failed_command(self):

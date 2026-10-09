@@ -5,7 +5,6 @@ import hashlib
 import json
 import os
 import re
-import shutil
 import subprocess
 import sys
 import tempfile
@@ -25,6 +24,7 @@ for entry in (str(ROOT), str(V2)):
         sys.path.insert(0, entry)
 
 from trading_workspace_v2.artifacts import ArtifactStore
+from trading_workspace_v2.artifact_backup import create_backup_bundle, restore_backup_files, verify_backup_bundle
 from trading_workspace_v2.contracts import ChartAnnotationDraft, DatasetSource, PlaybookDraft
 from trading_workspace_v2.product import ProductService
 from trading_workspace_v2.research import ResearchService
@@ -223,7 +223,6 @@ def main() -> int:
     with disposable_databases(admin_dsn) as (source_db, target_db), tempfile.TemporaryDirectory(prefix="tw-f7-restore-") as temp_raw:
         temp = Path(temp_raw)
         source_artifacts = temp / "source-artifacts"
-        target_artifacts = temp / "target-artifacts"
         dump_path = temp / "metadata.dump"
         source_store = PostgresStore(database_dsn(args.host, args.port, args.user, source_db))
         source_store.initialize()
@@ -249,7 +248,17 @@ def main() -> int:
                 source_db,
             ]
         )
-        shutil.copytree(source_artifacts, target_artifacts)
+        # This synthetic source has no running workers/writers. A live backup
+        # must establish the same quiescence before pg_dump and reference capture.
+        backup_bundle = temp / "backup-bundle"
+        backup_manifest = create_backup_bundle(
+            source_artifacts, dump_path, backup_bundle,
+            artifact_references={str(path.relative_to(source_artifacts)): sha256(path) for path in source_artifacts.rglob("*") if path.is_file()},
+            snapshot_id=source_db, mutations_quiesced=True,
+        )
+        restored_files = temp / "restored-files"
+        checked_dump = restore_backup_files(backup_bundle, restored_files)
+        target_artifacts = restored_files / "artifacts"
         run(
             [
                 str(pg_restore),
@@ -262,7 +271,7 @@ def main() -> int:
                 "-d",
                 target_db,
                 "--no-owner",
-                str(dump_path),
+                str(checked_dump),
             ]
         )
 
@@ -282,6 +291,7 @@ def main() -> int:
         restored_annotation = target_store.get_record("restore-tenant", "annotation", fixture["annotation_id"])
 
         checks = {
+            "backup_bundle_verified": verify_backup_bundle(backup_bundle) == backup_manifest,
             "metadata_counts_match": source_counts == target_counts,
             "dataset_hash_match": restored_dataset.artifact_sha256 == fixture["dataset_sha256"],
             "result_hash_match": restored_job.result_sha256 == fixture["result_sha256"],

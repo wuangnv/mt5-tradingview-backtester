@@ -1,0 +1,439 @@
+{
+  "$defs": {
+    "LossRule": {
+      "additionalProperties": false,
+      "properties": {
+        "threshold": {
+          "$ref": "#/$defs/ThresholdValue"
+        },
+        "basis": {
+          "default": "equity",
+          "enum": [
+            "balance",
+            "equity"
+          ],
+          "title": "Basis",
+          "type": "string"
+        },
+        "comparator": {
+          "default": "lt",
+          "enum": [
+            "lt",
+            "lte"
+          ],
+          "title": "Comparator",
+          "type": "string"
+        }
+      },
+      "required": [
+        "threshold"
+      ],
+      "title": "LossRule",
+      "type": "object"
+    },
+    "OverallDrawdownRule": {
+      "additionalProperties": false,
+      "properties": {
+        "threshold": {
+          "$ref": "#/$defs/ThresholdValue"
+        },
+        "basis": {
+          "default": "equity",
+          "enum": [
+            "balance",
+            "equity"
+          ],
+          "title": "Basis",
+          "type": "string"
+        },
+        "comparator": {
+          "default": "lt",
+          "enum": [
+            "lt",
+            "lte"
+          ],
+          "title": "Comparator",
+          "type": "string"
+        },
+        "kind": {
+          "default": "static",
+          "enum": [
+            "static",
+            "trailing"
+          ],
+          "title": "Kind",
+          "type": "string"
+        },
+        "trailing_granularity": {
+          "anyOf": [
+            {
+              "enum": [
+                "intraday",
+                "end_of_day"
+              ],
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Trailing Granularity"
+        },
+        "lock_floor_at_initial": {
+          "default": false,
+          "title": "Lock Floor At Initial",
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "threshold"
+      ],
+      "title": "OverallDrawdownRule",
+      "type": "object"
+    },
+    "ProfitTargetRule": {
+      "additionalProperties": false,
+      "properties": {
+        "threshold": {
+          "$ref": "#/$defs/ThresholdValue"
+        },
+        "basis": {
+          "default": "balance",
+          "enum": [
+            "balance",
+            "equity"
+          ],
+          "title": "Basis",
+          "type": "string"
+        },
+        "comparator": {
+          "default": "gte",
+          "enum": [
+            "gte",
+            "gt"
+          ],
+          "title": "Comparator",
+          "type": "string"
+        }
+      },
+      "required": [
+        "threshold"
+      ],
+      "title": "ProfitTargetRule",
+      "type": "object"
+    },
+    "PropPhaseSpec": {
+      "additionalProperties": false,
+      "properties": {
+        "phase_index": {
+          "minimum": 1,
+          "title": "Phase Index",
+          "type": "integer"
+        },
+        "initial_capital": {
+          "anyOf": [
+            {
+              "exclusiveMinimum": 0.0,
+              "type": "number"
+            },
+            {
+              "pattern": "^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$",
+              "type": "string"
+            }
+          ],
+          "title": "Initial Capital"
+        },
+        "currency": {
+          "maxLength": 12,
+          "minLength": 3,
+          "title": "Currency",
+          "type": "string"
+        },
+        "profit_target": {
+          "$ref": "#/$defs/ProfitTargetRule"
+        },
+        "daily_loss": {
+          "$ref": "#/$defs/LossRule"
+        },
+        "overall_drawdown": {
+          "$ref": "#/$defs/OverallDrawdownRule"
+        },
+        "reset_timezone": {
+          "maxLength": 128,
+          "minLength": 1,
+          "title": "Reset Timezone",
+          "type": "string"
+        },
+        "reset_local_time": {
+          "default": "00:00:00",
+          "format": "time",
+          "title": "Reset Local Time",
+          "type": "string"
+        },
+        "reset_order": {
+          "default": "fees_then_reset",
+          "enum": [
+            "fees_then_reset",
+            "reset_then_fees"
+          ],
+          "title": "Reset Order",
+          "type": "string"
+        },
+        "min_qualifying_days": {
+          "default": 0,
+          "minimum": 0,
+          "title": "Min Qualifying Days",
+          "type": "integer"
+        },
+        "max_calendar_days": {
+          "anyOf": [
+            {
+              "minimum": 1,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Max Calendar Days"
+        },
+        "carry_policy": {
+          "default": "reset",
+          "enum": [
+            "reset",
+            "carry_balance",
+            "carry_all"
+          ],
+          "title": "Carry Policy",
+          "type": "string"
+        },
+        "position_policy": {
+          "default": "must_be_flat",
+          "enum": [
+            "must_be_flat",
+            "carry",
+            "close_by_simulator"
+          ],
+          "title": "Position Policy",
+          "type": "string"
+        }
+      },
+      "required": [
+        "phase_index",
+        "initial_capital",
+        "currency",
+        "profit_target",
+        "daily_loss",
+        "overall_drawdown",
+        "reset_timezone"
+      ],
+      "title": "PropPhaseSpec",
+      "type": "object"
+    },
+    "PropProfileSnapshot": {
+      "additionalProperties": false,
+      "properties": {
+        "contract_version": {
+          "const": "prop-session-v1",
+          "default": "prop-session-v1",
+          "title": "Contract Version",
+          "type": "string"
+        },
+        "profile_id": {
+          "maxLength": 128,
+          "minLength": 1,
+          "title": "Profile Id",
+          "type": "string"
+        },
+        "terms_version": {
+          "maxLength": 128,
+          "minLength": 1,
+          "title": "Terms Version",
+          "type": "string"
+        },
+        "profile_hash": {
+          "maxLength": 128,
+          "minLength": 8,
+          "title": "Profile Hash",
+          "type": "string"
+        },
+        "effective_from": {
+          "format": "date",
+          "title": "Effective From",
+          "type": "string"
+        },
+        "source_kind": {
+          "default": "generic",
+          "enum": [
+            "generic",
+            "custom",
+            "named_provider"
+          ],
+          "title": "Source Kind",
+          "type": "string"
+        },
+        "source_url": {
+          "anyOf": [
+            {
+              "maxLength": 2048,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Source Url"
+        },
+        "supported_rule_flags": {
+          "items": {
+            "type": "string"
+          },
+          "maxItems": 64,
+          "title": "Supported Rule Flags",
+          "type": "array"
+        },
+        "phases": {
+          "items": {
+            "$ref": "#/$defs/PropPhaseSpec"
+          },
+          "maxItems": 16,
+          "minItems": 1,
+          "title": "Phases",
+          "type": "array"
+        }
+      },
+      "required": [
+        "profile_id",
+        "terms_version",
+        "profile_hash",
+        "effective_from",
+        "phases"
+      ],
+      "title": "PropProfileSnapshot",
+      "type": "object"
+    },
+    "ThresholdValue": {
+      "additionalProperties": false,
+      "properties": {
+        "amount": {
+          "anyOf": [
+            {
+              "minimum": 0.0,
+              "type": "number"
+            },
+            {
+              "pattern": "^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Amount"
+        },
+        "percent": {
+          "anyOf": [
+            {
+              "minimum": 0.0,
+              "type": "number"
+            },
+            {
+              "pattern": "^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Percent"
+        },
+        "percent_base": {
+          "default": "initial_capital",
+          "enum": [
+            "initial_capital",
+            "daily_anchor",
+            "high_water_mark"
+          ],
+          "title": "Percent Base",
+          "type": "string"
+        }
+      },
+      "title": "ThresholdValue",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "contract_version": {
+      "const": "prop-session-v1",
+      "default": "prop-session-v1",
+      "title": "Contract Version",
+      "type": "string"
+    },
+    "workspace_id": {
+      "maxLength": 128,
+      "minLength": 1,
+      "title": "Workspace Id",
+      "type": "string"
+    },
+    "session_id": {
+      "maxLength": 128,
+      "minLength": 1,
+      "title": "Session Id",
+      "type": "string"
+    },
+    "mode": {
+      "const": "simulation",
+      "default": "simulation",
+      "title": "Mode",
+      "type": "string"
+    },
+    "session_type": {
+      "default": "challenge",
+      "enum": [
+        "challenge",
+        "practice"
+      ],
+      "title": "Session Type",
+      "type": "string"
+    },
+    "profile": {
+      "$ref": "#/$defs/PropProfileSnapshot"
+    },
+    "status": {
+      "default": "draft",
+      "enum": [
+        "draft",
+        "ready",
+        "running",
+        "paused",
+        "phase_passed",
+        "next_phase_ready",
+        "completed_pass",
+        "failed_breach",
+        "expired",
+        "abandoned"
+      ],
+      "title": "Status",
+      "type": "string"
+    },
+    "revision": {
+      "default": 1,
+      "minimum": 1,
+      "title": "Revision",
+      "type": "integer"
+    }
+  },
+  "required": [
+    "workspace_id",
+    "session_id",
+    "profile"
+  ],
+  "title": "PropSessionSnapshot",
+  "type": "object"
+}

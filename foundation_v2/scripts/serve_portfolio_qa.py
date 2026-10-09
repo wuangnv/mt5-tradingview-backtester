@@ -31,6 +31,7 @@ def portfolio_qa_app():
     admin = make_conninfo(**{**config, 'dbname': 'postgres'})
     with psycopg.connect(admin, autocommit=True) as connection:
         connection.execute(sql.SQL('CREATE DATABASE {}').format(sql.Identifier(database)))
+    app = None
     try:
         with TemporaryDirectory(prefix='tw-portfolio-qa-') as folder:
             app = create_app(dsn=make_conninfo(**{**config, 'dbname':database}), artifact_root=folder,
@@ -48,6 +49,8 @@ def portfolio_qa_app():
                 manifests.append(manifest)
             yield app, manifests
     finally:
+        if app is not None:
+            app.state.store.close()
         with psycopg.connect(admin, autocommit=True) as connection:
             connection.execute(sql.SQL('DROP DATABASE {}').format(sql.Identifier(database)))
 

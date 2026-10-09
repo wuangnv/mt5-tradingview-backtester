@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import os
+import json
 import sys
 import tempfile
 import unittest
@@ -38,6 +39,7 @@ from trading_workspace_v2.store import (
     PostgresStore,
     PropIdempotencyConflict,
     PropPersistenceConflict,
+    StoredContractUntrusted,
 )
 
 
@@ -132,6 +134,38 @@ class Ps01PropPersistenceTests(unittest.TestCase):
         }
         self.store.create_prop_session(self.session)
         self.store.create_prop_attempt(self.attempt, self.phase, resume_state=self.resume_state)
+
+    def test_persisted_prop_identity_corruption_never_crosses_scoped_reads(self):
+        for table,column,original,changes in (
+            ("prop_sessions","snapshot_json",self.session.model_dump(mode="json"),
+             {"workspace_id":"foreign-workspace","session_id":"foreign-session","status":"invalid"}),
+            ("prop_attempts","snapshot_json",self.attempt.model_dump(mode="json"),
+             {"workspace_id":"foreign-workspace","session_id":"foreign-session","attempt_id":"foreign-attempt","revision":1.5}),
+            ("prop_attempts","phase_json",self.phase.model_dump(mode="json"),
+             {"workspace_id":"foreign-workspace","session_id":"foreign-session","attempt_id":"foreign-attempt","profile_hash":"sha256:foreign-profile"}),
+        ):
+            for key,value in changes.items():
+                with self.subTest(table=table,column=column,key=key):
+                    with self.store.connect() as conn:
+                        conn.execute(f"UPDATE {table} SET {column}=jsonb_set({column},%s,%s::jsonb) WHERE workspace_id=%s AND session_id=%s",
+                                     ([key],json.dumps(value),self.workspace_id,self.session_id))
+                    try:
+                        getters = [lambda:self.store.get_prop_resume_state(self.workspace_id,self.session_id,self.attempt_id)]
+                        if table == "prop_sessions":
+                            getters += [lambda:self.store.get_prop_session(self.workspace_id,self.session_id),
+                                        lambda:self.store.list_prop_sessions(self.workspace_id)]
+                        elif column == "snapshot_json":
+                            getters += [lambda:self.store.get_prop_attempt(self.workspace_id,self.session_id,self.attempt_id),
+                                        lambda:self.store.list_prop_attempts(self.workspace_id,self.session_id)]
+                        for getter in getters:
+                            with self.assertRaisesRegex(StoredContractUntrusted,"stored_contract_untrusted"):
+                                getter()
+                    finally:
+                        with self.store.connect() as conn:
+                            conn.execute(f"UPDATE {table} SET {column}=%s::jsonb WHERE workspace_id=%s AND session_id=%s",
+                                         (json.dumps(original),self.workspace_id,self.session_id))
+        restored = self.store.get_prop_resume_state(self.workspace_id,self.session_id,self.attempt_id)
+        self.assertEqual(restored["attempt"],self.attempt)
 
     def test_resume_round_trip_preserves_cursor_money_event_and_orders_after_store_restart(self):
         next_attempt = self.attempt.model_copy(update={"revision": 2})

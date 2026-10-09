@@ -65,6 +65,7 @@ class LocalDatasetRemovalTests(unittest.TestCase):
 
     @classmethod
     def tearDownClass(cls):
+        cls.store.close()
         with psycopg.connect(cls.admin,autocommit=True) as conn:
             conn.execute(sql.SQL('DROP DATABASE {}').format(sql.Identifier(cls.name)))
 

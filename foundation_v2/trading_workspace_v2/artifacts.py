@@ -3,6 +3,7 @@ from __future__ import annotations
 import hashlib
 import json
 import os
+import stat
 from collections.abc import Iterable
 from pathlib import Path
 from uuid import uuid4
@@ -29,6 +30,9 @@ def _safe_component(value: str, label: str) -> str:
         raise ValueError(f"{label} must be a single path component")
     if any(ord(character) < 32 for character in value) or value[-1] in {".", " "}:
         raise ValueError(f"{label} must be a single path component")
+    reserved = {"CON", "PRN", "AUX", "NUL", *(f"COM{n}" for n in range(1, 10)), *(f"LPT{n}" for n in range(1, 10))}
+    if value.split(".")[0].upper() in reserved:
+        raise ValueError(f"{label} uses a reserved path component")
     return value
 
 
@@ -46,16 +50,82 @@ def canonical_json_bytes(value: object) -> bytes:
     return (json.dumps(value, sort_keys=True, separators=(",", ":")) + "\n").encode("utf-8")
 
 
+def _sync_directory(directory: Path) -> None:
+    if os.name != "nt":
+        descriptor = os.open(directory, os.O_RDONLY)
+        try:
+            os.fsync(descriptor)
+        finally:
+            os.close(descriptor)
+
+
+def publish_immutable(temp: Path, target: Path, *, sync_file: bool = True) -> None:
+    """Publish without replacing a concurrent winner; persist bytes before the name."""
+    if sync_file:
+        with temp.open("r+b") as handle:
+            os.fsync(handle.fileno())
+    if os.name == "nt":
+        import ctypes
+        from ctypes import wintypes
+
+        kernel = ctypes.WinDLL("kernel32", use_last_error=True)
+        move = kernel.MoveFileExW
+        move.argtypes = (wintypes.LPCWSTR, wintypes.LPCWSTR, wintypes.DWORD)
+        move.restype = wintypes.BOOL
+        # MOVEFILE_WRITE_THROUGH, deliberately without REPLACE_EXISTING.
+        if not move(str(temp), str(target), 0x8):
+            error = ctypes.get_last_error()
+            if error in (80, 183):
+                raise ArtifactConflict(f"artifact already exists: {target.name}")
+            raise ctypes.WinError(error)
+    else:
+        try:
+            os.link(temp, target)
+        except FileExistsError as exc:
+            raise ArtifactConflict(f"artifact already exists: {target.name}") from exc
+        _sync_directory(target.parent)
+        temp.unlink()
+        _sync_directory(target.parent)
+
+
+def _file_identity(value: os.stat_result) -> tuple:
+    return (value.st_dev, value.st_ino, value.st_size, value.st_mtime_ns, value.st_ctime_ns)
+
+
 class ArtifactStore:
     def __init__(self, root: str | Path):
         self.root = Path(root).resolve()
         self.root.mkdir(parents=True, exist_ok=True)
+        _sync_directory(self.root.parent)
+
+    def _mkdir(self, path: Path) -> None:
+        path.mkdir(parents=True, exist_ok=True)
+        for directory in (path, *path.parents):
+            _sync_directory(directory)
+            if directory == self.root:
+                break
+
+    def _path(self, relative_path: str | Path) -> Path:
+        relative = Path(relative_path)
+        if relative.is_absolute() or not relative.parts or any(part in {".", ".."} for part in relative.parts):
+            raise ValueError("artifact path escapes root")
+        for part in relative.parts:
+            _safe_component(part, "artifact path")
+        path = self.root / relative
+        for component in (path, *path.parents):
+            if component == self.root:
+                break
+            if component.is_symlink() or getattr(component, "is_junction", lambda: False)():
+                raise ValueError("artifact path escapes root")
+        if self.root not in path.resolve().parents:
+            raise ValueError("artifact path escapes root")
+        return path
 
     def _workspace_dir(self, workspace_id: str, family: str) -> Path:
         safe = _safe_component(workspace_id, "workspace_id")
         safe_family = _safe_component(family, "artifact family")
-        path = self.root / safe / safe_family
-        path.mkdir(parents=True, exist_ok=True)
+        path = self._path(Path(safe) / safe_family)
+        self._mkdir(path)
         return path
 
     def write_dataset(self, workspace_id: str, dataset_id: str, rows: list[dict]) -> tuple[str, str]:
@@ -108,7 +178,7 @@ class ArtifactStore:
             digest = sha256_file(temp, continue_check)
             if continue_check is not None:
                 continue_check()
-            os.replace(temp, target)
+            publish_immutable(temp, target)
         finally:
             if writer is not None:
                 writer.close()
@@ -121,11 +191,11 @@ class ArtifactStore:
         if not source.is_file():
             raise FileNotFoundError(source)
         safe_dataset = _safe_component(dataset_id, "dataset_id")
-        target_dir = self._workspace_dir(workspace_id, "raw") / safe_dataset
+        target_dir = self._path(self._workspace_dir(workspace_id, "raw").relative_to(self.root) / safe_dataset)
         target = target_dir / "source.csv"
         if target.exists():
             raise ArtifactConflict(f"raw artifact already exists: {dataset_id}")
-        target_dir.mkdir(parents=True, exist_ok=True)
+        self._mkdir(target_dir)
         temp = target.with_name(f".{target.name}.{uuid4().hex}.tmp")
         try:
             with source.open("rb") as source_handle, temp.open("wb") as target_handle:
@@ -138,7 +208,7 @@ class ArtifactStore:
             digest = sha256_file(temp, continue_check)
             if continue_check is not None:
                 continue_check()
-            os.replace(temp, target)
+            publish_immutable(temp, target)
         finally:
             if temp.exists():
                 temp.unlink()
@@ -175,31 +245,56 @@ class ArtifactStore:
             return None
 
     def read_dataset(self, relative_path: str, expected_sha256: str) -> list[dict]:
-        path = (self.root / relative_path).resolve()
-        if self.root not in path.parents:
-            raise ValueError("artifact path escapes root")
-        if sha256_file(path) != expected_sha256:
+        path = self._path(relative_path)
+        with path.open("rb") as handle:
+            identity = self._verify_dataset(handle, expected_sha256)
+            rows = pq.ParquetFile(handle).read().to_pylist()
+            self._verify_unchanged(path, handle, identity)
+            return rows
+
+    @staticmethod
+    def _verify_dataset(handle, expected_sha256, continue_check=None):
+        before = os.fstat(handle.fileno())
+        if not stat.S_ISREG(before.st_mode):
+            raise ValueError("artifact must be a regular file")
+        digest = hashlib.sha256()
+        for block in iter(lambda: handle.read(1024 * 1024), b""):
+            if continue_check is not None:
+                continue_check()
+            digest.update(block)
+        identity = _file_identity(before)
+        if digest.hexdigest() != expected_sha256 or _file_identity(os.fstat(handle.fileno())) != identity:
             raise ArtifactConflict("dataset checksum mismatch")
-        return pq.read_table(path).to_pylist()
+        handle.seek(0)
+        return identity
+
+    def _verify_unchanged(self, path, handle, identity):
+        # Windows 3.12 path.stat and fstat expose different ctime semantics.
+        # Compare ctime only descriptor-to-descriptor, and retain inode/size/mtime
+        # on the pathname check to detect replacement while this handle is open.
+        if self._path(path.relative_to(self.root)) != path or _file_identity(os.fstat(handle.fileno())) != identity or _file_identity(path.stat())[:4] != identity[:4]:
+            raise ArtifactConflict("dataset changed during read")
 
     def read_dataset_range(
         self, relative_path: str, expected_sha256: str, *, from_utc: int, to_utc: int,
         max_bars: int, continue_check=None,
     ) -> list[dict]:
-        path = (self.root / relative_path).resolve()
-        if self.root not in path.parents:
-            raise ValueError("artifact path escapes root")
-        digest = hashlib.sha256()
-        with path.open("rb") as handle:
-            for block in iter(lambda: handle.read(1024 * 1024), b""):
-                if continue_check is not None:
-                    continue_check()
-                digest.update(block)
-        if digest.hexdigest() != expected_sha256:
-            raise ArtifactConflict("dataset checksum mismatch")
+        if max_bars < 0 or to_utc < from_utc:
+            raise ValueError("invalid dataset range budget")
+        path = self._path(relative_path)
         rows = []
-        with pq.ParquetFile(path) as parquet:
-            for batch in parquet.iter_batches(batch_size=4096, columns=["timestamp", "open", "high", "low", "close"]):
+        with path.open("rb") as handle:
+            identity = self._verify_dataset(handle, expected_sha256, continue_check)
+            parquet = pq.ParquetFile(handle)
+            timestamp_column = parquet.schema_arrow.get_field_index("timestamp")
+            if timestamp_column < 0:
+                raise ValueError("dataset has no timestamp column")
+            groups = []
+            for index in range(parquet.num_row_groups):
+                statistics = parquet.metadata.row_group(index).column(timestamp_column).statistics
+                if statistics is None or not statistics.has_min_max or (statistics.min < to_utc and statistics.max >= from_utc):
+                    groups.append(index)
+            for batch in parquet.iter_batches(batch_size=4096, row_groups=groups, columns=["timestamp", "open", "high", "low", "close"]):
                 if continue_check is not None:
                     continue_check()
                 for row in batch.to_pylist():
@@ -207,6 +302,7 @@ class ArtifactStore:
                         if len(rows) >= max_bars:
                             raise ValueError("run exceeded budget.max_bars")
                         rows.append(row)
+            self._verify_unchanged(path, handle, identity)
         return rows
 
     def write_result(self, workspace_id: str, job_id: str, payload: dict) -> tuple[str, str]:
@@ -217,8 +313,11 @@ class ArtifactStore:
             raise ArtifactConflict(f"result artifact already exists: {safe_job}")
         data = canonical_json_bytes(payload)
         temp = target.with_name(f".{target.name}.{uuid4().hex}.tmp")
-        temp.write_bytes(data)
-        os.replace(temp, target)
+        try:
+            temp.write_bytes(data)
+            publish_immutable(temp, target)
+        finally:
+            temp.unlink(missing_ok=True)
         return str(target.relative_to(self.root)), hashlib.sha256(data).hexdigest()
 
     def write_result_candidate(
@@ -234,22 +333,23 @@ class ArtifactStore:
         legacy_target = results / f"{safe_job}.json"
         if legacy_target.exists():
             raise ArtifactConflict(f"result artifact already exists: {safe_job}")
-        attempt_dir = results / safe_job
-        attempt_dir.mkdir(parents=True, exist_ok=True)
+        attempt_dir = self._path(results.relative_to(self.root) / safe_job)
+        self._mkdir(attempt_dir)
         token_key = hashlib.sha256(lease_token.encode("utf-8")).hexdigest()[:16]
         target = attempt_dir / f"attempt-{attempt_no:06d}-{token_key}.json"
         if target.exists():
             raise ArtifactConflict(f"result candidate already exists: {job_id} attempt {attempt_no}")
         data = canonical_json_bytes(payload)
         temp = target.with_name(f".{target.name}.{uuid4().hex}.tmp")
-        temp.write_bytes(data)
-        os.replace(temp, target)
+        try:
+            temp.write_bytes(data)
+            publish_immutable(temp, target)
+        finally:
+            temp.unlink(missing_ok=True)
         return str(target.relative_to(self.root)), hashlib.sha256(data).hexdigest()
 
     def quarantine_result_candidate(self, relative_path: str) -> str | None:
-        source = (self.root / relative_path).resolve()
-        if self.root not in source.parents:
-            raise ValueError("artifact path escapes root")
+        source = self._path(relative_path)
         try:
             relative = source.relative_to(self.root)
         except ValueError as exc:
@@ -260,17 +360,31 @@ class ArtifactStore:
         workspace_id, _, job_id = parts[:3]
         safe_workspace = _safe_component(workspace_id, "workspace_id")
         safe_job = _safe_component(job_id, "job_id")
-        quarantine_dir = self.root / safe_workspace / "quarantine" / "results" / safe_job
-        quarantine_dir.mkdir(parents=True, exist_ok=True)
+        quarantine_dir = self._path(Path(safe_workspace) / "quarantine" / "results" / safe_job)
+        self._mkdir(quarantine_dir)
         target = quarantine_dir / source.name
         if not source.exists():
             return str(target.relative_to(self.root)) if target.exists() else None
         if target.exists():
             if not source.exists():
                 return str(target.relative_to(self.root))
+            if os.path.samefile(source, target):
+                source.unlink(missing_ok=True)
+                _sync_directory(source.parent)
+                return str(target.relative_to(self.root))
             raise ArtifactConflict(f"quarantine artifact already exists: {relative_path}")
         try:
-            os.replace(source, target)
+            # Candidates were synced when created. Reopening them writable here
+            # can block a concurrent Windows rename, so sync only the new name.
+            publish_immutable(source, target, sync_file=False)
+        except ArtifactConflict:
+            if not source.exists() and target.exists():
+                return str(target.relative_to(self.root))
+            if source.exists() and target.exists() and os.path.samefile(source, target):
+                source.unlink(missing_ok=True)
+                _sync_directory(source.parent)
+                return str(target.relative_to(self.root))
+            raise
         except FileNotFoundError:
             if target.exists():
                 return str(target.relative_to(self.root))
@@ -296,9 +410,7 @@ class ArtifactStore:
         return quarantined
 
     def read_json(self, relative_path: str, expected_sha256: str) -> dict:
-        path = (self.root / relative_path).resolve()
-        if self.root not in path.parents:
-            raise ValueError("artifact path escapes root")
+        path = self._path(relative_path)
         data = path.read_bytes()
         if hashlib.sha256(data).hexdigest() != expected_sha256:
             raise ArtifactConflict("result checksum mismatch")

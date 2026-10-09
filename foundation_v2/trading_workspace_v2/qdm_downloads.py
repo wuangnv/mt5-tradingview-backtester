@@ -13,6 +13,7 @@ from .artifacts import sha256_file
 from .data_ingest import DataImportError, DataIngestService
 from .dukascopy_downloads import DukascopyDownloads
 from .qdm_cli import PROVIDER
+from .download_job_store import DownloadJobStore
 
 
 def normalize_export(source, target, from_date, to_date):
@@ -42,7 +43,7 @@ class QdmDownloads(DukascopyDownloads):
     library = 'qdm-cli-v1'
     price = 'provider_default'
 
-    def __init__(self, store, artifacts, catalog, authorization):
+    def __init__(self, store, artifacts, catalog, authorization, *, jobs=None):
         self.store, self.artifacts, self.catalog, self.authorization = store, artifacts, catalog, authorization
         self.cli = catalog.cli
         self.root = artifacts.root / 'qdm'
@@ -53,17 +54,19 @@ class QdmDownloads(DukascopyDownloads):
         self.stopping = False
         self.ingest = DataIngestService(store, artifacts)
         catalog.refresh()
+        self.jobs = jobs or DownloadJobStore(store, self.provider)
+        self._save_source()
 
     @property
     def meta(self):
         return self.catalog.instruments
 
-    def _save(self, job):
+    def _save(self, job, *, conn=None):
         snapshot = self.catalog.snapshot
         if 'provider_code' not in job and job['instrument_id'] in snapshot['instruments']:
             job['provider_code'] = snapshot['instruments'][job['instrument_id']]['code']
             job['catalog_sha256'] = snapshot['source_sha256']
-        super()._save(job)
+        super()._save(job, conn=conn)
 
     def availability(self):
         return {**super().availability(), 'available': bool(self.meta) and self.cli.executable.is_file() and not self.catalog.error,
@@ -94,8 +97,8 @@ class QdmDownloads(DukascopyDownloads):
         # Node endpoint cooldowns do not describe QDM's own licensed transport.
         return {'rate_limit_level': 0, 'until': 0}
 
-    def _public(self, job):
-        return {**super()._public(job), 'provider': self.provider, 'supports_pause': False, 'supports_cancel': False,
+    def _snapshot(self, job):
+        return {**super()._snapshot(job), 'provider': self.provider, 'supports_pause': False, 'supports_cancel': False,
                 'data_source': 'Dukascopy', 'download_engine': self.provider,
                 'transferred_bytes': None, 'progress_scope': 'phase'}
 
@@ -133,7 +136,7 @@ class QdmDownloads(DukascopyDownloads):
         folder = self._folder(workspace, job_id)
         try:
             self.authorization.authorize(workspace)
-            with self.store.connect() as owner:
+            with self.store.dedicated_connection() as owner:
                 if not owner.execute('SELECT pg_try_advisory_lock(%s) AS owned', (self.advisory_key,)).fetchone()['owned']:
                     raise RuntimeError('download_busy')
                 owner.execute('SELECT pg_advisory_lock(%s)', (self._job_key(job),))
@@ -180,9 +183,11 @@ class QdmDownloads(DukascopyDownloads):
                      'qdm_version_unsupported', 'download_busy', 'download_interrupted', 'invalid_source_data', 'empty_range',
                      'quality_rejected', 'dataset_not_supported'}
             error = str(exc) if str(exc) in known else 'quality_rejected' if isinstance(exc, DataImportError) else 'qdm_command_failed'
-            with self.lock:
-                job.update(status='paused' if error in {'qdm_busy', 'download_busy', 'download_interrupted'} else 'failed', error=error)
-                self._save(job)
+            with self.lock, self._recovery_owner(job) as owned:
+                job = self._read(workspace, job_id)
+                if owned and job['status'] not in {'completed', 'cancelled'}:
+                    job.update(status='paused' if error in {'qdm_busy', 'download_busy', 'download_interrupted'} else 'failed', error=error)
+                    self._save(job)
         finally:
             with self.lock:
                 self.active = None

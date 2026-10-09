@@ -1,0 +1,32 @@
+{
+  "scope": "synthetic local Parquet range-read fixture; both paths SHA256 all bytes per call, five warm reads, no live data",
+  "rows": 200000,
+  "returned_rows": 500,
+  "total_row_groups": 20,
+  "selected_row_groups": 1,
+  "file_size_bytes": 3103917,
+  "exact_output_equal": true,
+  "timings": {
+    "full_scan": {
+      "milliseconds": [
+        744.1556000012497,
+        745.0406000025396,
+        753.4286999980395,
+        751.6294999986712,
+        748.5180000003311
+      ],
+      "median_ms": 748.5180000003311
+    },
+    "pruned": {
+      "milliseconds": [
+        48.567400001047645,
+        46.48559999986901,
+        45.11169999750564,
+        48.461099999258295,
+        47.94910000055097
+      ],
+      "median_ms": 47.94910000055097
+    }
+  },
+  "latency_reduction_percent": 93.59412866483775
+}
