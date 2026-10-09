@@ -42,6 +42,7 @@
 .wm-reference-row-sample tbody tr { background:var(--wm-canvas); }
 .wm-reference-row-sample tbody tr:hover { background:var(--wm-row-hover); }
 .wm-reference-row-sample tbody tr.is-selected { background:var(--wm-row-selected); }
+.wm-reference-row-sample :is(th,td):last-child { text-align:center; }
 .fx-app.fx-shell-story[data-theme] .fx-content .wm-reference-row-sample .wm-button { background:transparent; }
 .fx-app.fx-shell-story[data-theme] .fx-content .wm-reference-row-sample .wm-button:hover:not(:disabled) { background:var(--wm-control-hover); }
 .wm-reference-types { display:grid; gap:8px; margin-block:24px; }

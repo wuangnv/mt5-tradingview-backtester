@@ -25,7 +25,7 @@
 .fx-app.fx-shell-story[data-theme] .fx-content :is(input[type=checkbox]:not([role=switch]),.fx-select-checkbox) {
   appearance:none; position:relative; display:inline-block; box-sizing:border-box;
   width:16px; height:16px; min-width:16px; min-height:16px; flex:0 0 16px;
-  padding:0; border:1px solid var(--wm-control-hover-border); border-radius:2px;
+  margin:0; padding:0; border:1px solid var(--wm-control-hover-border); border-radius:2px;
   background:var(--wm-canvas); font-size:0; vertical-align:middle;
   transition:background-color var(--ds-motion-hover) var(--ds-ease-standard),border-color var(--ds-motion-hover) var(--ds-ease-standard);
 }

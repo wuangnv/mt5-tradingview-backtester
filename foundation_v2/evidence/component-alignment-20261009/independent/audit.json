@@ -1,0 +1,656 @@
+[
+  {
+    "theme": "dark",
+    "width": 1710,
+    "name": "reference",
+    "body": "Bộ chuẩn giao diện\n\nGọn · rõ · chuyển động nhẹ. Mẫu dùng dữ liệu minh hoạ, không gửi lệnh hay tạo phiên.\n\nCompact 0.1.1\nNút và trạng thái\nKích thước và chữ\nMàu\nChuyển động\nLuồng dữ liệu\nKPI / card / chart\nBố cục\nRà soát\nNút, ô nhập và trạng thái\n\nRê chuột, bấm và dùng phím Tab. Hover không làm nút nhảy hay thêm viền; focus bàn phím có dấu riêng.\n\nMua\nChọn…\nMua\nMở dialog mẫu\nNút phụ\nThông tin\nHoàn tất\nXoá mẫu\nKhông khả dụng\nLiên kết thao tác\nTên phiên\n*\nSố dư\nMô tả\nCheckbox: đã chọn\nLựa chọn A\nLự",
+    "pageOverflow": false,
+    "contentOverflow": false,
+    "controls": [],
+    "totalControls": 10
+  },
+  {
+    "theme": "dark",
+    "width": 1710,
+    "name": "settings",
+    "body": "Settings\nMở Practice\nLearn\nGiao diện\n\nLưu trên trình duyệt này. Ngôn ngữ áp dụng cho thanh điều hướng; nội dung nghiệp vụ giữ ngôn ngữ hiện có.\n\nChế độ màu\nTối\nSáng\nNgôn ngữ điều hướng\nTiếng Việt\nEnglish\nLưu giao diện\nHủy thay đổi\n\nWorkspace\ntenant-a\nMode\nlocal-trusted-demo\nDataset được chọn\nChưa chọn\nBroker capability\nĐã khóa\nProject session\nPhiên local hiện tại\nsigned_in\nAuth mode\nlocal-trusted-demo\nProduction auth\nTắt\nIdentity\nlocal-owner\nIdentity source\nlocal-process\nSession id\nlocal-demo-se",
+    "pageOverflow": false,
+    "contentOverflow": false,
+    "controls": [],
+    "totalControls": 0
+  },
+  {
+    "theme": "dark",
+    "width": 1710,
+    "name": "risk",
+    "body": "Risk & giới hạn\nSIMULATION ONLY\nKhông có broker action\nRisk Lab không mở live trading\nKết quả chỉ đánh giá profile + snapshot bạn nhập, giữ nguyên các giới hạn local/replay.\nINPUT / PROFILE\nProfile giới hạn\nProfile ID\nTerms version\nEffective from\nTotal drawdown\nType\nStatic\nTrailing\nOverall basis\nEquity\nBalance\nDaily loss\nDaily basis\nEquity\nBalance\nCost basis\nIncluded\nSeparate\nINPUT / SNAPSHOT\nTrạng thái tài khoản\nStarting balance\nBalance\nEquity\nHigh-water mark\nDaily start equity\nChạm đúng floor ",
+    "pageOverflow": false,
+    "contentOverflow": false,
+    "controls": [],
+    "totalControls": 1
+  },
+  {
+    "theme": "dark",
+    "width": 1710,
+    "name": "research",
+    "body": "Research\nRESEARCH / SIMULATION\nBroker locked · không gửi lệnh\nData Desk →\nWorkspace tenant-a\nJob Chưa tạo\nChưa chạy\nEngine nautilus sẵn sàng\n✓\nContext\n✓\nQuality gate\n03\nRun\n04\nCheckpoint\n05\nResult\nDữ liệu đầu vào\n\nPhạm vi cố định cho run này. Đổi dataset sẽ xóa deep link job hiện tại.\n\nMở Data Desk →\nXAU/USD · 60s\n7.966.491 rows · 05/05/2003 00:01 → 07/10/2026 23:58\n\ndataset-c7de666c3be38818c1d91ad143b8dbc4467f7a190d782d127fd34851c27f04cd\n\nQuality\nChưa xác minh\nHoldout\nHoldout khóa\nProvider\nloca",
+    "pageOverflow": false,
+    "contentOverflow": false,
+    "controls": [],
+    "totalControls": 0
+  },
+  {
+    "theme": "dark",
+    "width": 1710,
+    "name": "learn",
+    "body": "Học & thuật ngữ\nResearch\nPractice\nSettings\nREAD ONLY\nKhông ghi tiến độ · không lộ answer key\nLocal course · đọc từ workspace\nProgress owner education/progress.json\nOAuth PREP_ONLY\nBroker Locked\nCourse\nForex từ nền tảng đến thực hành có kiểm chứng\nVersion\n1.1\nTiến độ\n4/24 bài\nTrạng thái\nin_progress\nBài hiện tại\nM08-L03\nQuyết định bước tiếp theo\nMở module hiện tại\n17%\nCập nhật 2026-09-13\nCourse map\n8 module\nTổng quan course\nWorkbook\nBài đang chờ\nM01\nCơ chế giao dịch\nMở\nM01-L01\nHai giá mua/bán\nM01-",
+    "pageOverflow": false,
+    "contentOverflow": false,
+    "controls": [],
+    "totalControls": 0
+  },
+  {
+    "theme": "dark",
+    "width": 1710,
+    "name": "playbook",
+    "body": "Chiến lược của tôi\nLondon Breakout\ndemo-london\nDraft\nr1\nNew York Reversal\ndemo-newyork\nDraft\nr1\nGold Swing\ndemo-gold\nDraft\nr1\nLondon Breakout\nDraft\nRecord\ndemo-london\nCurrent revision\nr1\nCapability\nUnknown capability\nCreated\n06/07/2026 08:00:00 UTC\nUpdated\n05/10/2026 08:00:00 UTC\nParent\nRoot record\nRULE SURFACE\nentry\nexit\nrisk",
+    "pageOverflow": false,
+    "contentOverflow": false,
+    "controls": [],
+    "totalControls": 0
+  },
+  {
+    "theme": "dark",
+    "width": 1710,
+    "name": "journal",
+    "body": "Nhật ký\nQUYẾT ĐỊNH\nLondon Breakout · EURUSD: chờ đóng nến xác nhận\n06/07/2026 14:20 · r1 · source · demo-london\ndemo-london\nbreakout · review\nQUYẾT ĐỊNH\nNew York Reversal · GBPUSD: chờ đóng nến xác nhận\n07/07/2026 15:35 · r1 · source · demo-newyork\ndemo-newyork\nreversal · planned\nQUYẾT ĐỊNH\nGold Swing · XAUUSD: chờ đóng nến xác nhận\n08/07/2026 16:50 · r1 · source · demo-gold\ndemo-gold\nbreakout · planned\nQUYẾT ĐỊNH\nLondon Breakout · EURUSD: chờ đóng nến xác nhận\n10/07/2026 18:05 · r1 · source · d",
+    "pageOverflow": false,
+    "contentOverflow": false,
+    "controls": [],
+    "totalControls": 0
+  },
+  {
+    "theme": "dark",
+    "width": 1710,
+    "name": "market",
+    "body": "Tất cả danh mục\nTất cả nguồn\nĐã tải\nTên A–Z\nXóa bộ lọc\nNhập CSV\nSản phẩm\tDanh mục\tNguồn\tDữ liệu\tTừ ngày (UTC)\tĐến ngày (UTC)\tSố nến\tDung lượng\tThao tác\n\n—\n\tChưa phân loại\t—\t—\t06/07/2026\t05/10/2026\t—\t—\t\nĐã tải\n\n\n—\n\tChưa phân loại\t—\t—\t06/07/2026\t05/10/2026\t—\t—\t\nĐã tải\n\n\n—\n\tChưa phân loại\t—\t—\t06/07/2026\t05/10/2026\t—\t—\t\nĐã tải\n1\n25",
+    "pageOverflow": false,
+    "contentOverflow": false,
+    "controls": [],
+    "totalControls": 17
+  },
+  {
+    "theme": "dark",
+    "width": 1710,
+    "name": "overview",
+    "body": "Tổng quan\nPhiên backtest\nKiểm thử trên dữ liệu lịch sử\nThử thách prop firm\nBắt đầu thử thách mô phỏng\nHướng dẫn\nHọc và luyện tập\nHiệu suất\nBacktest\nTất cả\nThời gian luyện tập\n18\ngiờ\n40\nphút\nThời gian luyện tập mẫu\nThời gian lịch sử đã replay\n36\nngày\n7\ngiờ\nThời gian replay mẫu\nGiao dịch đã đóng\n60\n50,00% Mua · 50,00% Bán\nTỷ lệ thắng tổng thể\n50%\nGiao dịch theo tháng\n22\n11\n0\n19\n07/2026\n22\n08/2026\n19\n09/2026\nTỷ lệ thắng theo tháng\n100%\n80%\n60%\n40%\n20%\n0%\n52,6%\n07/2026\n50%\n08/2026\n47,4%\n09/2026\nGiao",
+    "pageOverflow": false,
+    "contentOverflow": false,
+    "controls": [],
+    "totalControls": 28
+  },
+  {
+    "theme": "dark",
+    "width": 1710,
+    "name": "sessions",
+    "body": "Phiên\nChọn phiên\nLondon Breakout\nEURUSD · M1\nSố dư sau lệnh đóng: 10.960 USD\nNgày tạo: 06/07/2026 · UTC\nPhiên mới\nPhân tích\nCài đặt phiên\nXóa phiên\nLondon Breakout\nSố dư tài khoản\n10.960 USD\n\ndemo-london · EURUSD\n\n06/07/2026 – 05/10/2026\nCòn 7 ngày\n\nMở biểu đồ\nMô tả\nSố dư sau lệnh đóng\nUSD · không gồm lãi/lỗ thả nổi\n9.865\n10.412,5\n10.960\nBắt đầu\n20 giao dịch đã đóng\nKết quả theo tháng\nUSD · ròng · UTC\n2026-07\n430\n2026-08\n-85\n2026-09\n615\nKết quả theo thứ\nUSD · ròng · UTC\nT2\n490\nT3\n-310\nT4\n720\nT5\n",
+    "pageOverflow": false,
+    "contentOverflow": false,
+    "controls": [],
+    "totalControls": 11
+  },
+  {
+    "theme": "dark",
+    "width": 1710,
+    "name": "trades",
+    "body": "Giao dịch\nTất cả phiên\nLọc theo\nCơ bản\nNhãn\n\tThao tác\tPhiên\tLoại\tNguồn\tThời gian ghi nhận (UTC)\tThời gian vào lệnh (biểu đồ UTC)\tTài sản\tHướng lệnh\tLoại lệnh\tP/L ròng (USD)\tTỷ suất (%)\tKết quả (R)\tĐánh giá giao dịch\tGiá vào lệnh\tKhối lượng\tCắt lỗ\tChốt lời\tThời gian thoát lệnh (UTC) ↓\tGiá thoát lệnh\tP/L trước phí\tPhí\n\t\n\tGold Swing\tĐã đóng\tDữ liệu mẫu\t05/10/2026 08:00\t26/09/2026 21:00\tXAUUSD\tBán\tmarket\t-110 USD\t-1,1%\t-1,1 R\t5\t2.573,6\t1\t2.574,6\t2.571,6\t26/09/2026 22:05\t2.574,67\t-107 USD\t3 USD\n\t\n\tNe",
+    "pageOverflow": false,
+    "contentOverflow": false,
+    "controls": [],
+    "totalControls": 18
+  },
+  {
+    "theme": "dark",
+    "width": 1710,
+    "name": "analytics",
+    "body": "Phân tích\nLoại\nTài sản\nHướng lệnh\nKết quả\nNhãn\nPhiên\nChiến lược\nThứ\nGiờ\nMúi giờ\nNgày backtest\nÁp dụng\nBacktest\nPhiên · London Breakout\nXóa bộ lọc\nHiệu suất\nSụt giảm vốn\nMô phỏng\nLãi và lỗ\nSố dư sau lệnh đóng · không gồm lãi/lỗ thả nổi\nBiểu đồ\nSố dư\nP/L tổng\n960 USD\nSố dư sau lệnh đóng\n10.960 USD\nTỷ lệ thắng\n50%\nTổng giao dịch\n20\nHòa vốn\n2 lệnh\n9.755,5\n10.084\n10.412,5\n10.741\n11.069,5\nBắt đầu\n20 giao dịch đã đóng\nSố dư sau lệnh đóng · USD\nChi tiết điểm\nChọn giao dịch\nR thực hiện trung bình\n0,48 R\n",
+    "pageOverflow": false,
+    "contentOverflow": false,
+    "controls": [],
+    "totalControls": 17
+  },
+  {
+    "theme": "dark",
+    "width": 1710,
+    "name": "prop",
+    "body": "Phân tích\nLoại\nTài sản\nHướng lệnh\nKết quả\nNhãn\nPhiên\nChiến lược\nThứ\nGiờ\nMúi giờ\nNgày backtest\nÁp dụng\nProp Firm\nPhiên · London Breakout\nXóa bộ lọc\nMục tiêu thử thách\nLuyện tập · giai đoạn 1\nSố dư\n10.960 USD\nMục tiêu lợi nhuận\n1.000 USD\nGiới hạn lỗ ngày\n500 USD\nGiới hạn lỗ tổng\n1.000 USD\nMục tiêu\tKết quả / ngưỡng\tTrạng thái\nMục tiêu lợi nhuận\t960 USD / 1.000 USD\tĐang thực hiện\nGiới hạn sụt giảm vốn tổng\t295 USD / 1.000 USD\tTrong giới hạn\nHiệu suất\nSụt giảm vốn\nMô phỏng\nLãi và lỗ\nSố dư sau lệnh đó",
+    "pageOverflow": false,
+    "contentOverflow": false,
+    "controls": [],
+    "totalControls": 17
+  },
+  {
+    "theme": "dark",
+    "width": 1710,
+    "name": "prop-report",
+    "body": "Phân tích\nLoại\nTài sản\nHướng lệnh\nKết quả\nNhãn\nPhiên\nChiến lược\nThứ\nGiờ\nMúi giờ\nNgày backtest\nÁp dụng\nProp Firm\nPhiên · London Breakout\nXóa bộ lọc\nMục tiêu thử thách\nLuyện tập · giai đoạn 1\nSố dư\n10.960 USD\nMục tiêu lợi nhuận\n1.000 USD\nGiới hạn lỗ ngày\n500 USD\nGiới hạn lỗ tổng\n1.000 USD\nMục tiêu\tKết quả / ngưỡng\tTrạng thái\nMục tiêu lợi nhuận\t960 USD / 1.000 USD\tĐang thực hiện\nGiới hạn sụt giảm vốn tổng\t295 USD / 1.000 USD\tTrong giới hạn\nHiệu suất\nSụt giảm vốn\nMô phỏng\nLãi và lỗ\nSố dư sau lệnh đó",
+    "pageOverflow": false,
+    "contentOverflow": false,
+    "controls": [],
+    "totalControls": 17
+  },
+  {
+    "theme": "dark",
+    "width": 1710,
+    "name": "live",
+    "body": "Trực tiếp\nThêm giao dịch\nTất cả tài khoản\nLọc theo\nCơ bản\nNhãn\n‹\nTháng 10\n›\n‹\n2026\n›\nUSD\n%\nChia sẻ\nTổng kết tháng\nT2\nT3\nT4\nT5\nT6\nT7\nCN\nTổng\n28\n29\n30\n1\n0\n2\n0\n3\n260\n6 deal khớp lệnh\n4\n150\n2 deal khớp lệnh\nTuần 1\n410\n5\n—\n6\n—\n7\n—\n8\n—\n9\n—\n10\n—\n11\n—\nTuần 2\n—\n12\n—\n13\n—\n14\n—\n15\n—\n16\n—\n17\n—\n18\n—\nTuần 3\n—\n19\n—\n20\n—\n21\n—\n22\n—\n23\n—\n24\n—\n25\n—\nTuần 4\n—\n26\n—\n27\n—\n28\n—\n29\n—\n30\n—\n31\n—\n1\nTuần 5\n—\nTổng tháng\n410 USD\n8 deal khớp lệnh\nPhân tích\nP/L ròng từ deal\n410 USD\nDeal khớp lệnh\n8\nTỷ suất (%)\n—\nNguồn dữ liệu và",
+    "pageOverflow": false,
+    "contentOverflow": false,
+    "controls": [],
+    "totalControls": 4
+  },
+  {
+    "theme": "dark",
+    "width": 360,
+    "name": "reference",
+    "body": "Bộ chuẩn giao diện\n\nGọn · rõ · chuyển động nhẹ. Mẫu dùng dữ liệu minh hoạ, không gửi lệnh hay tạo phiên.\n\nCompact 0.1.1\nNút và trạng thái\nKích thước và chữ\nMàu\nChuyển động\nLuồng dữ liệu\nKPI / card / chart\nBố cục\nRà soát\nNút, ô nhập và trạng thái\n\nRê chuột, bấm và dùng phím Tab. Hover không làm nút nhảy hay thêm viền; focus bàn phím có dấu riêng.\n\nMua\nChọn…\nMua\nMở dialog mẫu\nNút phụ\nThông tin\nHoàn tất\nXoá mẫu\nKhông khả dụng\nLiên kết thao tác\nTên phiên\n*\nSố dư\nMô tả\nCheckbox: đã chọn\nLựa chọn A\nLự",
+    "pageOverflow": false,
+    "contentOverflow": false,
+    "controls": [],
+    "totalControls": 10
+  },
+  {
+    "theme": "dark",
+    "width": 360,
+    "name": "settings",
+    "body": "Settings\nMở Practice\nLearn\nGiao diện\n\nLưu trên trình duyệt này. Ngôn ngữ áp dụng cho thanh điều hướng; nội dung nghiệp vụ giữ ngôn ngữ hiện có.\n\nChế độ màu\nTối\nSáng\nNgôn ngữ điều hướng\nTiếng Việt\nEnglish\nLưu giao diện\nHủy thay đổi\n\nWorkspace\ntenant-a\nMode\nlocal-trusted-demo\nDataset được chọn\nChưa chọn\nBroker capability\nĐã khóa\nProject session\nPhiên local hiện tại\nsigned_in\nAuth mode\nlocal-trusted-demo\nProduction auth\nTắt\nIdentity\nlocal-owner\nIdentity source\nlocal-process\nSession id\nlocal-demo-se",
+    "pageOverflow": false,
+    "contentOverflow": false,
+    "controls": [],
+    "totalControls": 0
+  },
+  {
+    "theme": "dark",
+    "width": 360,
+    "name": "risk",
+    "body": "Risk & giới hạn\nSIMULATION ONLY\nKhông có broker action\nRisk Lab không mở live trading\nKết quả chỉ đánh giá profile + snapshot bạn nhập, giữ nguyên các giới hạn local/replay.\nINPUT / PROFILE\nProfile giới hạn\nProfile ID\nTerms version\nEffective from\nTotal drawdown\nType\nStatic\nTrailing\nOverall basis\nEquity\nBalance\nDaily loss\nDaily basis\nEquity\nBalance\nCost basis\nIncluded\nSeparate\nINPUT / SNAPSHOT\nTrạng thái tài khoản\nStarting balance\nBalance\nEquity\nHigh-water mark\nDaily start equity\nChạm đúng floor ",
+    "pageOverflow": false,
+    "contentOverflow": false,
+    "controls": [],
+    "totalControls": 1
+  },
+  {
+    "theme": "dark",
+    "width": 360,
+    "name": "research",
+    "body": "Research\nRESEARCH / SIMULATION\nBroker locked · không gửi lệnh\nData Desk →\nWorkspace tenant-a\nJob Chưa tạo\nChưa chạy\nEngine nautilus sẵn sàng\n✓\nContext\n✓\nQuality gate\n03\nRun\n04\nCheckpoint\n05\nResult\nDữ liệu đầu vào\n\nPhạm vi cố định cho run này. Đổi dataset sẽ xóa deep link job hiện tại.\n\nMở Data Desk →\nXAU/USD · 60s\n7.966.491 rows · 05/05/2003 00:01 → 07/10/2026 23:58\n\ndataset-c7de666c3be38818c1d91ad143b8dbc4467f7a190d782d127fd34851c27f04cd\n\nQuality\nChưa xác minh\nHoldout\nHoldout khóa\nProvider\nloca",
+    "pageOverflow": false,
+    "contentOverflow": false,
+    "controls": [],
+    "totalControls": 0
+  },
+  {
+    "theme": "dark",
+    "width": 360,
+    "name": "learn",
+    "body": "Học & thuật ngữ\nResearch\nPractice\nSettings\nREAD ONLY\nKhông ghi tiến độ · không lộ answer key\nLocal course · đọc từ workspace\nProgress owner education/progress.json\nOAuth PREP_ONLY\nBroker Locked\nCourse\nForex từ nền tảng đến thực hành có kiểm chứng\nVersion\n1.1\nTiến độ\n4/24 bài\nTrạng thái\nin_progress\nBài hiện tại\nM08-L03\nQuyết định bước tiếp theo\nMở module hiện tại\n17%\nCập nhật 2026-09-13\nCourse map\n8 module\nTổng quan course\nWorkbook\nBài đang chờ\nM01\nCơ chế giao dịch\nMở\nM01-L01\nHai giá mua/bán\nM01-",
+    "pageOverflow": false,
+    "contentOverflow": false,
+    "controls": [],
+    "totalControls": 0
+  },
+  {
+    "theme": "dark",
+    "width": 360,
+    "name": "playbook",
+    "body": "Chiến lược của tôi\nLondon Breakout\ndemo-london\nDraft\nr1\nNew York Reversal\ndemo-newyork\nDraft\nr1\nGold Swing\ndemo-gold\nDraft\nr1\nLondon Breakout\nDraft\nRecord\ndemo-london\nCurrent revision\nr1\nCapability\nUnknown capability\nCreated\n06/07/2026 08:00:00 UTC\nUpdated\n05/10/2026 08:00:00 UTC\nParent\nRoot record\nRULE SURFACE\nentry\nexit\nrisk",
+    "pageOverflow": false,
+    "contentOverflow": false,
+    "controls": [],
+    "totalControls": 0
+  },
+  {
+    "theme": "dark",
+    "width": 360,
+    "name": "journal",
+    "body": "Nhật ký\nQUYẾT ĐỊNH\nLondon Breakout · EURUSD: chờ đóng nến xác nhận\n06/07/2026 14:20 · r1 · source · demo-london\ndemo-london\nbreakout · review\nQUYẾT ĐỊNH\nNew York Reversal · GBPUSD: chờ đóng nến xác nhận\n07/07/2026 15:35 · r1 · source · demo-newyork\ndemo-newyork\nreversal · planned\nQUYẾT ĐỊNH\nGold Swing · XAUUSD: chờ đóng nến xác nhận\n08/07/2026 16:50 · r1 · source · demo-gold\ndemo-gold\nbreakout · planned\nQUYẾT ĐỊNH\nLondon Breakout · EURUSD: chờ đóng nến xác nhận\n10/07/2026 18:05 · r1 · source · d",
+    "pageOverflow": false,
+    "contentOverflow": false,
+    "controls": [],
+    "totalControls": 0
+  },
+  {
+    "theme": "dark",
+    "width": 360,
+    "name": "market",
+    "body": "Tất cả danh mục\nTất cả nguồn\nĐã tải\nTên A–Z\nXóa bộ lọc\nNhập CSV\nSản phẩm\tDanh mục\tNguồn\tDữ liệu\tTừ ngày (UTC)\tĐến ngày (UTC)\tSố nến\tDung lượng\tThao tác\n\n—\n\tChưa phân loại\t—\t—\t06/07/2026\t05/10/2026\t—\t—\t\nĐã tải\n\n\n—\n\tChưa phân loại\t—\t—\t06/07/2026\t05/10/2026\t—\t—\t\nĐã tải\n\n\n—\n\tChưa phân loại\t—\t—\t06/07/2026\t05/10/2026\t—\t—\t\nĐã tải\n1\n25",
+    "pageOverflow": false,
+    "contentOverflow": false,
+    "controls": [],
+    "totalControls": 15
+  },
+  {
+    "theme": "dark",
+    "width": 360,
+    "name": "overview",
+    "body": "Tổng quan\nPhiên backtest\nKiểm thử trên dữ liệu lịch sử\nThử thách prop firm\nBắt đầu thử thách mô phỏng\nHướng dẫn\nHọc và luyện tập\nHiệu suất\nBacktest\nTất cả\nThời gian luyện tập\n18\ngiờ\n40\nphút\nThời gian luyện tập mẫu\nThời gian lịch sử đã replay\n36\nngày\n7\ngiờ\nThời gian replay mẫu\nGiao dịch đã đóng\n60\n50,00% Mua · 50,00% Bán\nTỷ lệ thắng tổng thể\n50%\nGiao dịch theo tháng\n22\n11\n0\n19\n07/2026\n22\n08/2026\n19\n09/2026\nTỷ lệ thắng theo tháng\n100%\n80%\n60%\n40%\n20%\n0%\n52,6%\n07/2026\n50%\n08/2026\n47,4%\n09/2026\nGiao",
+    "pageOverflow": false,
+    "contentOverflow": false,
+    "controls": [
+      {
+        "class": "fx-select-trigger",
+        "text": "Backtest",
+        "x": 74,
+        "y": 475,
+        "width": 130,
+        "height": 44,
+        "display": "flex",
+        "align": "center",
+        "iconOffsetY": -497,
+        "iconOffsetX": -139,
+        "icon": 0
+      },
+      {
+        "class": "fx-select-trigger",
+        "text": "Tất cả",
+        "x": 214,
+        "y": 475,
+        "width": 130,
+        "height": 44,
+        "display": "flex",
+        "align": "center",
+        "iconOffsetY": -497,
+        "iconOffsetX": -279,
+        "icon": 0
+      }
+    ],
+    "totalControls": 28
+  },
+  {
+    "theme": "dark",
+    "width": 360,
+    "name": "sessions",
+    "body": "Phiên\nChọn phiên\nLondon Breakout\nEURUSD · M1\nSố dư sau lệnh đóng: 10.960 USD\nNgày tạo: 06/07/2026 · UTC\nPhiên mới\nPhân tích\nCài đặt phiên\nXóa phiên\nLondon Breakout\nSố dư tài khoản\n10.960 USD\n\ndemo-london · EURUSD\n\n06/07/2026 – 05/10/2026\nCòn 7 ngày\n\nMở biểu đồ\nMô tả\nSố dư sau lệnh đóng\nUSD · không gồm lãi/lỗ thả nổi\n9.865\n10.412,5\n10.960\nBắt đầu\n20 giao dịch đã đóng\nKết quả theo tháng\nUSD · ròng · UTC\n2026-07\n430\n2026-08\n-85\n2026-09\n615\nKết quả theo thứ\nUSD · ròng · UTC\nT2\n490\nT3\n-310\nT4\n720\nT5\n",
+    "pageOverflow": false,
+    "contentOverflow": false,
+    "controls": [],
+    "totalControls": 9
+  },
+  {
+    "theme": "dark",
+    "width": 360,
+    "name": "trades",
+    "body": "Giao dịch\nTất cả phiên\nLọc theo\nCơ bản\nNhãn\n\tThao tác\tPhiên\tLoại\tNguồn\tThời gian ghi nhận (UTC)\tThời gian vào lệnh (biểu đồ UTC)\tTài sản\tHướng lệnh\tLoại lệnh\tP/L ròng (USD)\tTỷ suất (%)\tKết quả (R)\tĐánh giá giao dịch\tGiá vào lệnh\tKhối lượng\tCắt lỗ\tChốt lời\tThời gian thoát lệnh (UTC) ↓\tGiá thoát lệnh\tP/L trước phí\tPhí\n\t\n\tGold Swing\tĐã đóng\tDữ liệu mẫu\t05/10/2026 08:00\t26/09/2026 21:00\tXAUUSD\tBán\tmarket\t-110 USD\t-1,1%\t-1,1 R\t5\t2.573,6\t1\t2.574,6\t2.571,6\t26/09/2026 22:05\t2.574,67\t-107 USD\t3 USD\n\t\n\tNe",
+    "pageOverflow": false,
+    "contentOverflow": false,
+    "controls": [],
+    "totalControls": 16
+  },
+  {
+    "theme": "dark",
+    "width": 360,
+    "name": "analytics",
+    "body": "Phân tích\nLoại\nTài sản\nHướng lệnh\nKết quả\nNhãn\nPhiên\nChiến lược\nThứ\nGiờ\nMúi giờ\nNgày backtest\nÁp dụng\nBacktest\nPhiên · London Breakout\nXóa bộ lọc\nHiệu suất\nSụt giảm vốn\nMô phỏng\nLãi và lỗ\nSố dư sau lệnh đóng · không gồm lãi/lỗ thả nổi\nBiểu đồ\nSố dư\nP/L tổng\n960 USD\nSố dư sau lệnh đóng\n10.960 USD\nTỷ lệ thắng\n50%\nTổng giao dịch\n20\nHòa vốn\n2 lệnh\nThấp nhất 9.865 USD\nCao nhất 10.960 USD\nBắt đầu\n20 giao dịch đã đóng\nSố dư sau lệnh đóng · USD\nChi tiết điểm\nChọn giao dịch\nR thực hiện trung bình\n0,48 R\n",
+    "pageOverflow": false,
+    "contentOverflow": false,
+    "controls": [],
+    "totalControls": 17
+  },
+  {
+    "theme": "dark",
+    "width": 360,
+    "name": "prop",
+    "body": "Phân tích\nLoại\nTài sản\nHướng lệnh\nKết quả\nNhãn\nPhiên\nChiến lược\nThứ\nGiờ\nMúi giờ\nNgày backtest\nÁp dụng\nProp Firm\nPhiên · London Breakout\nXóa bộ lọc\nMục tiêu thử thách\nLuyện tập · giai đoạn 1\nSố dư\n10.960 USD\nMục tiêu lợi nhuận\n1.000 USD\nGiới hạn lỗ ngày\n500 USD\nGiới hạn lỗ tổng\n1.000 USD\nMục tiêu\tKết quả / ngưỡng\tTrạng thái\nMục tiêu lợi nhuận\t960 USD / 1.000 USD\tĐang thực hiện\nGiới hạn sụt giảm vốn tổng\t295 USD / 1.000 USD\tTrong giới hạn\nHiệu suất\nSụt giảm vốn\nMô phỏng\nLãi và lỗ\nSố dư sau lệnh đó",
+    "pageOverflow": false,
+    "contentOverflow": false,
+    "controls": [],
+    "totalControls": 17
+  },
+  {
+    "theme": "dark",
+    "width": 360,
+    "name": "prop-report",
+    "body": "Phân tích\nLoại\nTài sản\nHướng lệnh\nKết quả\nNhãn\nPhiên\nChiến lược\nThứ\nGiờ\nMúi giờ\nNgày backtest\nÁp dụng\nProp Firm\nPhiên · London Breakout\nXóa bộ lọc\nMục tiêu thử thách\nLuyện tập · giai đoạn 1\nSố dư\n10.960 USD\nMục tiêu lợi nhuận\n1.000 USD\nGiới hạn lỗ ngày\n500 USD\nGiới hạn lỗ tổng\n1.000 USD\nMục tiêu\tKết quả / ngưỡng\tTrạng thái\nMục tiêu lợi nhuận\t960 USD / 1.000 USD\tĐang thực hiện\nGiới hạn sụt giảm vốn tổng\t295 USD / 1.000 USD\tTrong giới hạn\nHiệu suất\nSụt giảm vốn\nMô phỏng\nLãi và lỗ\nSố dư sau lệnh đó",
+    "pageOverflow": false,
+    "contentOverflow": false,
+    "controls": [],
+    "totalControls": 17
+  },
+  {
+    "theme": "dark",
+    "width": 360,
+    "name": "live",
+    "body": "Trực tiếp\nThêm giao dịch\nTất cả tài khoản\nLọc theo\nCơ bản\nNhãn\n‹\nTháng 10\n›\n‹\n2026\n›\nUSD\n%\nChia sẻ\nTổng kết tháng\nT2\nT3\nT4\nT5\nT6\nT7\nCN\nTổng\n28\n29\n30\n1\n0\n2\n0\n3\n260\n6 deal khớp lệnh\n4\n150\n2 deal khớp lệnh\nTuần 1\n410\n5\n—\n6\n—\n7\n—\n8\n—\n9\n—\n10\n—\n11\n—\nTuần 2\n—\n12\n—\n13\n—\n14\n—\n15\n—\n16\n—\n17\n—\n18\n—\nTuần 3\n—\n19\n—\n20\n—\n21\n—\n22\n—\n23\n—\n24\n—\n25\n—\nTuần 4\n—\n26\n—\n27\n—\n28\n—\n29\n—\n30\n—\n31\n—\n1\nTuần 5\n—\nTổng tháng\n410 USD\n8 deal khớp lệnh\nPhân tích\nP/L ròng từ deal\n410 USD\nDeal khớp lệnh\n8\nTỷ suất (%)\n—\nNguồn dữ liệu và",
+    "pageOverflow": false,
+    "contentOverflow": false,
+    "controls": [],
+    "totalControls": 4
+  },
+  {
+    "theme": "light",
+    "width": 1710,
+    "name": "reference",
+    "body": "Bộ chuẩn giao diện\n\nGọn · rõ · chuyển động nhẹ. Mẫu dùng dữ liệu minh hoạ, không gửi lệnh hay tạo phiên.\n\nCompact 0.1.1\nNút và trạng thái\nKích thước và chữ\nMàu\nChuyển động\nLuồng dữ liệu\nKPI / card / chart\nBố cục\nRà soát\nNút, ô nhập và trạng thái\n\nRê chuột, bấm và dùng phím Tab. Hover không làm nút nhảy hay thêm viền; focus bàn phím có dấu riêng.\n\nMua\nChọn…\nMua\nMở dialog mẫu\nNút phụ\nThông tin\nHoàn tất\nXoá mẫu\nKhông khả dụng\nLiên kết thao tác\nTên phiên\n*\nSố dư\nMô tả\nCheckbox: đã chọn\nLựa chọn A\nLự",
+    "pageOverflow": false,
+    "contentOverflow": false,
+    "controls": [],
+    "totalControls": 10
+  },
+  {
+    "theme": "light",
+    "width": 1710,
+    "name": "settings",
+    "body": "Settings\nMở Practice\nLearn\nGiao diện\n\nLưu trên trình duyệt này. Ngôn ngữ áp dụng cho thanh điều hướng; nội dung nghiệp vụ giữ ngôn ngữ hiện có.\n\nChế độ màu\nTối\nSáng\nNgôn ngữ điều hướng\nTiếng Việt\nEnglish\nLưu giao diện\nHủy thay đổi\n\nWorkspace\ntenant-a\nMode\nlocal-trusted-demo\nDataset được chọn\nChưa chọn\nBroker capability\nĐã khóa\nProject session\nPhiên local hiện tại\nsigned_in\nAuth mode\nlocal-trusted-demo\nProduction auth\nTắt\nIdentity\nlocal-owner\nIdentity source\nlocal-process\nSession id\nlocal-demo-se",
+    "pageOverflow": false,
+    "contentOverflow": false,
+    "controls": [],
+    "totalControls": 0
+  },
+  {
+    "theme": "light",
+    "width": 1710,
+    "name": "risk",
+    "body": "Risk & giới hạn\nSIMULATION ONLY\nKhông có broker action\nRisk Lab không mở live trading\nKết quả chỉ đánh giá profile + snapshot bạn nhập, giữ nguyên các giới hạn local/replay.\nINPUT / PROFILE\nProfile giới hạn\nProfile ID\nTerms version\nEffective from\nTotal drawdown\nType\nStatic\nTrailing\nOverall basis\nEquity\nBalance\nDaily loss\nDaily basis\nEquity\nBalance\nCost basis\nIncluded\nSeparate\nINPUT / SNAPSHOT\nTrạng thái tài khoản\nStarting balance\nBalance\nEquity\nHigh-water mark\nDaily start equity\nChạm đúng floor ",
+    "pageOverflow": false,
+    "contentOverflow": false,
+    "controls": [],
+    "totalControls": 1
+  },
+  {
+    "theme": "light",
+    "width": 1710,
+    "name": "research",
+    "body": "Research\nRESEARCH / SIMULATION\nBroker locked · không gửi lệnh\nData Desk →\nWorkspace tenant-a\nJob Chưa tạo\nChưa chạy\nEngine nautilus sẵn sàng\n✓\nContext\n✓\nQuality gate\n03\nRun\n04\nCheckpoint\n05\nResult\nDữ liệu đầu vào\n\nPhạm vi cố định cho run này. Đổi dataset sẽ xóa deep link job hiện tại.\n\nMở Data Desk →\nXAU/USD · 60s\n7.966.491 rows · 05/05/2003 00:01 → 07/10/2026 23:58\n\ndataset-c7de666c3be38818c1d91ad143b8dbc4467f7a190d782d127fd34851c27f04cd\n\nQuality\nChưa xác minh\nHoldout\nHoldout khóa\nProvider\nloca",
+    "pageOverflow": false,
+    "contentOverflow": false,
+    "controls": [],
+    "totalControls": 0
+  },
+  {
+    "theme": "light",
+    "width": 1710,
+    "name": "learn",
+    "body": "Học & thuật ngữ\nResearch\nPractice\nSettings\nREAD ONLY\nKhông ghi tiến độ · không lộ answer key\nLocal course · đọc từ workspace\nProgress owner education/progress.json\nOAuth PREP_ONLY\nBroker Locked\nCourse\nForex từ nền tảng đến thực hành có kiểm chứng\nVersion\n1.1\nTiến độ\n4/24 bài\nTrạng thái\nin_progress\nBài hiện tại\nM08-L03\nQuyết định bước tiếp theo\nMở module hiện tại\n17%\nCập nhật 2026-09-13\nCourse map\n8 module\nTổng quan course\nWorkbook\nBài đang chờ\nM01\nCơ chế giao dịch\nMở\nM01-L01\nHai giá mua/bán\nM01-",
+    "pageOverflow": false,
+    "contentOverflow": false,
+    "controls": [],
+    "totalControls": 0
+  },
+  {
+    "theme": "light",
+    "width": 1710,
+    "name": "playbook",
+    "body": "Chiến lược của tôi\nLondon Breakout\ndemo-london\nDraft\nr1\nNew York Reversal\ndemo-newyork\nDraft\nr1\nGold Swing\ndemo-gold\nDraft\nr1\nLondon Breakout\nDraft\nRecord\ndemo-london\nCurrent revision\nr1\nCapability\nUnknown capability\nCreated\n06/07/2026 08:00:00 UTC\nUpdated\n05/10/2026 08:00:00 UTC\nParent\nRoot record\nRULE SURFACE\nentry\nexit\nrisk",
+    "pageOverflow": false,
+    "contentOverflow": false,
+    "controls": [],
+    "totalControls": 0
+  },
+  {
+    "theme": "light",
+    "width": 1710,
+    "name": "journal",
+    "body": "Nhật ký\nQUYẾT ĐỊNH\nLondon Breakout · EURUSD: chờ đóng nến xác nhận\n06/07/2026 14:20 · r1 · source · demo-london\ndemo-london\nbreakout · review\nQUYẾT ĐỊNH\nNew York Reversal · GBPUSD: chờ đóng nến xác nhận\n07/07/2026 15:35 · r1 · source · demo-newyork\ndemo-newyork\nreversal · planned\nQUYẾT ĐỊNH\nGold Swing · XAUUSD: chờ đóng nến xác nhận\n08/07/2026 16:50 · r1 · source · demo-gold\ndemo-gold\nbreakout · planned\nQUYẾT ĐỊNH\nLondon Breakout · EURUSD: chờ đóng nến xác nhận\n10/07/2026 18:05 · r1 · source · d",
+    "pageOverflow": false,
+    "contentOverflow": false,
+    "controls": [],
+    "totalControls": 0
+  },
+  {
+    "theme": "light",
+    "width": 1710,
+    "name": "market",
+    "body": "Tất cả danh mục\nTất cả nguồn\nĐã tải\nTên A–Z\nXóa bộ lọc\nNhập CSV\nSản phẩm\tDanh mục\tNguồn\tDữ liệu\tTừ ngày (UTC)\tĐến ngày (UTC)\tSố nến\tDung lượng\tThao tác\n\n—\n\tChưa phân loại\t—\t—\t06/07/2026\t05/10/2026\t—\t—\t\nĐã tải\n\n\n—\n\tChưa phân loại\t—\t—\t06/07/2026\t05/10/2026\t—\t—\t\nĐã tải\n\n\n—\n\tChưa phân loại\t—\t—\t06/07/2026\t05/10/2026\t—\t—\t\nĐã tải\n1\n25",
+    "pageOverflow": false,
+    "contentOverflow": false,
+    "controls": [],
+    "totalControls": 17
+  },
+  {
+    "theme": "light",
+    "width": 1710,
+    "name": "overview",
+    "body": "Tổng quan\nPhiên backtest\nKiểm thử trên dữ liệu lịch sử\nThử thách prop firm\nBắt đầu thử thách mô phỏng\nHướng dẫn\nHọc và luyện tập\nHiệu suất\nBacktest\nTất cả\nThời gian luyện tập\n18\ngiờ\n40\nphút\nThời gian luyện tập mẫu\nThời gian lịch sử đã replay\n36\nngày\n7\ngiờ\nThời gian replay mẫu\nGiao dịch đã đóng\n60\n50,00% Mua · 50,00% Bán\nTỷ lệ thắng tổng thể\n50%\nGiao dịch theo tháng\n22\n11\n0\n19\n07/2026\n22\n08/2026\n19\n09/2026\nTỷ lệ thắng theo tháng\n100%\n80%\n60%\n40%\n20%\n0%\n52,6%\n07/2026\n50%\n08/2026\n47,4%\n09/2026\nGiao",
+    "pageOverflow": false,
+    "contentOverflow": false,
+    "controls": [],
+    "totalControls": 28
+  },
+  {
+    "theme": "light",
+    "width": 1710,
+    "name": "sessions",
+    "body": "Phiên\nChọn phiên\nLondon Breakout\nEURUSD · M1\nSố dư sau lệnh đóng: 10.960 USD\nNgày tạo: 06/07/2026 · UTC\nPhiên mới\nPhân tích\nCài đặt phiên\nXóa phiên\nLondon Breakout\nSố dư tài khoản\n10.960 USD\n\ndemo-london · EURUSD\n\n06/07/2026 – 05/10/2026\nCòn 7 ngày\n\nMở biểu đồ\nMô tả\nSố dư sau lệnh đóng\nUSD · không gồm lãi/lỗ thả nổi\n9.865\n10.412,5\n10.960\nBắt đầu\n20 giao dịch đã đóng\nKết quả theo tháng\nUSD · ròng · UTC\n2026-07\n430\n2026-08\n-85\n2026-09\n615\nKết quả theo thứ\nUSD · ròng · UTC\nT2\n490\nT3\n-310\nT4\n720\nT5\n",
+    "pageOverflow": false,
+    "contentOverflow": false,
+    "controls": [],
+    "totalControls": 11
+  },
+  {
+    "theme": "light",
+    "width": 1710,
+    "name": "trades",
+    "body": "Giao dịch\nTất cả phiên\nLọc theo\nCơ bản\nNhãn\n\tThao tác\tPhiên\tLoại\tNguồn\tThời gian ghi nhận (UTC)\tThời gian vào lệnh (biểu đồ UTC)\tTài sản\tHướng lệnh\tLoại lệnh\tP/L ròng (USD)\tTỷ suất (%)\tKết quả (R)\tĐánh giá giao dịch\tGiá vào lệnh\tKhối lượng\tCắt lỗ\tChốt lời\tThời gian thoát lệnh (UTC) ↓\tGiá thoát lệnh\tP/L trước phí\tPhí\n\t\n\tGold Swing\tĐã đóng\tDữ liệu mẫu\t05/10/2026 08:00\t26/09/2026 21:00\tXAUUSD\tBán\tmarket\t-110 USD\t-1,1%\t-1,1 R\t5\t2.573,6\t1\t2.574,6\t2.571,6\t26/09/2026 22:05\t2.574,67\t-107 USD\t3 USD\n\t\n\tNe",
+    "pageOverflow": false,
+    "contentOverflow": false,
+    "controls": [],
+    "totalControls": 18
+  },
+  {
+    "theme": "light",
+    "width": 1710,
+    "name": "analytics",
+    "body": "Phân tích\nLoại\nTài sản\nHướng lệnh\nKết quả\nNhãn\nPhiên\nChiến lược\nThứ\nGiờ\nMúi giờ\nNgày backtest\nÁp dụng\nBacktest\nPhiên · London Breakout\nXóa bộ lọc\nHiệu suất\nSụt giảm vốn\nMô phỏng\nLãi và lỗ\nSố dư sau lệnh đóng · không gồm lãi/lỗ thả nổi\nBiểu đồ\nSố dư\nP/L tổng\n960 USD\nSố dư sau lệnh đóng\n10.960 USD\nTỷ lệ thắng\n50%\nTổng giao dịch\n20\nHòa vốn\n2 lệnh\n9.755,5\n10.084\n10.412,5\n10.741\n11.069,5\nBắt đầu\n20 giao dịch đã đóng\nSố dư sau lệnh đóng · USD\nChi tiết điểm\nChọn giao dịch\nR thực hiện trung bình\n0,48 R\n",
+    "pageOverflow": false,
+    "contentOverflow": false,
+    "controls": [],
+    "totalControls": 17
+  },
+  {
+    "theme": "light",
+    "width": 1710,
+    "name": "prop",
+    "body": "Phân tích\nLoại\nTài sản\nHướng lệnh\nKết quả\nNhãn\nPhiên\nChiến lược\nThứ\nGiờ\nMúi giờ\nNgày backtest\nÁp dụng\nProp Firm\nPhiên · London Breakout\nXóa bộ lọc\nMục tiêu thử thách\nLuyện tập · giai đoạn 1\nSố dư\n10.960 USD\nMục tiêu lợi nhuận\n1.000 USD\nGiới hạn lỗ ngày\n500 USD\nGiới hạn lỗ tổng\n1.000 USD\nMục tiêu\tKết quả / ngưỡng\tTrạng thái\nMục tiêu lợi nhuận\t960 USD / 1.000 USD\tĐang thực hiện\nGiới hạn sụt giảm vốn tổng\t295 USD / 1.000 USD\tTrong giới hạn\nHiệu suất\nSụt giảm vốn\nMô phỏng\nLãi và lỗ\nSố dư sau lệnh đó",
+    "pageOverflow": false,
+    "contentOverflow": false,
+    "controls": [],
+    "totalControls": 17
+  },
+  {
+    "theme": "light",
+    "width": 1710,
+    "name": "prop-report",
+    "body": "Phân tích\nLoại\nTài sản\nHướng lệnh\nKết quả\nNhãn\nPhiên\nChiến lược\nThứ\nGiờ\nMúi giờ\nNgày backtest\nÁp dụng\nProp Firm\nPhiên · London Breakout\nXóa bộ lọc\nMục tiêu thử thách\nLuyện tập · giai đoạn 1\nSố dư\n10.960 USD\nMục tiêu lợi nhuận\n1.000 USD\nGiới hạn lỗ ngày\n500 USD\nGiới hạn lỗ tổng\n1.000 USD\nMục tiêu\tKết quả / ngưỡng\tTrạng thái\nMục tiêu lợi nhuận\t960 USD / 1.000 USD\tĐang thực hiện\nGiới hạn sụt giảm vốn tổng\t295 USD / 1.000 USD\tTrong giới hạn\nHiệu suất\nSụt giảm vốn\nMô phỏng\nLãi và lỗ\nSố dư sau lệnh đó",
+    "pageOverflow": false,
+    "contentOverflow": false,
+    "controls": [],
+    "totalControls": 17
+  },
+  {
+    "theme": "light",
+    "width": 1710,
+    "name": "live",
+    "body": "Trực tiếp\nThêm giao dịch\nTất cả tài khoản\nLọc theo\nCơ bản\nNhãn\n‹\nTháng 10\n›\n‹\n2026\n›\nUSD\n%\nChia sẻ\nTổng kết tháng\nT2\nT3\nT4\nT5\nT6\nT7\nCN\nTổng\n28\n29\n30\n1\n0\n2\n0\n3\n260\n6 deal khớp lệnh\n4\n150\n2 deal khớp lệnh\nTuần 1\n410\n5\n—\n6\n—\n7\n—\n8\n—\n9\n—\n10\n—\n11\n—\nTuần 2\n—\n12\n—\n13\n—\n14\n—\n15\n—\n16\n—\n17\n—\n18\n—\nTuần 3\n—\n19\n—\n20\n—\n21\n—\n22\n—\n23\n—\n24\n—\n25\n—\nTuần 4\n—\n26\n—\n27\n—\n28\n—\n29\n—\n30\n—\n31\n—\n1\nTuần 5\n—\nTổng tháng\n410 USD\n8 deal khớp lệnh\nPhân tích\nP/L ròng từ deal\n410 USD\nDeal khớp lệnh\n8\nTỷ suất (%)\n—\nNguồn dữ liệu và",
+    "pageOverflow": false,
+    "contentOverflow": false,
+    "controls": [],
+    "totalControls": 4
+  },
+  {
+    "theme": "light",
+    "width": 360,
+    "name": "reference",
+    "body": "Bộ chuẩn giao diện\n\nGọn · rõ · chuyển động nhẹ. Mẫu dùng dữ liệu minh hoạ, không gửi lệnh hay tạo phiên.\n\nCompact 0.1.1\nNút và trạng thái\nKích thước và chữ\nMàu\nChuyển động\nLuồng dữ liệu\nKPI / card / chart\nBố cục\nRà soát\nNút, ô nhập và trạng thái\n\nRê chuột, bấm và dùng phím Tab. Hover không làm nút nhảy hay thêm viền; focus bàn phím có dấu riêng.\n\nMua\nChọn…\nMua\nMở dialog mẫu\nNút phụ\nThông tin\nHoàn tất\nXoá mẫu\nKhông khả dụng\nLiên kết thao tác\nTên phiên\n*\nSố dư\nMô tả\nCheckbox: đã chọn\nLựa chọn A\nLự",
+    "pageOverflow": false,
+    "contentOverflow": false,
+    "controls": [],
+    "totalControls": 10
+  },
+  {
+    "theme": "light",
+    "width": 360,
+    "name": "settings",
+    "body": "Settings\nMở Practice\nLearn\nGiao diện\n\nLưu trên trình duyệt này. Ngôn ngữ áp dụng cho thanh điều hướng; nội dung nghiệp vụ giữ ngôn ngữ hiện có.\n\nChế độ màu\nTối\nSáng\nNgôn ngữ điều hướng\nTiếng Việt\nEnglish\nLưu giao diện\nHủy thay đổi\n\nWorkspace\ntenant-a\nMode\nlocal-trusted-demo\nDataset được chọn\nChưa chọn\nBroker capability\nĐã khóa\nProject session\nPhiên local hiện tại\nsigned_in\nAuth mode\nlocal-trusted-demo\nProduction auth\nTắt\nIdentity\nlocal-owner\nIdentity source\nlocal-process\nSession id\nlocal-demo-se",
+    "pageOverflow": false,
+    "contentOverflow": false,
+    "controls": [],
+    "totalControls": 0
+  },
+  {
+    "theme": "light",
+    "width": 360,
+    "name": "risk",
+    "body": "Risk & giới hạn\nSIMULATION ONLY\nKhông có broker action\nRisk Lab không mở live trading\nKết quả chỉ đánh giá profile + snapshot bạn nhập, giữ nguyên các giới hạn local/replay.\nINPUT / PROFILE\nProfile giới hạn\nProfile ID\nTerms version\nEffective from\nTotal drawdown\nType\nStatic\nTrailing\nOverall basis\nEquity\nBalance\nDaily loss\nDaily basis\nEquity\nBalance\nCost basis\nIncluded\nSeparate\nINPUT / SNAPSHOT\nTrạng thái tài khoản\nStarting balance\nBalance\nEquity\nHigh-water mark\nDaily start equity\nChạm đúng floor ",
+    "pageOverflow": false,
+    "contentOverflow": false,
+    "controls": [],
+    "totalControls": 1
+  },
+  {
+    "theme": "light",
+    "width": 360,
+    "name": "research",
+    "body": "Research\nRESEARCH / SIMULATION\nBroker locked · không gửi lệnh\nData Desk →\nWorkspace tenant-a\nJob Chưa tạo\nChưa chạy\nEngine nautilus sẵn sàng\n✓\nContext\n✓\nQuality gate\n03\nRun\n04\nCheckpoint\n05\nResult\nDữ liệu đầu vào\n\nPhạm vi cố định cho run này. Đổi dataset sẽ xóa deep link job hiện tại.\n\nMở Data Desk →\nXAU/USD · 60s\n7.966.491 rows · 05/05/2003 00:01 → 07/10/2026 23:58\n\ndataset-c7de666c3be38818c1d91ad143b8dbc4467f7a190d782d127fd34851c27f04cd\n\nQuality\nChưa xác minh\nHoldout\nHoldout khóa\nProvider\nloca",
+    "pageOverflow": false,
+    "contentOverflow": false,
+    "controls": [],
+    "totalControls": 0
+  },
+  {
+    "theme": "light",
+    "width": 360,
+    "name": "learn",
+    "body": "Học & thuật ngữ\nResearch\nPractice\nSettings\nREAD ONLY\nKhông ghi tiến độ · không lộ answer key\nLocal course · đọc từ workspace\nProgress owner education/progress.json\nOAuth PREP_ONLY\nBroker Locked\nCourse\nForex từ nền tảng đến thực hành có kiểm chứng\nVersion\n1.1\nTiến độ\n4/24 bài\nTrạng thái\nin_progress\nBài hiện tại\nM08-L03\nQuyết định bước tiếp theo\nMở module hiện tại\n17%\nCập nhật 2026-09-13\nCourse map\n8 module\nTổng quan course\nWorkbook\nBài đang chờ\nM01\nCơ chế giao dịch\nMở\nM01-L01\nHai giá mua/bán\nM01-",
+    "pageOverflow": false,
+    "contentOverflow": false,
+    "controls": [],
+    "totalControls": 0
+  },
+  {
+    "theme": "light",
+    "width": 360,
+    "name": "playbook",
+    "body": "Chiến lược của tôi\nLondon Breakout\ndemo-london\nDraft\nr1\nNew York Reversal\ndemo-newyork\nDraft\nr1\nGold Swing\ndemo-gold\nDraft\nr1\nLondon Breakout\nDraft\nRecord\ndemo-london\nCurrent revision\nr1\nCapability\nUnknown capability\nCreated\n06/07/2026 08:00:00 UTC\nUpdated\n05/10/2026 08:00:00 UTC\nParent\nRoot record\nRULE SURFACE\nentry\nexit\nrisk",
+    "pageOverflow": false,
+    "contentOverflow": false,
+    "controls": [],
+    "totalControls": 0
+  },
+  {
+    "theme": "light",
+    "width": 360,
+    "name": "journal",
+    "body": "Nhật ký\nQUYẾT ĐỊNH\nLondon Breakout · EURUSD: chờ đóng nến xác nhận\n06/07/2026 14:20 · r1 · source · demo-london\ndemo-london\nbreakout · review\nQUYẾT ĐỊNH\nNew York Reversal · GBPUSD: chờ đóng nến xác nhận\n07/07/2026 15:35 · r1 · source · demo-newyork\ndemo-newyork\nreversal · planned\nQUYẾT ĐỊNH\nGold Swing · XAUUSD: chờ đóng nến xác nhận\n08/07/2026 16:50 · r1 · source · demo-gold\ndemo-gold\nbreakout · planned\nQUYẾT ĐỊNH\nLondon Breakout · EURUSD: chờ đóng nến xác nhận\n10/07/2026 18:05 · r1 · source · d",
+    "pageOverflow": false,
+    "contentOverflow": false,
+    "controls": [],
+    "totalControls": 0
+  },
+  {
+    "theme": "light",
+    "width": 360,
+    "name": "market",
+    "body": "Tất cả danh mục\nTất cả nguồn\nĐã tải\nTên A–Z\nXóa bộ lọc\nNhập CSV\nSản phẩm\tDanh mục\tNguồn\tDữ liệu\tTừ ngày (UTC)\tĐến ngày (UTC)\tSố nến\tDung lượng\tThao tác\n\n—\n\tChưa phân loại\t—\t—\t06/07/2026\t05/10/2026\t—\t—\t\nĐã tải\n\n\n—\n\tChưa phân loại\t—\t—\t06/07/2026\t05/10/2026\t—\t—\t\nĐã tải\n\n\n—\n\tChưa phân loại\t—\t—\t06/07/2026\t05/10/2026\t—\t—\t\nĐã tải\n1\n25",
+    "pageOverflow": false,
+    "contentOverflow": false,
+    "controls": [],
+    "totalControls": 15
+  },
+  {
+    "theme": "light",
+    "width": 360,
+    "name": "overview",
+    "body": "Tổng quan\nPhiên backtest\nKiểm thử trên dữ liệu lịch sử\nThử thách prop firm\nBắt đầu thử thách mô phỏng\nHướng dẫn\nHọc và luyện tập\nHiệu suất\nBacktest\nTất cả\nThời gian luyện tập\n18\ngiờ\n40\nphút\nThời gian luyện tập mẫu\nThời gian lịch sử đã replay\n36\nngày\n7\ngiờ\nThời gian replay mẫu\nGiao dịch đã đóng\n60\n50,00% Mua · 50,00% Bán\nTỷ lệ thắng tổng thể\n50%\nGiao dịch theo tháng\n22\n11\n0\n19\n07/2026\n22\n08/2026\n19\n09/2026\nTỷ lệ thắng theo tháng\n100%\n80%\n60%\n40%\n20%\n0%\n52,6%\n07/2026\n50%\n08/2026\n47,4%\n09/2026\nGiao",
+    "pageOverflow": false,
+    "contentOverflow": false,
+    "controls": [
+      {
+        "class": "fx-select-trigger",
+        "text": "Backtest",
+        "x": 74,
+        "y": 475,
+        "width": 130,
+        "height": 44,
+        "display": "flex",
+        "align": "center",
+        "iconOffsetY": -497,
+        "iconOffsetX": -139,
+        "icon": 0
+      },
+      {
+        "class": "fx-select-trigger",
+        "text": "Tất cả",
+        "x": 214,
+        "y": 475,
+        "width": 130,
+        "height": 44,
+        "display": "flex",
+        "align": "center",
+        "iconOffsetY": -497,
+        "iconOffsetX": -279,
+        "icon": 0
+      }
+    ],
+    "totalControls": 28
+  },
+  {
+    "theme": "light",
+    "width": 360,
+    "name": "sessions",
+    "body": "Phiên\nChọn phiên\nLondon Breakout\nEURUSD · M1\nSố dư sau lệnh đóng: 10.960 USD\nNgày tạo: 06/07/2026 · UTC\nPhiên mới\nPhân tích\nCài đặt phiên\nXóa phiên\nLondon Breakout\nSố dư tài khoản\n10.960 USD\n\ndemo-london · EURUSD\n\n06/07/2026 – 05/10/2026\nCòn 7 ngày\n\nMở biểu đồ\nMô tả\nSố dư sau lệnh đóng\nUSD · không gồm lãi/lỗ thả nổi\n9.865\n10.412,5\n10.960\nBắt đầu\n20 giao dịch đã đóng\nKết quả theo tháng\nUSD · ròng · UTC\n2026-07\n430\n2026-08\n-85\n2026-09\n615\nKết quả theo thứ\nUSD · ròng · UTC\nT2\n490\nT3\n-310\nT4\n720\nT5\n",
+    "pageOverflow": false,
+    "contentOverflow": false,
+    "controls": [],
+    "totalControls": 9
+  },
+  {
+    "theme": "light",
+    "width": 360,
+    "name": "trades",
+    "body": "Giao dịch\nTất cả phiên\nLọc theo\nCơ bản\nNhãn\n\tThao tác\tPhiên\tLoại\tNguồn\tThời gian ghi nhận (UTC)\tThời gian vào lệnh (biểu đồ UTC)\tTài sản\tHướng lệnh\tLoại lệnh\tP/L ròng (USD)\tTỷ suất (%)\tKết quả (R)\tĐánh giá giao dịch\tGiá vào lệnh\tKhối lượng\tCắt lỗ\tChốt lời\tThời gian thoát lệnh (UTC) ↓\tGiá thoát lệnh\tP/L trước phí\tPhí\n\t\n\tGold Swing\tĐã đóng\tDữ liệu mẫu\t05/10/2026 08:00\t26/09/2026 21:00\tXAUUSD\tBán\tmarket\t-110 USD\t-1,1%\t-1,1 R\t5\t2.573,6\t1\t2.574,6\t2.571,6\t26/09/2026 22:05\t2.574,67\t-107 USD\t3 USD\n\t\n\tNe",
+    "pageOverflow": false,
+    "contentOverflow": false,
+    "controls": [],
+    "totalControls": 16
+  },
+  {
+    "theme": "light",
+    "width": 360,
+    "name": "analytics",
+    "body": "Phân tích\nLoại\nTài sản\nHướng lệnh\nKết quả\nNhãn\nPhiên\nChiến lược\nThứ\nGiờ\nMúi giờ\nNgày backtest\nÁp dụng\nBacktest\nPhiên · London Breakout\nXóa bộ lọc\nHiệu suất\nSụt giảm vốn\nMô phỏng\nLãi và lỗ\nSố dư sau lệnh đóng · không gồm lãi/lỗ thả nổi\nBiểu đồ\nSố dư\nP/L tổng\n960 USD\nSố dư sau lệnh đóng\n10.960 USD\nTỷ lệ thắng\n50%\nTổng giao dịch\n20\nHòa vốn\n2 lệnh\nThấp nhất 9.865 USD\nCao nhất 10.960 USD\nBắt đầu\n20 giao dịch đã đóng\nSố dư sau lệnh đóng · USD\nChi tiết điểm\nChọn giao dịch\nR thực hiện trung bình\n0,48 R\n",
+    "pageOverflow": false,
+    "contentOverflow": false,
+    "controls": [],
+    "totalControls": 17
+  },
+  {
+    "theme": "light",
+    "width": 360,
+    "name": "prop",
+    "body": "Phân tích\nLoại\nTài sản\nHướng lệnh\nKết quả\nNhãn\nPhiên\nChiến lược\nThứ\nGiờ\nMúi giờ\nNgày backtest\nÁp dụng\nProp Firm\nPhiên · London Breakout\nXóa bộ lọc\nMục tiêu thử thách\nLuyện tập · giai đoạn 1\nSố dư\n10.960 USD\nMục tiêu lợi nhuận\n1.000 USD\nGiới hạn lỗ ngày\n500 USD\nGiới hạn lỗ tổng\n1.000 USD\nMục tiêu\tKết quả / ngưỡng\tTrạng thái\nMục tiêu lợi nhuận\t960 USD / 1.000 USD\tĐang thực hiện\nGiới hạn sụt giảm vốn tổng\t295 USD / 1.000 USD\tTrong giới hạn\nHiệu suất\nSụt giảm vốn\nMô phỏng\nLãi và lỗ\nSố dư sau lệnh đó",
+    "pageOverflow": false,
+    "contentOverflow": false,
+    "controls": [],
+    "totalControls": 17
+  },
+  {
+    "theme": "light",
+    "width": 360,
+    "name": "prop-report",
+    "body": "Phân tích\nLoại\nTài sản\nHướng lệnh\nKết quả\nNhãn\nPhiên\nChiến lược\nThứ\nGiờ\nMúi giờ\nNgày backtest\nÁp dụng\nProp Firm\nPhiên · London Breakout\nXóa bộ lọc\nMục tiêu thử thách\nLuyện tập · giai đoạn 1\nSố dư\n10.960 USD\nMục tiêu lợi nhuận\n1.000 USD\nGiới hạn lỗ ngày\n500 USD\nGiới hạn lỗ tổng\n1.000 USD\nMục tiêu\tKết quả / ngưỡng\tTrạng thái\nMục tiêu lợi nhuận\t960 USD / 1.000 USD\tĐang thực hiện\nGiới hạn sụt giảm vốn tổng\t295 USD / 1.000 USD\tTrong giới hạn\nHiệu suất\nSụt giảm vốn\nMô phỏng\nLãi và lỗ\nSố dư sau lệnh đó",
+    "pageOverflow": false,
+    "contentOverflow": false,
+    "controls": [],
+    "totalControls": 17
+  },
+  {
+    "theme": "light",
+    "width": 360,
+    "name": "live",
+    "body": "Trực tiếp\nThêm giao dịch\nTất cả tài khoản\nLọc theo\nCơ bản\nNhãn\n‹\nTháng 10\n›\n‹\n2026\n›\nUSD\n%\nChia sẻ\nTổng kết tháng\nT2\nT3\nT4\nT5\nT6\nT7\nCN\nTổng\n28\n29\n30\n1\n0\n2\n0\n3\n260\n6 deal khớp lệnh\n4\n150\n2 deal khớp lệnh\nTuần 1\n410\n5\n—\n6\n—\n7\n—\n8\n—\n9\n—\n10\n—\n11\n—\nTuần 2\n—\n12\n—\n13\n—\n14\n—\n15\n—\n16\n—\n17\n—\n18\n—\nTuần 3\n—\n19\n—\n20\n—\n21\n—\n22\n—\n23\n—\n24\n—\n25\n—\nTuần 4\n—\n26\n—\n27\n—\n28\n—\n29\n—\n30\n—\n31\n—\n1\nTuần 5\n—\nTổng tháng\n410 USD\n8 deal khớp lệnh\nPhân tích\nP/L ròng từ deal\n410 USD\nDeal khớp lệnh\n8\nTỷ suất (%)\n—\nNguồn dữ liệu và",
+    "pageOverflow": false,
+    "contentOverflow": false,
+    "controls": [],
+    "totalControls": 4
+  }
+]

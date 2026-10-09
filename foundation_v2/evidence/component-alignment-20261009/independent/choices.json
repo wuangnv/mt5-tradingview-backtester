@@ -1,0 +1,790 @@
+[
+  {
+    "route": "risk",
+    "metrics": [
+      {
+        "text": "Chạm đúng floor cũng tính là breach",
+        "class": "risk-checkbox",
+        "mark": {
+          "x": 284,
+          "y": 839.1875,
+          "w": 16,
+          "h": 16
+        },
+        "gap": 11,
+        "centerDelta": 0,
+        "margin": "3px 3px 3px 4px",
+        "cssgap": "8px"
+      }
+    ]
+  },
+  {
+    "route": "journal",
+    "metrics": []
+  },
+  {
+    "route": "trade",
+    "metrics": [
+      {
+        "text": "",
+        "class": "",
+        "mark": {
+          "x": 1377,
+          "y": 301.5,
+          "w": 16,
+          "h": 16
+        },
+        "gap": 13,
+        "centerDelta": 0.25,
+        "margin": "3px 3px 3px 4px",
+        "cssgap": "10px"
+      },
+      {
+        "text": "",
+        "class": "",
+        "mark": {
+          "x": 1377,
+          "y": 335.5,
+          "w": 16,
+          "h": 16
+        },
+        "gap": 13,
+        "centerDelta": 0.25,
+        "margin": "3px 3px 3px 4px",
+        "cssgap": "10px"
+      },
+      {
+        "text": "",
+        "class": "",
+        "mark": {
+          "x": 1377,
+          "y": 369.5,
+          "w": 16,
+          "h": 16
+        },
+        "gap": 13,
+        "centerDelta": 0.25,
+        "margin": "3px 3px 3px 4px",
+        "cssgap": "10px"
+      },
+      {
+        "text": "Mua",
+        "class": "",
+        "mark": {
+          "x": 1377,
+          "y": 361.5,
+          "w": 16,
+          "h": 16
+        },
+        "gap": 13,
+        "centerDelta": 0.25,
+        "margin": "3px 3px 3px 4px",
+        "cssgap": "10px"
+      },
+      {
+        "text": "Bán",
+        "class": "",
+        "mark": {
+          "x": 1377,
+          "y": 395.5,
+          "w": 16,
+          "h": 16
+        },
+        "gap": 13,
+        "centerDelta": 0.25,
+        "margin": "3px 3px 3px 4px",
+        "cssgap": "10px"
+      },
+      {
+        "text": "",
+        "class": "",
+        "mark": {
+          "x": 1377,
+          "y": 501.5,
+          "w": 16,
+          "h": 16
+        },
+        "gap": 13,
+        "centerDelta": 0.25,
+        "margin": "3px 3px 3px 4px",
+        "cssgap": "10px"
+      },
+      {
+        "text": "",
+        "class": "",
+        "mark": {
+          "x": 1377,
+          "y": 535.5,
+          "w": 16,
+          "h": 16
+        },
+        "gap": 13,
+        "centerDelta": 0.25,
+        "margin": "3px 3px 3px 4px",
+        "cssgap": "10px"
+      },
+      {
+        "text": "",
+        "class": "",
+        "mark": {
+          "x": 1377,
+          "y": 569.5,
+          "w": 16,
+          "h": 16
+        },
+        "gap": 13,
+        "centerDelta": 0.25,
+        "margin": "3px 3px 3px 4px",
+        "cssgap": "10px"
+      },
+      {
+        "text": "",
+        "class": "",
+        "mark": {
+          "x": 1377,
+          "y": 603.5,
+          "w": 16,
+          "h": 16
+        },
+        "gap": 13,
+        "centerDelta": 0.25,
+        "margin": "3px 3px 3px 4px",
+        "cssgap": "10px"
+      },
+      {
+        "text": "",
+        "class": "",
+        "mark": {
+          "x": 1377,
+          "y": 561.5,
+          "w": 16,
+          "h": 16
+        },
+        "gap": 13,
+        "centerDelta": 0.25,
+        "margin": "3px 3px 3px 4px",
+        "cssgap": "10px"
+      },
+      {
+        "text": "",
+        "class": "",
+        "mark": {
+          "x": 1377,
+          "y": 681.5,
+          "w": 16,
+          "h": 16
+        },
+        "gap": 13,
+        "centerDelta": 0.25,
+        "margin": "3px 3px 3px 4px",
+        "cssgap": "10px"
+      },
+      {
+        "text": "",
+        "class": "",
+        "mark": {
+          "x": 1377,
+          "y": 741.5,
+          "w": 16,
+          "h": 16
+        },
+        "gap": 13,
+        "centerDelta": 0.25,
+        "margin": "3px 3px 3px 4px",
+        "cssgap": "10px"
+      },
+      {
+        "text": "",
+        "class": "",
+        "mark": {
+          "x": 1377,
+          "y": 775.5,
+          "w": 16,
+          "h": 16
+        },
+        "gap": 13,
+        "centerDelta": 0.25,
+        "margin": "3px 3px 3px 4px",
+        "cssgap": "10px"
+      },
+      {
+        "text": "",
+        "class": "",
+        "mark": {
+          "x": 1377,
+          "y": 809.5,
+          "w": 16,
+          "h": 16
+        },
+        "gap": 13,
+        "centerDelta": 0.25,
+        "margin": "3px 3px 3px 4px",
+        "cssgap": "10px"
+      },
+      {
+        "text": "",
+        "class": "",
+        "mark": {
+          "x": 1377,
+          "y": 843.5,
+          "w": 16,
+          "h": 16
+        },
+        "gap": 13,
+        "centerDelta": 0.25,
+        "margin": "3px 3px 3px 4px",
+        "cssgap": "10px"
+      },
+      {
+        "text": "",
+        "class": "",
+        "mark": {
+          "x": 1377,
+          "y": 877.5,
+          "w": 16,
+          "h": 16
+        },
+        "gap": 13,
+        "centerDelta": 0.25,
+        "margin": "3px 3px 3px 4px",
+        "cssgap": "10px"
+      },
+      {
+        "text": "",
+        "class": "",
+        "mark": {
+          "x": 1377,
+          "y": 911.5,
+          "w": 16,
+          "h": 16
+        },
+        "gap": 13,
+        "centerDelta": 0.25,
+        "margin": "3px 3px 3px 4px",
+        "cssgap": "10px"
+      },
+      {
+        "text": "",
+        "class": "",
+        "mark": {
+          "x": 1377,
+          "y": 945.5,
+          "w": 16,
+          "h": 16
+        },
+        "gap": 13,
+        "centerDelta": 0.25,
+        "margin": "3px 3px 3px 4px",
+        "cssgap": "10px"
+      },
+      {
+        "text": "",
+        "class": "",
+        "mark": {
+          "x": 1377,
+          "y": 979.5,
+          "w": 16,
+          "h": 16
+        },
+        "gap": 13,
+        "centerDelta": 0.25,
+        "margin": "3px 3px 3px 4px",
+        "cssgap": "10px"
+      },
+      {
+        "text": "",
+        "class": "",
+        "mark": {
+          "x": 1377,
+          "y": 1013.5,
+          "w": 16,
+          "h": 16
+        },
+        "gap": 13,
+        "centerDelta": 0.25,
+        "margin": "3px 3px 3px 4px",
+        "cssgap": "10px"
+      },
+      {
+        "text": "",
+        "class": "",
+        "mark": {
+          "x": 1377,
+          "y": 1047.5,
+          "w": 16,
+          "h": 16
+        },
+        "gap": 13,
+        "centerDelta": 0.25,
+        "margin": "3px 3px 3px 4px",
+        "cssgap": "10px"
+      },
+      {
+        "text": "",
+        "class": "",
+        "mark": {
+          "x": 1377,
+          "y": 1081.5,
+          "w": 16,
+          "h": 16
+        },
+        "gap": 13,
+        "centerDelta": 0.25,
+        "margin": "3px 3px 3px 4px",
+        "cssgap": "10px"
+      },
+      {
+        "text": "",
+        "class": "",
+        "mark": {
+          "x": 1377,
+          "y": 1115.5,
+          "w": 16,
+          "h": 16
+        },
+        "gap": 13,
+        "centerDelta": 0.25,
+        "margin": "3px 3px 3px 4px",
+        "cssgap": "10px"
+      },
+      {
+        "text": "",
+        "class": "",
+        "mark": {
+          "x": 1377,
+          "y": 801.5,
+          "w": 16,
+          "h": 16
+        },
+        "gap": 13,
+        "centerDelta": 0.25,
+        "margin": "3px 3px 3px 4px",
+        "cssgap": "10px"
+      },
+      {
+        "text": "",
+        "class": "",
+        "mark": {
+          "x": 1377,
+          "y": 835.5,
+          "w": 16,
+          "h": 16
+        },
+        "gap": 13,
+        "centerDelta": 0.25,
+        "margin": "3px 3px 3px 4px",
+        "cssgap": "10px"
+      },
+      {
+        "text": "",
+        "class": "",
+        "mark": {
+          "x": 1377,
+          "y": 869.5,
+          "w": 16,
+          "h": 16
+        },
+        "gap": 13,
+        "centerDelta": 0.25,
+        "margin": "3px 3px 3px 4px",
+        "cssgap": "10px"
+      },
+      {
+        "text": "",
+        "class": "",
+        "mark": {
+          "x": 1377,
+          "y": 903.5,
+          "w": 16,
+          "h": 16
+        },
+        "gap": 13,
+        "centerDelta": 0.25,
+        "margin": "3px 3px 3px 4px",
+        "cssgap": "10px"
+      },
+      {
+        "text": "",
+        "class": "",
+        "mark": {
+          "x": 1377,
+          "y": 937.5,
+          "w": 16,
+          "h": 16
+        },
+        "gap": 13,
+        "centerDelta": 0.25,
+        "margin": "3px 3px 3px 4px",
+        "cssgap": "10px"
+      },
+      {
+        "text": "",
+        "class": "",
+        "mark": {
+          "x": 1377,
+          "y": 971.5,
+          "w": 16,
+          "h": 16
+        },
+        "gap": 13,
+        "centerDelta": 0.25,
+        "margin": "3px 3px 3px 4px",
+        "cssgap": "10px"
+      },
+      {
+        "text": "",
+        "class": "",
+        "mark": {
+          "x": 1377,
+          "y": 1005.5,
+          "w": 16,
+          "h": 16
+        },
+        "gap": 13,
+        "centerDelta": 0.25,
+        "margin": "3px 3px 3px 4px",
+        "cssgap": "10px"
+      },
+      {
+        "text": "",
+        "class": "",
+        "mark": {
+          "x": 1377,
+          "y": 861.5,
+          "w": 16,
+          "h": 16
+        },
+        "gap": 13,
+        "centerDelta": 0.25,
+        "margin": "3px 3px 3px 4px",
+        "cssgap": "10px"
+      },
+      {
+        "text": "",
+        "class": "",
+        "mark": {
+          "x": 1377,
+          "y": 895.5,
+          "w": 16,
+          "h": 16
+        },
+        "gap": 13,
+        "centerDelta": 0.25,
+        "margin": "3px 3px 3px 4px",
+        "cssgap": "10px"
+      },
+      {
+        "text": "",
+        "class": "",
+        "mark": {
+          "x": 1377,
+          "y": 929.5,
+          "w": 16,
+          "h": 16
+        },
+        "gap": 13,
+        "centerDelta": 0.25,
+        "margin": "3px 3px 3px 4px",
+        "cssgap": "10px"
+      },
+      {
+        "text": "",
+        "class": "",
+        "mark": {
+          "x": 1377,
+          "y": 963.5,
+          "w": 16,
+          "h": 16
+        },
+        "gap": 13,
+        "centerDelta": 0.25,
+        "margin": "3px 3px 3px 4px",
+        "cssgap": "10px"
+      },
+      {
+        "text": "",
+        "class": "",
+        "mark": {
+          "x": 1377,
+          "y": 997.5,
+          "w": 16,
+          "h": 16
+        },
+        "gap": 13,
+        "centerDelta": 0.25,
+        "margin": "3px 3px 3px 4px",
+        "cssgap": "10px"
+      },
+      {
+        "text": "",
+        "class": "",
+        "mark": {
+          "x": 1377,
+          "y": 1031.5,
+          "w": 16,
+          "h": 16
+        },
+        "gap": 13,
+        "centerDelta": 0.25,
+        "margin": "3px 3px 3px 4px",
+        "cssgap": "10px"
+      },
+      {
+        "text": "",
+        "class": "",
+        "mark": {
+          "x": 1377,
+          "y": 1065.5,
+          "w": 16,
+          "h": 16
+        },
+        "gap": 13,
+        "centerDelta": 0.25,
+        "margin": "3px 3px 3px 4px",
+        "cssgap": "10px"
+      },
+      {
+        "text": "",
+        "class": "",
+        "mark": {
+          "x": 1377,
+          "y": 1099.5,
+          "w": 16,
+          "h": 16
+        },
+        "gap": 13,
+        "centerDelta": 0.25,
+        "margin": "3px 3px 3px 4px",
+        "cssgap": "10px"
+      },
+      {
+        "text": "",
+        "class": "",
+        "mark": {
+          "x": 1377,
+          "y": 1133.5,
+          "w": 16,
+          "h": 16
+        },
+        "gap": 13,
+        "centerDelta": 0.25,
+        "margin": "3px 3px 3px 4px",
+        "cssgap": "10px"
+      },
+      {
+        "text": "",
+        "class": "",
+        "mark": {
+          "x": 1377,
+          "y": 1167.5,
+          "w": 16,
+          "h": 16
+        },
+        "gap": 13,
+        "centerDelta": 0.25,
+        "margin": "3px 3px 3px 4px",
+        "cssgap": "10px"
+      },
+      {
+        "text": "",
+        "class": "",
+        "mark": {
+          "x": 1377,
+          "y": 1201.5,
+          "w": 16,
+          "h": 16
+        },
+        "gap": 13,
+        "centerDelta": 0.25,
+        "margin": "3px 3px 3px 4px",
+        "cssgap": "10px"
+      },
+      {
+        "text": "",
+        "class": "",
+        "mark": {
+          "x": 1377,
+          "y": 1235.5,
+          "w": 16,
+          "h": 16
+        },
+        "gap": 13,
+        "centerDelta": 0.25,
+        "margin": "3px 3px 3px 4px",
+        "cssgap": "10px"
+      },
+      {
+        "text": "",
+        "class": "",
+        "mark": {
+          "x": 1377,
+          "y": 1269.5,
+          "w": 16,
+          "h": 16
+        },
+        "gap": 13,
+        "centerDelta": 0.25,
+        "margin": "3px 3px 3px 4px",
+        "cssgap": "10px"
+      },
+      {
+        "text": "",
+        "class": "",
+        "mark": {
+          "x": 1377,
+          "y": 1303.5,
+          "w": 16,
+          "h": 16
+        },
+        "gap": 13,
+        "centerDelta": 0.25,
+        "margin": "3px 3px 3px 4px",
+        "cssgap": "10px"
+      },
+      {
+        "text": "",
+        "class": "",
+        "mark": {
+          "x": 1377,
+          "y": 1337.5,
+          "w": 16,
+          "h": 16
+        },
+        "gap": 13,
+        "centerDelta": 0.25,
+        "margin": "3px 3px 3px 4px",
+        "cssgap": "10px"
+      },
+      {
+        "text": "",
+        "class": "",
+        "mark": {
+          "x": 1377,
+          "y": 1371.5,
+          "w": 16,
+          "h": 16
+        },
+        "gap": 13,
+        "centerDelta": 0.25,
+        "margin": "3px 3px 3px 4px",
+        "cssgap": "10px"
+      },
+      {
+        "text": "",
+        "class": "",
+        "mark": {
+          "x": 1377,
+          "y": 1405.5,
+          "w": 16,
+          "h": 16
+        },
+        "gap": 13,
+        "centerDelta": 0.25,
+        "margin": "3px 3px 3px 4px",
+        "cssgap": "10px"
+      },
+      {
+        "text": "",
+        "class": "",
+        "mark": {
+          "x": 1377,
+          "y": 1439.5,
+          "w": 16,
+          "h": 16
+        },
+        "gap": 13,
+        "centerDelta": 0.25,
+        "margin": "3px 3px 3px 4px",
+        "cssgap": "10px"
+      },
+      {
+        "text": "",
+        "class": "",
+        "mark": {
+          "x": 1377,
+          "y": 1473.5,
+          "w": 16,
+          "h": 16
+        },
+        "gap": 13,
+        "centerDelta": 0.25,
+        "margin": "3px 3px 3px 4px",
+        "cssgap": "10px"
+      },
+      {
+        "text": "",
+        "class": "",
+        "mark": {
+          "x": 1377,
+          "y": 1507.5,
+          "w": 16,
+          "h": 16
+        },
+        "gap": 13,
+        "centerDelta": 0.25,
+        "margin": "3px 3px 3px 4px",
+        "cssgap": "10px"
+      },
+      {
+        "text": "",
+        "class": "",
+        "mark": {
+          "x": 1377,
+          "y": 1541.5,
+          "w": 16,
+          "h": 16
+        },
+        "gap": 13,
+        "centerDelta": 0.25,
+        "margin": "3px 3px 3px 4px",
+        "cssgap": "10px"
+      },
+      {
+        "text": "",
+        "class": "",
+        "mark": {
+          "x": 1377,
+          "y": 1575.5,
+          "w": 16,
+          "h": 16
+        },
+        "gap": 13,
+        "centerDelta": 0.25,
+        "margin": "3px 3px 3px 4px",
+        "cssgap": "10px"
+      },
+      {
+        "text": "",
+        "class": "",
+        "mark": {
+          "x": 1377,
+          "y": 1609.5,
+          "w": 16,
+          "h": 16
+        },
+        "gap": 13,
+        "centerDelta": 0.25,
+        "margin": "3px 3px 3px 4px",
+        "cssgap": "10px"
+      },
+      {
+        "text": "",
+        "class": "",
+        "mark": {
+          "x": 1377,
+          "y": 1643.5,
+          "w": 16,
+          "h": 16
+        },
+        "gap": 13,
+        "centerDelta": 0.25,
+        "margin": "3px 3px 3px 4px",
+        "cssgap": "10px"
+      }
+    ]
+  },
+  {
+    "route": "market-data-real",
+    "metrics": []
+  }
+]

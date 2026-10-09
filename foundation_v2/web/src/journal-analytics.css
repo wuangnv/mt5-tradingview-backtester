@@ -19,7 +19,7 @@
 .ja-context-actions { display: flex; align-items: center; justify-content: flex-end; flex-wrap: wrap; gap: 12px; }
 .ja-text-link { color: #cbd5dc; font-size: 12px; text-underline-offset: 3px; }
 .ja-text-link:hover { color: #efc269; }
-.ja-filter-toggle { display: inline-flex; align-items: center; gap: 7px; color: #aeb7be; font-size: 11px; }
+.ja-filter-toggle { display: inline-flex; align-items: center; gap: var(--ds-space-2); color: #aeb7be; font-size: 11px; }
 .ja-filter-toggle input { accent-color: #d5a347; }
 .ja-message { padding: 24px 0; color: #c0c8ce; font-size: 13px; }
 .ja-message-error, .ja-form-error { color: #ef9797; }

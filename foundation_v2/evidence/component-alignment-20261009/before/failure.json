@@ -1,0 +1,28 @@
+{
+  "error": "locator.waitFor: Timeout 10000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('.fxl-filter-drawer') to be visible\u001b[22m\n\n    at D:\\ANNAM\\TradingWorkspace\\projects\\mt5-tradingview-backtester\\foundation_v2\\web\\tests\\componentAlignment.browser.mjs:50:69",
+  "results": [
+    {
+      "case": "ledger selection/action axes",
+      "theme": "dark",
+      "width": 1710,
+      "cells": [
+        {
+          "index": 0,
+          "centerDelta": 0.5,
+          "headerCenter": 273.5,
+          "bodyCenter": 274,
+          "margin": "3px 3px 3px 4px"
+        },
+        {
+          "index": 1,
+          "centerDelta": -9.234375,
+          "headerCenter": 338.234375,
+          "bodyCenter": 329,
+          "margin": "0px"
+        }
+      ]
+    }
+  ],
+  "errors": [],
+  "writes": []
+}

@@ -17,7 +17,7 @@
 .data-library-filters .data-library-status { flex:0 0 150px; width:150px; }
 .data-library-search { display:block; position:relative; flex:1 1 160px; max-width:420px; min-width:160px; }
 .data-library-search > svg { position:absolute; left:12px; top:50%; transform:translateY(-50%); width:16px; height:16px; color:var(--wm-content-muted); pointer-events:none; }
-.fx-app.fx-shell-story[data-theme] .data-library .data-library-search input { box-sizing:border-box; width:100%; min-height:44px; padding:8px 12px 8px 38px; border:1px solid var(--wm-control-border); border-radius:var(--wm-control-radius); background:var(--wm-canvas); color:var(--wm-content); font:inherit; font-size:13px; line-height:normal; outline:none; box-shadow:none; }
+.fx-app.fx-shell-story[data-theme] .data-library .data-library-search input { box-sizing:border-box; width:100%; min-height:var(--wm-control-height); padding:7px 12px 7px 38px; border:1px solid var(--wm-control-border); border-radius:var(--wm-control-radius); background:var(--wm-canvas); color:var(--wm-content); font:inherit; font-size:13px; line-height:var(--ds-line-control); outline:none; box-shadow:none; }
 .fx-app.fx-shell-story[data-theme] .data-library .data-library-search input:is(:hover, :focus-visible) { border-color:var(--wm-control-hover-border); outline:none; box-shadow:none; }
 .data-library-search input::placeholder { color:var(--wm-content-muted); opacity:1; }
 .data-library .data-library-import { display:flex; align-items:center; gap:8px; white-space:nowrap; }

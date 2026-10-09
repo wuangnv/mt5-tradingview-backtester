@@ -264,3 +264,10 @@ Kết quả kiểm chứng: [follow-up receipt](../foundation_v2/evidence/compac
 
 Rà soát tiếp theo: [menu/source audit và giới hạn](../foundation_v2/evidence/menu-audit-20261009/RECEIPT.md),
 [review độc lập](../foundation_v2/evidence/menu-audit-20261009/INDEPENDENT-REVIEW.md).
+
+Rà tiếp toàn bộ nhóm component: [alignment receipt và coverage](../foundation_v2/evidence/component-alignment-20261009/RECEIPT.md).
+Checkbox/mark dùng margin0 và khoảng cách8px tới chữ; label nhiều dòng căn mark
+theo dòng đầu. Trong bảng, checkbox/nút thao tác căn giữa, chữ căn trái và số căn
+phải; tiêu đề dùng cùng mép với dữ liệu. Cột có thể bật/tắt gắn vai trò theo key,
+không theo vị trí. Search và dropdown cùng toolbar dùng cùng chiều cao theo role;
+các hàng stack trên mobile không bị ép chung một trục tâm.

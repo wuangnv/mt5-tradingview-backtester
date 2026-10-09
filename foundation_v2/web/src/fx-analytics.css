@@ -88,6 +88,9 @@
 .fxa-table-scroll th{color:var(--wm-content-muted);font-weight:500;background:var(--wm-canvas);height:44px;box-sizing:border-box;padding-block:0}
 .fxa-table-scroll th button{border:0;background:transparent;color:inherit;font:inherit;padding:0;min-height:44px;cursor:pointer}
 .fxa-table-scroll th button:hover{color:var(--wm-content)}
+.fxa-trades .fxa-table-scroll :is(th,td):is(:first-child,:nth-child(2)):not([colspan]){text-align:center}
+.fxa-trades .fxa-table-scroll :is(th,td).is-numeric{text-align:right}
+.fxa-scenario-details .fxa-table-scroll :is(th,td):nth-child(n+3){text-align:right}
 .fxa-table-scroll small{display:block;color:var(--wm-content-muted);font-size:10px;max-width:260px;overflow:hidden;text-overflow:ellipsis;margin-top:6px}
 .fxa-table-scroll tbody tr:hover{background:var(--wm-row-hover)}
 .fxa-table-scroll tbody tr.is-selected{background:var(--wm-row-selected)}

@@ -20,7 +20,7 @@
 .fxl-filter-drawer details[open] summary::before{transform:rotate(90deg)}
 .fxl-filter-drawer summary:hover{color:var(--wm-content)}
 .fxl-choices{display:grid;gap:12px;padding:12px 4px}
-.fxl-choices label{display:flex;align-items:center;gap:10px;font-size:13px;cursor:pointer}
+.fxl-choices label{display:flex;align-items:center;gap:var(--ds-space-2);font-size:13px;line-height:var(--ds-line-control);cursor:pointer}
 .fxl-choices input{accent-color:var(--wm-action-bg);width:16px;height:16px}
 .fxl-fields{display:grid;gap:12px}
 .fxl-field{display:grid;gap:8px;font-size:13px;padding-block:10px}

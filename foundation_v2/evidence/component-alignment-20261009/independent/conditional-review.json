@@ -1,0 +1,117 @@
+{
+  "scope": "CSV review fixture POST is intercepted, never forwarded; Journal is local read-only",
+  "results": [
+    {
+      "theme": "dark",
+      "width": 1710,
+      "geometry": {
+        "margin": "0px",
+        "gap": 8,
+        "firstLineCenterDelta": -0.5,
+        "labelHeight": 18.84375,
+        "markTop": 0
+      },
+      "forwardedWrites": []
+    },
+    {
+      "theme": "dark",
+      "width": 1710,
+      "journal": {
+        "margin": "0px",
+        "gap": 8,
+        "centerDelta": 0
+      }
+    },
+    {
+      "theme": "dark",
+      "width": 360,
+      "geometry": {
+        "margin": "0px",
+        "gap": 8,
+        "firstLineCenterDelta": -0.5,
+        "labelHeight": 37.6875,
+        "markTop": 0
+      },
+      "forwardedWrites": []
+    },
+    {
+      "theme": "dark",
+      "width": 360,
+      "journal": {
+        "margin": "0px",
+        "gap": 8,
+        "centerDelta": 0
+      }
+    },
+    {
+      "theme": "light",
+      "width": 1710,
+      "geometry": {
+        "margin": "0px",
+        "gap": 8,
+        "firstLineCenterDelta": -0.5,
+        "labelHeight": 18.84375,
+        "markTop": 0
+      },
+      "forwardedWrites": []
+    },
+    {
+      "theme": "light",
+      "width": 1710,
+      "journal": {
+        "margin": "0px",
+        "gap": 8,
+        "centerDelta": 0
+      }
+    },
+    {
+      "theme": "light",
+      "width": 360,
+      "geometry": {
+        "margin": "0px",
+        "gap": 8,
+        "firstLineCenterDelta": -0.5,
+        "labelHeight": 37.6875,
+        "markTop": 0
+      },
+      "forwardedWrites": []
+    },
+    {
+      "theme": "light",
+      "width": 360,
+      "journal": {
+        "margin": "0px",
+        "gap": 8,
+        "centerDelta": 0
+      }
+    }
+  ],
+  "attemptedWrites": [
+    {
+      "theme": "dark",
+      "width": 1710,
+      "url": "http://127.0.0.1:5180/api/v2/data/csv/preview",
+      "disposition": "fixture fulfilled; never forwarded"
+    },
+    {
+      "theme": "dark",
+      "width": 360,
+      "url": "http://127.0.0.1:5180/api/v2/data/csv/preview",
+      "disposition": "fixture fulfilled; never forwarded"
+    },
+    {
+      "theme": "light",
+      "width": 1710,
+      "url": "http://127.0.0.1:5180/api/v2/data/csv/preview",
+      "disposition": "fixture fulfilled; never forwarded"
+    },
+    {
+      "theme": "light",
+      "width": 360,
+      "url": "http://127.0.0.1:5180/api/v2/data/csv/preview",
+      "disposition": "fixture fulfilled; never forwarded"
+    }
+  ],
+  "forwardedWrites": [],
+  "errors": []
+}

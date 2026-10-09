@@ -119,7 +119,7 @@
 .rd-import-actions { display: flex; gap: 10px; flex-wrap: wrap; }
 .rd-import-file-state { margin: 0; color: var(--wm-content-muted); font-size: 12px; overflow-wrap: anywhere; }
 .rd-import-review-check { display: flex; align-items: flex-start; gap: 8px; color: var(--wm-warning); font-size: 13px; line-height: 1.45; }
-.rd-import-review-check input { margin-top: 2px; accent-color: var(--wm-warning); }
+.rd-import-review-check input { accent-color: var(--wm-warning); }
 .rd-import-success { margin: 0; border-left: 2px solid var(--wm-positive); padding: 8px 10px; color: var(--wm-positive); font-size: 13px; line-height: 1.45; }
 .rd-import-success code { color: var(--wm-positive); overflow-wrap: anywhere; }
 .rd-import-report-column { min-width: 0; border-left: 1px solid var(--wm-border); padding-left: 20px; }
