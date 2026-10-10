@@ -1,0 +1,582 @@
+{
+  "scope": "Production components and deterministic preview data; real mode uses actual local GET APIs; writes blocked",
+  "cases": [
+    {
+      "view": "overview",
+      "width": 1440,
+      "theme": "dark",
+      "state": "many"
+    },
+    {
+      "view": "overview",
+      "width": 1440,
+      "theme": "dark",
+      "state": "loading"
+    },
+    {
+      "view": "overview",
+      "width": 1440,
+      "theme": "dark",
+      "state": "empty"
+    },
+    {
+      "view": "overview",
+      "width": 1440,
+      "theme": "dark",
+      "state": "error"
+    },
+    {
+      "view": "overview",
+      "width": 1440,
+      "theme": "dark",
+      "state": "unavailable"
+    },
+    {
+      "view": "overview",
+      "width": 1440,
+      "theme": "dark",
+      "state": "denied"
+    },
+    {
+      "view": "overview",
+      "width": 1440,
+      "theme": "dark",
+      "state": "filtered"
+    },
+    {
+      "view": "overview",
+      "width": 1440,
+      "theme": "dark",
+      "state": "refreshing"
+    },
+    {
+      "view": "overview",
+      "width": 1440,
+      "theme": "dark",
+      "state": "stale"
+    },
+    {
+      "view": "overview",
+      "width": 1440,
+      "theme": "dark",
+      "state": "partial"
+    },
+    {
+      "view": "overview",
+      "width": 1440,
+      "theme": "dark",
+      "state": "unknown"
+    },
+    {
+      "view": "overview",
+      "width": 1440,
+      "theme": "light",
+      "state": "many"
+    },
+    {
+      "view": "overview",
+      "width": 1440,
+      "theme": "light",
+      "state": "loading"
+    },
+    {
+      "view": "overview",
+      "width": 1440,
+      "theme": "light",
+      "state": "empty"
+    },
+    {
+      "view": "overview",
+      "width": 1440,
+      "theme": "light",
+      "state": "error"
+    },
+    {
+      "view": "overview",
+      "width": 1440,
+      "theme": "light",
+      "state": "unavailable"
+    },
+    {
+      "view": "overview",
+      "width": 1440,
+      "theme": "light",
+      "state": "denied"
+    },
+    {
+      "view": "overview",
+      "width": 1440,
+      "theme": "light",
+      "state": "filtered"
+    },
+    {
+      "view": "overview",
+      "width": 1440,
+      "theme": "light",
+      "state": "refreshing"
+    },
+    {
+      "view": "overview",
+      "width": 1440,
+      "theme": "light",
+      "state": "stale"
+    },
+    {
+      "view": "overview",
+      "width": 1440,
+      "theme": "light",
+      "state": "partial"
+    },
+    {
+      "view": "overview",
+      "width": 1440,
+      "theme": "light",
+      "state": "unknown"
+    },
+    {
+      "view": "overview",
+      "width": 390,
+      "theme": "dark",
+      "state": "many"
+    },
+    {
+      "view": "overview",
+      "width": 390,
+      "theme": "dark",
+      "state": "loading"
+    },
+    {
+      "view": "overview",
+      "width": 390,
+      "theme": "dark",
+      "state": "empty"
+    },
+    {
+      "view": "overview",
+      "width": 390,
+      "theme": "dark",
+      "state": "error"
+    },
+    {
+      "view": "overview",
+      "width": 390,
+      "theme": "dark",
+      "state": "unavailable"
+    },
+    {
+      "view": "overview",
+      "width": 390,
+      "theme": "dark",
+      "state": "denied"
+    },
+    {
+      "view": "overview",
+      "width": 390,
+      "theme": "dark",
+      "state": "filtered"
+    },
+    {
+      "view": "overview",
+      "width": 390,
+      "theme": "dark",
+      "state": "refreshing"
+    },
+    {
+      "view": "overview",
+      "width": 390,
+      "theme": "dark",
+      "state": "stale"
+    },
+    {
+      "view": "overview",
+      "width": 390,
+      "theme": "dark",
+      "state": "partial"
+    },
+    {
+      "view": "overview",
+      "width": 390,
+      "theme": "dark",
+      "state": "unknown"
+    },
+    {
+      "view": "overview",
+      "width": 390,
+      "theme": "light",
+      "state": "many"
+    },
+    {
+      "view": "overview",
+      "width": 390,
+      "theme": "light",
+      "state": "loading"
+    },
+    {
+      "view": "overview",
+      "width": 390,
+      "theme": "light",
+      "state": "empty"
+    },
+    {
+      "view": "overview",
+      "width": 390,
+      "theme": "light",
+      "state": "error"
+    },
+    {
+      "view": "overview",
+      "width": 390,
+      "theme": "light",
+      "state": "unavailable"
+    },
+    {
+      "view": "overview",
+      "width": 390,
+      "theme": "light",
+      "state": "denied"
+    },
+    {
+      "view": "overview",
+      "width": 390,
+      "theme": "light",
+      "state": "filtered"
+    },
+    {
+      "view": "overview",
+      "width": 390,
+      "theme": "light",
+      "state": "refreshing"
+    },
+    {
+      "view": "overview",
+      "width": 390,
+      "theme": "light",
+      "state": "stale"
+    },
+    {
+      "view": "overview",
+      "width": 390,
+      "theme": "light",
+      "state": "partial"
+    },
+    {
+      "view": "overview",
+      "width": 390,
+      "theme": "light",
+      "state": "unknown"
+    },
+    {
+      "view": "overview",
+      "width": 360,
+      "theme": "dark",
+      "state": "many"
+    },
+    {
+      "view": "overview",
+      "width": 360,
+      "theme": "dark",
+      "state": "loading"
+    },
+    {
+      "view": "overview",
+      "width": 360,
+      "theme": "dark",
+      "state": "empty"
+    },
+    {
+      "view": "overview",
+      "width": 360,
+      "theme": "dark",
+      "state": "error"
+    },
+    {
+      "view": "overview",
+      "width": 360,
+      "theme": "dark",
+      "state": "unavailable"
+    },
+    {
+      "view": "overview",
+      "width": 360,
+      "theme": "dark",
+      "state": "denied"
+    },
+    {
+      "view": "overview",
+      "width": 360,
+      "theme": "dark",
+      "state": "filtered"
+    },
+    {
+      "view": "overview",
+      "width": 360,
+      "theme": "dark",
+      "state": "refreshing"
+    },
+    {
+      "view": "overview",
+      "width": 360,
+      "theme": "dark",
+      "state": "stale"
+    },
+    {
+      "view": "overview",
+      "width": 360,
+      "theme": "dark",
+      "state": "partial"
+    },
+    {
+      "view": "overview",
+      "width": 360,
+      "theme": "dark",
+      "state": "unknown"
+    },
+    {
+      "view": "overview",
+      "width": 360,
+      "theme": "light",
+      "state": "many"
+    },
+    {
+      "view": "overview",
+      "width": 360,
+      "theme": "light",
+      "state": "loading"
+    },
+    {
+      "view": "overview",
+      "width": 360,
+      "theme": "light",
+      "state": "empty"
+    },
+    {
+      "view": "overview",
+      "width": 360,
+      "theme": "light",
+      "state": "error"
+    },
+    {
+      "view": "overview",
+      "width": 360,
+      "theme": "light",
+      "state": "unavailable"
+    },
+    {
+      "view": "overview",
+      "width": 360,
+      "theme": "light",
+      "state": "denied"
+    },
+    {
+      "view": "overview",
+      "width": 360,
+      "theme": "light",
+      "state": "filtered"
+    },
+    {
+      "view": "overview",
+      "width": 360,
+      "theme": "light",
+      "state": "refreshing"
+    },
+    {
+      "view": "overview",
+      "width": 360,
+      "theme": "light",
+      "state": "stale"
+    },
+    {
+      "view": "overview",
+      "width": 360,
+      "theme": "light",
+      "state": "partial"
+    },
+    {
+      "view": "overview",
+      "width": 360,
+      "theme": "light",
+      "state": "unknown"
+    },
+    {
+      "view": "overview",
+      "width": 320,
+      "theme": "dark",
+      "state": "many"
+    },
+    {
+      "view": "overview",
+      "width": 320,
+      "theme": "dark",
+      "state": "loading"
+    },
+    {
+      "view": "overview",
+      "width": 320,
+      "theme": "dark",
+      "state": "empty"
+    },
+    {
+      "view": "overview",
+      "width": 320,
+      "theme": "dark",
+      "state": "error"
+    },
+    {
+      "view": "overview",
+      "width": 320,
+      "theme": "dark",
+      "state": "unavailable"
+    },
+    {
+      "view": "overview",
+      "width": 320,
+      "theme": "dark",
+      "state": "denied"
+    },
+    {
+      "view": "overview",
+      "width": 320,
+      "theme": "dark",
+      "state": "filtered"
+    },
+    {
+      "view": "overview",
+      "width": 320,
+      "theme": "dark",
+      "state": "refreshing"
+    },
+    {
+      "view": "overview",
+      "width": 320,
+      "theme": "dark",
+      "state": "stale"
+    },
+    {
+      "view": "overview",
+      "width": 320,
+      "theme": "dark",
+      "state": "partial"
+    },
+    {
+      "view": "overview",
+      "width": 320,
+      "theme": "dark",
+      "state": "unknown"
+    },
+    {
+      "view": "overview",
+      "width": 320,
+      "theme": "light",
+      "state": "many"
+    },
+    {
+      "view": "overview",
+      "width": 320,
+      "theme": "light",
+      "state": "loading"
+    },
+    {
+      "view": "overview",
+      "width": 320,
+      "theme": "light",
+      "state": "empty"
+    },
+    {
+      "view": "overview",
+      "width": 320,
+      "theme": "light",
+      "state": "error"
+    },
+    {
+      "view": "overview",
+      "width": 320,
+      "theme": "light",
+      "state": "unavailable"
+    },
+    {
+      "view": "overview",
+      "width": 320,
+      "theme": "light",
+      "state": "denied"
+    },
+    {
+      "view": "overview",
+      "width": 320,
+      "theme": "light",
+      "state": "filtered"
+    },
+    {
+      "view": "overview",
+      "width": 320,
+      "theme": "light",
+      "state": "refreshing"
+    },
+    {
+      "view": "overview",
+      "width": 320,
+      "theme": "light",
+      "state": "stale"
+    },
+    {
+      "view": "overview",
+      "width": 320,
+      "theme": "light",
+      "state": "partial"
+    },
+    {
+      "view": "overview",
+      "width": 320,
+      "theme": "light",
+      "state": "unknown"
+    },
+    {
+      "view": "replay",
+      "state": "demo",
+      "fixtureOnly": true
+    },
+    {
+      "view": "trade",
+      "state": "demo",
+      "fixtureOnly": true
+    },
+    {
+      "view": "analytics",
+      "state": "demo",
+      "fixtureOnly": true
+    },
+    {
+      "view": "market-data",
+      "state": "demo",
+      "fixtureOnly": true
+    },
+    {
+      "view": "live",
+      "state": "demo",
+      "fixtureOnly": true
+    },
+    {
+      "view": "playbook",
+      "state": "demo",
+      "fixtureOnly": true
+    },
+    {
+      "view": "journal",
+      "state": "demo",
+      "fixtureOnly": true
+    },
+    {
+      "view": "testing",
+      "state": "demo",
+      "fixtureOnly": true
+    },
+    {
+      "view": "overview",
+      "state": "many",
+      "journey": "extra-session summary/reload/analytics; no fallback to an original session"
+    }
+  ],
+  "errors": [],
+  "previewRequests": [],
+  "writes": [],
+  "result": "PASS"
+}

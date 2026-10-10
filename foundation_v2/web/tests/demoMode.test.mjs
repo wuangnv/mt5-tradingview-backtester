@@ -1,6 +1,6 @@
 import test from 'node:test'
 import assert from 'node:assert/strict'
-import { DEMO_LEDGER, DEMO_SESSIONS, demoResult, demoFilterRows, demoOverview } from '../src/demoFixtures.js'
+import { DEMO_LEDGER, DEMO_SESSIONS, DEMO_MANY_SESSIONS, demoSessionItems, demoDashboardAnalytics, demoResult, demoFilterRows, demoOverview } from '../src/demoFixtures.js'
 import { canPreviewDemo, demoToggleHref, previewMode, previewStateHref, previewOptions } from '../src/demoMode.js'
 import { buildWorkspaceHref, readWorkspaceContext } from '../src/workspaceContext.js'
 
@@ -34,6 +34,18 @@ test('demo selection and UTC date filters have an independent numeric oracle', (
   assert.equal(demoFilterRows(null, { outcome: 'breakeven' }).length, 6)
   assert.equal(demoFilterRows([]).length, 0)
   assert.ok(demoFilterRows(null, { from: '2026-09-01', to: '2026-09-30' }).every(row => row.close_time_utc.startsWith('2026-09')))
+})
+
+test('many-session preview adds empty sessions without duplicating financial results', () => {
+  assert.equal(DEMO_MANY_SESSIONS.length, 12)
+  assert.equal(new Set(DEMO_MANY_SESSIONS.map(item => item.record_id)).size, 12)
+  const results = DEMO_MANY_SESSIONS.map(item => demoDashboardAnalytics(item, 'demo'))
+  assert.deepEqual(results.slice(3).map(result => result.metrics.closed_trade_count), Array(9).fill(0))
+  assert.equal(results.reduce((total, result) => total + result.metrics.closed_trade_count, 0), 60)
+  assert.equal(results.reduce((total, result) => total + result.metrics.net_pnl, 0), DEMO_LEDGER.reduce((total, row) => total + row.net_pnl, 0))
+  assert.equal(demoSessionItems(new URLSearchParams('demo_session=demo-practice-12')).find(item => item.record_id === 'demo-practice-12').name, 'Practice 12')
+  assert.equal(demoSessionItems(new URLSearchParams('ui_state=many')).length, 12)
+  assert.equal(demoSessionItems(new URLSearchParams('demo_session=demo-gold')).length, 3)
 })
 
 test('demo toggle roundtrip retains every real context/filter query value', () => {

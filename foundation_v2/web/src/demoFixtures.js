@@ -5,6 +5,17 @@ export const DEMO_SESSIONS = [
   { record_id: 'demo-gold', name: 'Gold Swing', instrument_id: 'XAUUSD', timeframe: 'M5', status: 'completed', created_at_utc: '2026-09-07T07:00:00Z' },
 ].map((item, i) => ({ ...item, dataset_id: `demo-dataset-${item.instrument_id}`, timeframe_seconds: item.timeframe === 'M5' ? 300 : 60, revision: 1, row_count: 30000, cursor_index: item.status === 'completed' ? 29999 : 1400 + i * 500, updated_at_utc: '2026-10-05T08:00:00Z', dataset_available: true, archived: false }))
 
+// Extra sessions have no ledger rows; paging must not multiply the original trades.
+export const DEMO_MANY_SESSIONS = [...DEMO_SESSIONS, ...Array.from({ length: 9 }, (_, index) => ({
+  ...DEMO_SESSIONS[index % DEMO_SESSIONS.length], record_id: `demo-practice-${index + 4}`, name: `Practice ${index + 4}`,
+  status: 'paused', cursor_index: 0, created_at_utc: `2026-09-${String(index + 8).padStart(2, '0')}T08:00:00Z`,
+}))]
+
+export function demoSessionItems(query) {
+  const extraSession = DEMO_MANY_SESSIONS.slice(DEMO_SESSIONS.length).some(item => item.record_id === query?.get('demo_session'))
+  return query?.get('ui_state') === 'many' || extraSession ? DEMO_MANY_SESSIONS : DEMO_SESSIONS
+}
+
 export const DEMO_LEDGER = Array.from({ length: 60 }, (_, i) => {
   const session = DEMO_SESSIONS[i % 3], side = i % 2 ? 'sell' : 'buy'
   const net = [160, -90, 220, -120, 0, 85, -65, 140, 260, -110][i % 10]
@@ -61,7 +72,7 @@ export function demoReplayContext(item) {
   const source = item.source_record_id || item.record_id
   const index = Math.max(0, DEMO_SESSIONS.findIndex(entry => entry.record_id === source))
   const dataset = DEMO_DATASETS.find(entry => entry.dataset_id === item.dataset_id)
-  return { record_id: item.record_id, revision: item.revision, cutoff_timestamp: dataset.last_timestamp - [7, 3, 0][index] * 86400,
+  return { record_id: item.record_id, revision: item.revision, cutoff_timestamp: item.cursor_index === 0 ? dataset.first_timestamp : dataset.last_timestamp - [7, 3, 0][index] * 86400,
     payload: { execution: { balance: demoDashboardAnalytics(item, 'demo').metrics.ending_closed_trade_balance, starting_balance: 10000 } } }
 }
 

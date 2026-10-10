@@ -25,7 +25,8 @@ def fixture(source=None, *, key='replay-fixture', created='2026-10-01T00:00:00Z'
     return source
 
 
-def test_default_page_only_computes_six_summaries_and_filter_facets_need_no_financial_reads(monkeypatch):
+@pytest.mark.parametrize('page_size', [3, 6])
+def test_page_only_computes_requested_summaries_and_filter_facets_need_no_financial_reads(monkeypatch, page_size):
     import trading_workspace_v2.dashboard_sessions as module
     original = module.build_session_summary
     calls = []
@@ -35,16 +36,17 @@ def test_default_page_only_computes_six_summaries_and_filter_facets_need_no_fina
     monkeypatch.setattr(module, 'build_session_summary', measured)
     records = [fixture(key=f's{i:04}', strategy='swing' if i % 2 else None) for i in range(1000)]
     cache = DashboardSummaryCache()
-    first = build_dashboard_sessions(records, [manifest()], 'tenant-a', cache=cache)
-    assert len(first['items']) == len(calls) == 6
+    first = build_dashboard_sessions(records, [manifest()], 'tenant-a', page_size=page_size, cache=cache)
+    assert len(first['items']) == len(calls) == page_size
+    assert first['pages'] == (1000 + page_size - 1) // page_size
     assert first['total'] == first['matching_count'] == 1000
     assert first['facets'] == {'assets': ['EURUSD'], 'strategies': ['swing'], 'unassigned': True}
     # Opening the filter reads facets from the same contract; no detail endpoint.
-    again = build_dashboard_sessions(records, [manifest()], 'tenant-a', cache=cache, revision=first['revision'])
+    again = build_dashboard_sessions(records, [manifest()], 'tenant-a', page_size=page_size, cache=cache, revision=first['revision'])
     assert first['revision'] == again['revision']
-    assert len(calls) == 6
-    second = build_dashboard_sessions(records, [manifest()], 'tenant-a', page=2, cache=cache, revision=first['revision'])
-    assert len(calls) == 12
+    assert len(calls) == page_size
+    second = build_dashboard_sessions(records, [manifest()], 'tenant-a', page=2, page_size=page_size, cache=cache, revision=first['revision'])
+    assert len(calls) == page_size * 2
     assert not ({i['record_id'] for i in first['items']} & {i['record_id'] for i in second['items']})
 
 

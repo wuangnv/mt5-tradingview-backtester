@@ -5829,6 +5829,14 @@
     "vi": "Có phiên và giao dịch, nhưng chưa biết thời gian luyện tập và replay. Các số chưa biết hiển thị —.",
     "en": "Sessions and trades exist, but practice and replay durations are unknown. Missing values display —."
   },
+  "Nhiều phiên mẫu": {
+    "vi": "Nhiều phiên mẫu",
+    "en": "Many sample sessions"
+  },
+  "12 phiên để thử tìm kiếm và phân trang; mỗi trang tối đa 3 phiên.": {
+    "vi": "12 phiên để thử tìm kiếm và phân trang; mỗi trang tối đa 3 phiên.",
+    "en": "12 sessions to try search and pagination; up to 3 sessions per page."
+  },
   "Xem ví dụ có dữ liệu": {
     "vi": "Xem ví dụ có dữ liệu",
     "en": "View an example with data"

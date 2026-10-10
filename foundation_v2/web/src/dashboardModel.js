@@ -2,6 +2,8 @@ import { recentSessions } from './sessionCatalog.js'
 import { scopedRead } from './scopedRead.js'
 import { navigate } from './clientNavigation.js'
 
+export const DASHBOARD_PAGE_SIZE = 3
+
 const numberFormatter = new Intl.NumberFormat('vi-VN', { maximumFractionDigits: 1 })
 const moneyFormatter = new Intl.NumberFormat('vi-VN', { maximumFractionDigits: 2 })
 
@@ -162,7 +164,7 @@ export function dashboardCurve(metrics) {
 
 
 export function dashboardListUrl({ page = 1, search = '', sort = 'newest', asset = '', strategy = '', revision = '' } = {}) {
-  const params = new URLSearchParams({ page: String(page), page_size: '6', sort })
+  const params = new URLSearchParams({ page: String(page), page_size: String(DASHBOARD_PAGE_SIZE), sort })
   for (const [key, value] of Object.entries({ search, asset, strategy, revision })) if (value) params.set(key, value)
   return `/api/v2/dashboard/sessions?${params}`
 }
@@ -187,7 +189,7 @@ export async function readDashboardSessionList(workspace, filters, signal) {
   if (!response.ok) throw Object.assign(new Error(String(payload.detail || `HTTP ${response.status}`)), { status: response.status })
   if (payload.schema_version !== 'dashboard-session-list-v1' || payload.workspace_id !== workspace
       || typeof payload.revision !== 'string' || !payload.revision || !Array.isArray(payload.items)
-      || payload.items.length > 6 || !Array.isArray(payload.facets?.assets) || !Array.isArray(payload.facets?.strategies)
+      || payload.items.length > DASHBOARD_PAGE_SIZE || !Array.isArray(payload.facets?.assets) || !Array.isArray(payload.facets?.strategies)
       || !['total', 'matching_count', 'page', 'pages'].every(key => Number.isSafeInteger(payload[key]) && payload[key] >= (key === 'page' || key === 'pages' ? 1 : 0))
       || payload.items.some(item => !item?.record_id || !Number.isSafeInteger(item.revision)
         || item.detail?.revision !== item.revision || !['ready', 'error'].includes(item.detail?.status)

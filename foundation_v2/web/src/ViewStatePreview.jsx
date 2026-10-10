@@ -1,7 +1,6 @@
 import { Suspense, lazy } from 'react'
 import FxSelect from './FxSelect.jsx'
 import TestingReadState, { TestingSkeleton } from './TestingReadState.jsx'
-import { DATA_STATES } from './dataStates.js'
 import { previewOptions } from './demoMode.js'
 import { useTestingLocale } from './testingLocale.jsx'
 import './view-state-preview.css'
@@ -10,7 +9,7 @@ const DemoPreview = lazy(() => import('./DemoPreview.jsx'))
 
 export function ViewStateSelect({ value, view, onChange }) {
   const { t } = useTestingLocale()
-  const label = DATA_STATES.find(([state]) => state === value)?.[1] || 'Dữ liệu mẫu'
+  const label = previewOptions(view).find(option => option.value === value)?.label || 'Dữ liệu mẫu'
   return <div className="wm-demo-action">
     {value !== 'real' && <div className="wm-view-state-note" data-testid="view-state-preview" data-preview-state={value} role="status"><span>{t('Bản xem thử')}</span><strong title={t(label)}>{t(label)}</strong></div>}
     <FxSelect className="wm-view-state-select" label="Chế độ xem dữ liệu" value={value}
@@ -22,8 +21,8 @@ export function ViewStateSelect({ value, view, onChange }) {
 
 export default function ViewStatePreview({ state, view, workspace, query, onChange }) {
   const { t } = useTestingLocale()
-  const label = DATA_STATES.find(([value]) => value === state)?.[1] || 'Dữ liệu mẫu'
-  const hasData = ['demo', 'refreshing', 'stale', 'partial', 'unknown'].includes(state)
+  const label = previewOptions(view).find(option => option.value === state)?.label || 'Dữ liệu mẫu'
+  const hasData = ['demo', 'many', 'refreshing', 'stale', 'partial', 'unknown'].includes(state)
   const messages = {
     empty: view === 'overview' || view === 'replay' ? 'Chưa có phiên. Các kết quả và biểu đồ phụ thuộc phiên sẽ xuất hiện sau khi có dữ liệu.' : 'Chưa có bản ghi. Các kết quả phụ thuộc dữ liệu này chưa thể hiển thị.',
     error: 'Không tải được dữ liệu. Thử lại để xem trạng thái có dữ liệu.',

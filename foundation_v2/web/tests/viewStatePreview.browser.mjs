@@ -70,14 +70,38 @@ try {
         if (value === 'error') assert.equal(await preview.getByRole('button', { name: 'Thử lại' }).evaluate(button => getComputedStyle(button).whiteSpace), 'nowrap')
       } else {
         await preview.locator('.fx-dashboard-session-card').first().waitFor()
+        assert.equal(await page.evaluate(() => Boolean(document.querySelector('.fx-dashboard-recent').compareDocumentPosition(document.querySelector('.fx-dashboard-results')) & Node.DOCUMENT_POSITION_FOLLOWING)), true, 'Recent sessions precede Performance in the shared layout')
         const expected = value === 'partial' ? 2 : 3
         assert.equal(await preview.locator('.fx-dashboard-session-card').count(), expected)
         await preview.locator('.fx-dashboard-metric strong').nth(2).waitFor()
         await page.waitForFunction(count => document.querySelectorAll('.fx-dashboard-metric strong')[2]?.textContent === count, value === 'partial' ? '40' : '60')
         if (value === 'unknown') assert.deepEqual((await preview.locator('.fx-dashboard-metric strong').allTextContents()).slice(0, 2), ['—', '—'])
         if (value === 'refreshing') assert.equal(await preview.locator('.wm-view-state-update').getAttribute('aria-busy'), 'true')
+        if (value === 'many') {
+          const pagination = page.getByRole('navigation', { name: 'Phân trang phiên gần đây' })
+          const sessionIds = new Set()
+          for (let index = 0; index < 4; index++) {
+            assert.equal(await preview.locator('.fx-dashboard-session-card').count(), 3)
+            for (const id of await preview.locator('.fx-dashboard-session-card').evaluateAll(cards => cards.map(card => card.dataset.sessionId))) {
+              assert.equal(sessionIds.has(id), false, 'Pages do not repeat a session')
+              sessionIds.add(id)
+            }
+            assert.equal(await preview.locator('.fx-dashboard-metric strong').nth(2).textContent(), '60', 'Performance does not change with the recent-session page')
+            if (index < 3) {
+              await pagination.getByRole('button', { name: 'Trang sau', exact: true }).click()
+              await page.waitForFunction(pageNumber => document.querySelector('.fx-dashboard-recent .wm-pagination [aria-current="page"]')?.textContent === String(pageNumber), index + 2)
+            }
+          }
+          assert.equal(sessionIds.size, 12)
+          assert.equal(await pagination.getByRole('button', { name: 'Trang sau', exact: true }).isDisabled(), true)
+          await preview.getByRole('searchbox', { name: 'Tìm phiên gần đây' }).fill('Gold Swing')
+          assert.equal(await preview.locator('.fx-dashboard-session-card').count(), 1)
+          assert.equal(await preview.locator('.fx-dashboard-session-card').getAttribute('data-session-id'), 'demo-gold')
+          await preview.getByRole('searchbox', { name: 'Tìm phiên gần đây' }).fill('')
+          assert.equal(await preview.locator('.fx-dashboard-session-card').count(), 3)
+        }
       }
-      if (['loading', 'empty', 'error', 'stale', 'partial', 'unknown'].includes(value)) await page.screenshot({ path: `${output}/${theme}-${width}-${value}.png` })
+      if (['loading', 'empty', 'error', 'stale', 'partial', 'unknown', 'many'].includes(value)) await page.screenshot({ path: `${output}/${theme}-${width}-${value}.png` })
       report.cases.push({ view: 'overview', width, theme, state: value })
     }
     await choose('error')
@@ -92,6 +116,8 @@ try {
     await page.evaluate(() => { window.__previewShell = { shell: document.querySelector('[data-testid=fxreplay-shell]'), rail: document.querySelector('.fx-rail'), header: document.querySelector('.fx-topbar') } })
     await choose('real')
     await page.locator('.fx-dashboard-session-card').first().waitFor()
+    assert.equal(await page.evaluate(() => Boolean(document.querySelector('.fx-dashboard-recent').compareDocumentPosition(document.querySelector('.fx-dashboard-results')) & Node.DOCUMENT_POSITION_FOLLOWING)), true, 'Actual data uses the same section order')
+    assert.ok(await page.locator('.fx-dashboard-session-card').count() <= 3)
     assert.equal(await page.getByTestId('view-state-preview').count(), 0)
     assert.equal(new URL(page.url()).searchParams.has('demo'), false)
     assert.equal(new URL(page.url()).searchParams.has('ui_state'), false)
@@ -131,6 +157,21 @@ try {
     }
     report.cases.push({ view, state: 'demo', fixtureOnly: true })
   }
+  await page.goto(`${origin}/?workspace=tenant-a&view=overview&area=testing&section=dashboard&demo=1&ui_state=many`)
+  const practice = page.locator('.fx-dashboard-session-card[data-session-id="demo-practice-12"]')
+  await practice.waitFor()
+  await practice.locator('.fx-dashboard-card-summary').click()
+  await page.waitForURL(url => url.searchParams.get('view') === 'replay')
+  await page.waitForFunction(() => document.querySelector('.fxr-session-control .fx-select-trigger strong')?.textContent === 'Practice 12')
+  assert.match(await page.locator('.fxr-session-control .fx-select-trigger').textContent(), /10\.000 USD/)
+  await page.reload()
+  await page.waitForFunction(() => document.querySelector('.fxr-session-control .fx-select-trigger strong')?.textContent === 'Practice 12')
+  await page.goto(`${origin}/?workspace=tenant-a&view=overview&area=testing&section=dashboard&demo=1&ui_state=many`)
+  await practice.waitFor()
+  await practice.locator('a[href*="view=analytics"]').click()
+  await page.waitForURL(url => url.searchParams.get('view') === 'analytics')
+  await page.waitForFunction(() => document.querySelector('.fxa-session-trigger')?.getAttribute('aria-label')?.includes('Practice 12'))
+  report.cases.push({ view: 'overview', state: 'many', journey: 'extra-session summary/reload/analytics; no fallback to an original session' })
   await context.close()
   assert.deepEqual(report.errors, [])
   assert.deepEqual(report.previewRequests, [])

@@ -6,6 +6,7 @@ export function previewOptions(view) {
   return [
     { value: 'real', label: 'Dữ liệu thật', detail: 'Đọc dữ liệu hiện tại của workspace.' },
     { value: 'demo', label: 'Dữ liệu mẫu', detail: 'Có dữ liệu mẫu để xem bố cục và tương tác.' },
+    { value: 'many', label: 'Nhiều phiên mẫu', detail: '12 phiên để thử tìm kiếm và phân trang; mỗi trang tối đa 3 phiên.', disabled: view !== 'overview' },
     ...DATA_STATES.filter(([state]) => state !== 'ready').map(([value, label, detail]) => ({ value, label, detail,
       disabled: ['partial', 'unknown'].includes(value) && view !== 'overview' })),
   ]
@@ -19,7 +20,7 @@ export function previewMode(query, view) {
 
 export function previewStateHref(href, state) {
   const url = demoToggleHref(href, state !== 'real')
-  if (DATA_STATES.some(([value]) => value === state && value !== 'ready')) url.searchParams.set('ui_state', state)
+  if (state === 'many' || DATA_STATES.some(([value]) => value === state && value !== 'ready')) url.searchParams.set('ui_state', state)
   else url.searchParams.delete('ui_state')
   return url
 }

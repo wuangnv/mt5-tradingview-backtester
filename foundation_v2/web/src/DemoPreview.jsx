@@ -19,7 +19,7 @@ import { PlaybookList, PlaybookSummary } from './PlaybookWorkspace.jsx'
 import { JournalRow, StoryRail } from './JournalWorkspace.jsx'
 import { DEFAULT_EXTRA_FILTERS, filterAnalyticsRows, tradesCsv } from './tradingAnalyticsModel.js'
 import { buildWorkspaceHref } from './workspaceContext.js'
-import { DEMO_SESSIONS, DEMO_LEDGER, DEMO_LIVE, DEMO_DATASETS, demoDashboardAnalytics, demoReplayContext, demoResult, demoOverview, demoFilterRows } from './demoFixtures.js'
+import { DEMO_SESSIONS, DEMO_MANY_SESSIONS, DEMO_LEDGER, DEMO_LIVE, DEMO_DATASETS, demoSessionItems, demoDashboardAnalytics, demoReplayContext, demoResult, demoOverview, demoFilterRows } from './demoFixtures.js'
 const DEMO_DATA_LIBRARY = { datasets:DEMO_DATASETS, providers:[] }
 
 function Objectives({ model }) {
@@ -35,14 +35,15 @@ function DemoReports({ ledgerOnly, prop = false, query }) {
 
   const { t, fmt } = useTestingLocale()
 
-  const [ids, setIds] = useState(ledgerOnly ? null : DEMO_SESSIONS.find(item => item.record_id === query?.get('demo_session'))?.record_id || DEMO_SESSIONS[0].record_id)
+  const sessions = demoSessionItems(query)
+  const [ids, setIds] = useState(ledgerOnly ? null : sessions.find(item => item.record_id === query?.get('demo_session'))?.record_id || sessions[0].record_id)
   const [filters, setFilters] = useState({ side: 'all', outcome: 'all', from: '', to: '' })
   const [extra, setExtra] = useState({ ...DEFAULT_EXTRA_FILTERS })
   const [selected, setSelected] = useState(''), [config, setConfig] = useState({ stop_distance_ticks: 10, stop_multiplier: 1, target_r: 2 })
   const model = useMemo(() => {
     const rows = demoFilterRows(ledgerOnly ? ids : [ids], filters)
-    return buildAnalyticsModel({ ...demoResult(rows, DEMO_SESSIONS.find(item => item.record_id === ids)), multi_session: ledgerOnly }, prop ? 'prop' : 'app')
-  }, [ids, filters, ledgerOnly, prop])
+    return buildAnalyticsModel({ ...demoResult(rows, sessions.find(item => item.record_id === ids)), multi_session: ledgerOnly }, prop ? 'prop' : 'app')
+  }, [ids, filters, ledgerOnly, prop, sessions])
   const row = model.ledger.find(item => item.tradeId === selected)
   const exportCsv = () => {
     const blob = new Blob([tradesCsv(filterAnalyticsRows(model.ledger, extra), 'USD', { source: 'UI demo' })], { type: 'text/csv;charset=utf-8' })
@@ -50,7 +51,7 @@ function DemoReports({ ledgerOnly, prop = false, query }) {
     anchor.href = url; anchor.download = 'demo-trades.csv'; anchor.click(); setTimeout(() => URL.revokeObjectURL(url), 1000)
   }
   const Inspector = ledgerOnly ? TradeInspector : 'section'
-  const renderFilters = columnControl => <FxAnalyticsFilters persistInUrl={false} sourceType={prop ? 'Prop firm' : 'Backtesting'} columnControl={columnControl} ledgerOnly={ledgerOnly} filters={filters} onChange={patch => { setFilters(value => ({ ...value, ...patch })); setSelected('') }} extra={extra} onExtra={patch => setExtra(value => ({ ...value, ...patch }))} rows={model.ledger} onExport={exportCsv} sessionControl={<SessionFilter items={DEMO_SESSIONS} multiple={ledgerOnly} value={ids} onChange={value => { setIds(value); setSelected('') }} />} onClearSessions={() => setIds(ledgerOnly ? null : DEMO_SESSIONS[0].record_id)} />
+  const renderFilters = columnControl => <FxAnalyticsFilters persistInUrl={false} sourceType={prop ? 'Prop firm' : 'Backtesting'} columnControl={columnControl} ledgerOnly={ledgerOnly} filters={filters} onChange={patch => { setFilters(value => ({ ...value, ...patch })); setSelected('') }} extra={extra} onExtra={patch => setExtra(value => ({ ...value, ...patch }))} rows={model.ledger} onExport={exportCsv} sessionControl={<SessionFilter items={sessions} multiple={ledgerOnly} value={ids} onChange={value => { setIds(value); setSelected('') }} />} onClearSessions={() => setIds(ledgerOnly ? null : sessions[0].record_id)} />
   return <section className="wm-page as-page" aria-label={ledgerOnly ? t("Trades") : t("Analytics")}>
     <h1 className="sr-only">{ledgerOnly ? t("Trades") : t("Analytics")}</h1>
     {ledgerOnly ? <FxTradeLedger model={model} extra={extra} selected={selected} onSelect={setSelected} renderFilters={renderFilters} /> : renderFilters()}
@@ -65,8 +66,8 @@ function DemoSessions({ workspace, query }) {
 
   const { t, fmt } = useTestingLocale()
 
-  const [items, setItems] = useState(DEMO_SESSIONS)
-  const [id, setId] = useState(DEMO_SESSIONS.find(item => item.record_id === query.get('demo_session'))?.record_id || DEMO_SESSIONS[0].record_id)
+  const [items, setItems] = useState(() => demoSessionItems(query))
+  const [id, setId] = useState(() => demoSessionItems(query).find(item => item.record_id === query.get('demo_session'))?.record_id || DEMO_SESSIONS[0].record_id)
   useEffect(() => { setId(items.find(item => item.record_id === query.get('demo_session'))?.record_id || items[0]?.record_id || '') }, [query, items])
   const [editing, setEditing] = useState(false), [actionDialog, setActionDialog] = useState(null)
   const item = items.find(item => item.record_id === id)
@@ -107,10 +108,10 @@ function DemoSessions({ workspace, query }) {
 function DemoDashboard({ workspace, query, state }) {
   const { t } = useTestingLocale()
 
-  const preview = useMemo(() => ({ items: state === 'partial' ? DEMO_SESSIONS.slice(0, 2) : DEMO_SESSIONS, datasets: DEMO_DATASETS, analytics: demoDashboardAnalytics, replayContext: demoReplayContext,
+  const preview = useMemo(() => ({ items: state === 'partial' ? DEMO_SESSIONS.slice(0, 2) : state === 'many' ? DEMO_MANY_SESSIONS : DEMO_SESSIONS, datasets: DEMO_DATASETS, analytics: demoDashboardAnalytics, replayContext: demoReplayContext,
     overview: (filters, items) => {
       const result = demoOverview(demoFilterRows(filters.session ? [items.find(item => item.record_id === filters.session)?.source_record_id || filters.session] : [...new Set(items.map(item => item.source_record_id || item.record_id))], filters))
-      result.performance.scope = { session_count: DEMO_SESSIONS.length, readable_session_count: items.length }
+      result.performance.scope = { session_count: state === 'many' ? DEMO_MANY_SESSIONS.length : DEMO_SESSIONS.length, readable_session_count: items.length }
       if (state === 'unknown') {
         result.performance.time_invested_seconds = null
         result.performance.historical_time_replayed_seconds = null

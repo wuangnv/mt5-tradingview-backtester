@@ -78,6 +78,9 @@ Prop-linked-session refusal. Demo mutations affect local component state only.
 
 - Demo uses shared presentation components and labeled fixtures. Demo session
   edits stay local; unsupported data and experiments stay unavailable.
+- Owner feedback on a preview applies to the corresponding shared product
+  component, including actual data mode. Preview is a review surface, not a
+  separate visual implementation. Verify both data paths when changing it.
 - Actual reads never use demo as an error fallback. Unknown values are `—`; a
   known zero is `0`. An empty source differs from an empty filtered result.
 - Initial reads and lazy route loads show skeletons. Background refresh preserves
@@ -89,6 +92,12 @@ Prop-linked-session refusal. Demo mutations affect local component state only.
   Simulation; Monte Carlo code loads only when simulation runs.
 
 ## Paging contract
+
+Dashboard places Recent Sessions before Performance and shows at most three
+sessions per page using the shared pagination footer. Actual mode requests three
+summaries from the server; preview pages its fixture locally. Search and filters
+apply to the full catalog. Performance keeps its own scope, independent of the
+current recent-session page.
 
 Aggregate actual Trades uses opt-in `GET /api/v2/replay/trades?page=1&page_size=10`
 with `replay-trades-page-v1`. Existing unpaged consumers remain compatible.

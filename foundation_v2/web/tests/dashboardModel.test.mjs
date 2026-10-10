@@ -163,20 +163,23 @@ test('bounded dashboard list validates workspace, revision, summary and request 
     metadata: { schema_version: 'replay-metadata-v1', workspace_id: 'tenant-a', record_id: 'session-a', revision: 2, payload: {} },
     provenance: { workspace_id: 'tenant-a', session_id: 'session-a', revision: 2 }, metrics: { starting_balance: 100, ending_closed_trade_balance: 105 },
     periods: { months: [] }, curve: { points: [] }, currency: 'USD' } }
-  const payload = { schema_version: 'dashboard-session-list-v1', workspace_id: 'tenant-a', revision: 'snapshot', items: [item], facets: { assets: [], strategies: [] }, total: 1000, matching_count: 1000, page: 2, pages: 167 }
+  const payload = { schema_version: 'dashboard-session-list-v1', workspace_id: 'tenant-a', revision: 'snapshot', items: [item], facets: { assets: [], strategies: [] }, total: 1000, matching_count: 1000, page: 2, pages: 334 }
   context.mock.method(globalThis, 'fetch', async (url, options) => {
-    assert.equal(url, '/api/v2/dashboard/sessions?page=2&page_size=6&sort=profit&strategy=breakout')
+    assert.equal(url, '/api/v2/dashboard/sessions?page=2&page_size=3&sort=profit&strategy=breakout')
     assert.equal(options.headers['X-Workspace-Id'], 'tenant-a')
     return new Response(JSON.stringify(payload))
   })
   const filters = { page: 2, sort: 'profit', strategy: 'breakout' }
   assert.deepEqual(await readDashboardSessionList('tenant-a', filters), payload)
   assert.equal(dashboardSummaryDetail(item.detail).model.endingBalance, 105)
+  payload.items = Array(4).fill(item)
+  await assert.rejects(readDashboardSessionList('tenant-a', filters), /dashboard_session_list_invalid/)
+  payload.items = [item]
   item.detail.metadata.workspace_id = 'other'
   await assert.rejects(readDashboardSessionList('tenant-a', filters), /dashboard_session_list_invalid/)
   item.detail.metadata.workspace_id = 'tenant-a'; item.detail.curve.points = Array(129).fill({})
   await assert.rejects(readDashboardSessionList('tenant-a', filters), /dashboard_session_list_invalid/)
-  assert.equal(dashboardListUrl(), '/api/v2/dashboard/sessions?page=1&page_size=6&sort=newest')
+  assert.equal(dashboardListUrl(), '/api/v2/dashboard/sessions?page=1&page_size=3&sort=newest')
 })
 
 test('sampled card curve keeps original sequences and rejects incorrect endpoint or coverage', () => {
