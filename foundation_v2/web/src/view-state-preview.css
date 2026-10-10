@@ -1,12 +1,21 @@
-.wm-view-state-select { width:clamp(140px,16vw,200px); }
+.wm-view-state-select { width:clamp(140px,16vw,200px); flex-shrink:0; }
 .fx-app .wm-view-state-select .fx-select-trigger { border-color:transparent; background:var(--wm-control-open); }
 .fx-app .wm-view-state-select .fx-select-menu { width:320px; }
 .wm-view-state-menu-hint { padding:4px 10px 10px; margin:0; border-bottom:1px solid var(--wm-border); font-size:12px; line-height:1.5; color:var(--wm-content-muted); }
-.wm-view-state-note { display:flex; align-items:center; flex-wrap:wrap; gap:8px; padding:12px 0; color:var(--wm-content-muted); font-size:12px; }
-.wm-view-state-note strong { color:var(--project-highlight); font-weight:500; }
+.wm-view-state-note { display:flex; align-items:center; gap:8px; max-width:min(300px,22vw); color:var(--wm-content-muted); font-size:12px; white-space:nowrap; }
+.wm-view-state-note > span { flex-shrink:0; }
+.wm-view-state-note strong { min-width:0; overflow:hidden; text-overflow:ellipsis; color:var(--project-highlight); font-weight:500; }
 .wm-view-state-placeholder { padding:8px 0 var(--wm-page-gutter); }
 .wm-view-state-placeholder > .fxa-button { margin-top:12px; }
 .wm-view-state-update { padding:0; }
 .wm-view-state-update .wm-read-state { margin:0; }
 .wm-view-state-placeholder .wm-read-state button, .wm-view-state-update .wm-read-state button { flex-shrink:0; white-space:nowrap; }
-@media(max-width:600px) { .wm-view-state-select { width:140px; } }
+@media(max-width:600px) {
+  .fx-app.fx-shell-story:not(.is-chart-workspace) .fx-subnav:has(.wm-view-state-select) { flex-wrap:wrap; row-gap:0; }
+  .fx-app.fx-shell-story:not(.is-chart-workspace) .fx-subnav:has(.wm-view-state-select) .fx-subnav-primary { flex:1 0 100%; min-width:0; }
+  .fx-app.fx-shell-story:not(.is-chart-workspace) .fx-subnav:has(.wm-view-state-select) .fx-subnav-action { flex-basis:100%; display:flex; justify-content:flex-end; padding-block:8px; }
+  .fx-subnav-action .wm-demo-action { max-width:100%; }
+  .wm-view-state-select { width:140px; }
+  .wm-view-state-note { flex-direction:column; align-items:flex-start; gap:0; min-width:0; max-width:92px; line-height:1.3; }
+  .wm-view-state-note strong { max-width:100%; }
+}

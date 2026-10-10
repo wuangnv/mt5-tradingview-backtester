@@ -33,7 +33,7 @@ export default function FxSelect({ label, value, options: inputOptions, onChange
       const menu = root.current?.querySelector('.fx-select-menu')
       if (!menu) return
       // Popups must fit the scrolling content, which also clips the sidebar edge.
-      const container = root.current.closest('dialog, .quick-session-body, .fx-content')
+      const container = root.current.closest('dialog, .quick-session-body, .fx-content, .fx-main')
       const clip = container?.getBoundingClientRect()
       const left = Math.max(12, (clip?.left || 0) + 12), right = Math.min(window.innerWidth - 12, (clip ? clip.left + container.clientWidth : window.innerWidth) - 12)
       menu.style.maxWidth = `${right - left}px`

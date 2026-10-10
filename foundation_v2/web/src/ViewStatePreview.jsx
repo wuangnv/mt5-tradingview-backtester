@@ -10,7 +10,10 @@ const DemoPreview = lazy(() => import('./DemoPreview.jsx'))
 
 export function ViewStateSelect({ value, view, onChange }) {
   const { t } = useTestingLocale()
-  return <div className="wm-demo-action"><FxSelect className="wm-view-state-select" label="Chế độ xem dữ liệu" value={value}
+  const label = DATA_STATES.find(([state]) => state === value)?.[1] || 'Dữ liệu mẫu'
+  return <div className="wm-demo-action">
+    {value !== 'real' && <div className="wm-view-state-note" data-testid="view-state-preview" data-preview-state={value} role="status"><span>{t('Bản xem thử')}</span><strong title={t(label)}>{t(label)}</strong></div>}
+    <FxSelect className="wm-view-state-select" label="Chế độ xem dữ liệu" value={value}
     triggerContent={t(previewOptions(view).find(option => option.value === value)?.label)}
     options={previewOptions(view).map(option => ({ ...option, detail: option.disabled ? 'Chưa có mẫu trạng thái này cho trang hiện tại.' : option.detail }))}
     menuHeader={<p className="wm-view-state-menu-hint">{t('Các trạng thái xem thử dùng dữ liệu mẫu; dữ liệu thật được giữ nguyên.')}</p>}
@@ -33,7 +36,6 @@ export default function ViewStatePreview({ state, view, workspace, query, onChan
     unknown: 'Có phiên và giao dịch, nhưng chưa biết thời gian luyện tập và replay. Các số chưa biết hiển thị —.',
   }
   return <>
-    <div className="wm-view-state-note" data-testid="view-state-preview" data-preview-state={state} role="status"><span>{t('Bản xem thử')}</span><strong>{t(label)}</strong></div>
     {state === 'loading' ? <section className="wm-view-state-placeholder" aria-label={t(label)}><TestingSkeleton rows={6} /></section>
       : !hasData ? <section className="wm-view-state-placeholder"><TestingReadState error={state === 'error' || state === 'denied'} message={messages[state]} onRetry={state === 'error' ? () => onChange('demo') : undefined} />
         {['empty', 'filtered'].includes(state) && <button className="fxa-button" type="button" onClick={() => onChange('demo')}>{t(state === 'filtered' ? 'Xóa bộ lọc' : 'Xem ví dụ có dữ liệu')}</button>}

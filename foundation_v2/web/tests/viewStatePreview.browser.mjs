@@ -10,7 +10,7 @@ await mkdir(output, { recursive: true })
 const browser = await chromium.launch({ headless: true })
 const report = { scope: 'Production components and deterministic preview data; real mode uses actual local GET APIs; writes blocked', cases: [], errors: [], previewRequests: [], writes: [] }
 try {
-  for (const width of [1440, 390]) for (const theme of ['dark', 'light']) {
+  for (const width of [1440, 390, 360, 320]) for (const theme of ['dark', 'light']) {
     const context = await browser.newContext({ viewport: { width, height: 987 } })
     await context.addInitScript(theme => { localStorage.setItem('tw-theme', theme); localStorage.setItem('tw-language', 'vi') }, theme)
     const page = await context.newPage()
@@ -39,12 +39,27 @@ try {
       const option = page.getByRole('option').filter({ has: page.locator('.fx-select-option-label', { hasText: label }) }).first()
       const bounds = await page.locator('.wm-view-state-select .fx-select-menu').boundingBox()
       assert.ok(bounds.x >= 0 && bounds.x + bounds.width <= width + 1, 'State menu fits viewport')
+      const mainBounds = await page.locator('.fx-main').boundingBox()
+      assert.ok(bounds.x >= mainBounds.x + 12 - 1, 'State menu stays outside the sidebar clipping region')
       await option.click()
       if (state !== 'real') await page.locator(`[data-testid=view-state-preview][data-preview-state=${state}]`).waitFor()
     }
     for (const { value } of previewOptions('overview').filter(option => !['real', 'demo'].includes(option.value))) {
       await choose(value)
       const preview = page.locator('.fx-content')
+      const note = page.locator('.fx-subnav-action .wm-view-state-note')
+      assert.equal(await note.count(), 1, 'Preview label belongs to the shared subnav action')
+      assert.equal(await preview.locator('.wm-view-state-note').count(), 0, 'No separate preview label in page content')
+      const noteBounds = await note.boundingBox()
+      const triggerBounds = await page.locator('.wm-view-state-select .fx-select-trigger').boundingBox()
+      assert.ok(triggerBounds.x >= 0 && triggerBounds.x + triggerBounds.width <= width, 'State selector stays inside viewport')
+      if (width <= 600) {
+        const navBounds = await page.locator('.fx-subnav-primary').boundingBox()
+        assert.ok(navBounds.width >= 180, 'Preview controls preserve useful mobile navigation width')
+        assert.ok(navBounds.y + navBounds.height <= noteBounds.y, 'Mobile preview controls sit below navigation')
+      }
+      assert.ok(noteBounds.x + noteBounds.width <= triggerBounds.x, 'Preview label stays left of the state selector')
+      assert.ok(Math.abs(noteBounds.y + noteBounds.height / 2 - triggerBounds.y - triggerBounds.height / 2) <= 1, 'Preview label aligns with selector centre')
       if (value === 'loading') {
         assert.equal(await preview.locator('.wm-skeleton').getAttribute('aria-busy'), 'true')
         assert.equal(await preview.locator('.fx-dashboard-session-card').count(), 0)
@@ -97,6 +112,7 @@ try {
   for (const view of ['replay', 'trade', 'analytics', 'market-data', 'live', 'playbook', 'journal', 'testing']) {
     await page.goto(`${origin}/?workspace=tenant-a&view=${view}&select=1&demo=1&ui_state=loading`)
     await page.locator('[data-preview-state=loading]').waitFor()
+    assert.equal(await page.locator('.fx-subnav-action .wm-view-state-note').count(), 1, 'Every supported page shares the preview label location')
     await page.locator('.wm-skeleton').waitFor()
     await page.locator('.wm-view-state-select .fx-select-trigger').click()
     await page.getByRole('option').filter({ hasText: 'Dữ liệu mẫu' }).first().click()
