@@ -104,12 +104,20 @@ function DemoSessions({ workspace, query }) {
   </section>
 }
 
-function DemoDashboard({ workspace, query }) {
+function DemoDashboard({ workspace, query, state }) {
   const { t } = useTestingLocale()
 
-  const preview = useMemo(() => ({ items: DEMO_SESSIONS, datasets: DEMO_DATASETS, analytics: demoDashboardAnalytics, replayContext: demoReplayContext,
-    overview: (filters, items) => demoOverview(demoFilterRows(filters.session ? [items.find(item => item.record_id === filters.session)?.source_record_id || filters.session] : [...new Set(items.map(item => item.source_record_id || item.record_id))], filters)),
-    propReport: <DemoReports prop /> }), [])
+  const preview = useMemo(() => ({ items: state === 'partial' ? DEMO_SESSIONS.slice(0, 2) : DEMO_SESSIONS, datasets: DEMO_DATASETS, analytics: demoDashboardAnalytics, replayContext: demoReplayContext,
+    overview: (filters, items) => {
+      const result = demoOverview(demoFilterRows(filters.session ? [items.find(item => item.record_id === filters.session)?.source_record_id || filters.session] : [...new Set(items.map(item => item.source_record_id || item.record_id))], filters))
+      result.performance.scope = { session_count: DEMO_SESSIONS.length, readable_session_count: items.length }
+      if (state === 'unknown') {
+        result.performance.time_invested_seconds = null
+        result.performance.historical_time_replayed_seconds = null
+      }
+      return result
+    },
+    propReport: <DemoReports prop /> }), [state])
   return <section className="fx-dashboard" aria-label={t("Dashboard")}><div className="fx-dashboard-inner"><DashboardSessions workspace={workspace} query={query} preview={preview} /></div></section>
 }
 const demoPlaybooks = DEMO_SESSIONS.map(item => ({ ...item, payload: { name: item.name, status: 'draft', execution_capability: 'replay_only', rules: { entry: 'breakout', exit: '2R', risk: '1%' } } }))
@@ -127,10 +135,10 @@ function DemoJournal() {
   const [record, setRecord] = useState(demoNotes[0])
   return <section className="ja-page journal-page ja-story-page wm-page" aria-label={t("Journal")}><h1>{t("Journal")}</h1><div className="ja-workspace-grid"><div className="ja-list">{demoNotes.map(item => <JournalRow key={item.record_id} record={item} selected={record.record_id === item.record_id} onSelect={setRecord} />)}</div><StoryRail record={record} context={{}} /></div></section>
 }
-export default function DemoPreview({ view, workspace, query }) {
+export default function DemoPreview({ view, workspace, query, state = 'demo' }) {
   const { t } = useTestingLocale()
 
-  if (view === 'overview') return <DemoDashboard workspace={workspace} query={query} />
+  if (view === 'overview') return <DemoDashboard workspace={workspace} query={query} state={state} />
   if (view === 'replay') return <DemoSessions workspace={workspace} query={query} />
   if (view === 'trade') return <DemoReports ledgerOnly />
   if (view === 'analytics' || view === 'testing' || view === 'prop') return <DemoReports query={query} prop={view !== 'analytics' || query.get('analytics_source') === 'prop'} />

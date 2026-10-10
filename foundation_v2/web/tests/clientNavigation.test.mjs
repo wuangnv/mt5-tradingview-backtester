@@ -45,7 +45,7 @@ test('reader identity ignores filters/tab/cursor while isolating workspace, page
     const next = new URLSearchParams(query); next.set(key, value)
     assert.equal(navigationScope(next, 'analytics'), identity, key)
   }
-  for (const [key, value] of [['workspace', 'b'], ['session', 'other'], ['dataset', 'other'], ['demo', '1'], ['analytics_source', 'prop'], ['surface', 'workspace'], ['job', 'j'], ['section', 'other']]) {
+  for (const [key, value] of [['workspace', 'b'], ['session', 'other'], ['dataset', 'other'], ['demo', '1'], ['ui_state', 'error'], ['analytics_source', 'prop'], ['surface', 'workspace'], ['job', 'j'], ['section', 'other']]) {
     const next = new URLSearchParams(query); next.set(key, value)
     assert.notEqual(navigationScope(next, 'analytics'), identity, key)
   }

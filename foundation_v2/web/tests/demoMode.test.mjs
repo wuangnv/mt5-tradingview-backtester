@@ -1,7 +1,7 @@
 import test from 'node:test'
 import assert from 'node:assert/strict'
 import { DEMO_LEDGER, DEMO_SESSIONS, demoResult, demoFilterRows, demoOverview } from '../src/demoFixtures.js'
-import { canPreviewDemo, demoToggleHref } from '../src/demoMode.js'
+import { canPreviewDemo, demoToggleHref, previewMode, previewStateHref, previewOptions } from '../src/demoMode.js'
 import { buildWorkspaceHref, readWorkspaceContext } from '../src/workspaceContext.js'
 
 test('demo curve, money, fee and R values reconcile to the same ledger', () => {
@@ -52,4 +52,22 @@ test('demo does not replace chart or order-entry surfaces', () => {
   assert.equal(canPreviewDemo('replay', new URLSearchParams('select=1')), true)
   assert.equal(canPreviewDemo('trade', new URLSearchParams('intent=order')), false)
   assert.equal(canPreviewDemo('settings', new URLSearchParams()), false)
+})
+
+test('state previews preserve real context, round-trip to real and fence unsupported surfaces', () => {
+  const original = 'http://127.0.0.1:5180/?workspace=tenant-a&view=overview&session=owner&dashboard_from=2026-01-01'
+  for (const option of previewOptions('overview')) {
+    const href = previewStateHref(original, option.value)
+    assert.equal(previewMode(href.searchParams, 'overview'), option.value)
+    assert.equal(href.searchParams.get('session'), 'owner')
+    assert.equal(previewStateHref(href, 'real').href, original)
+  }
+  assert.equal(previewMode(new URLSearchParams('ui_state=error'), 'overview'), 'real')
+  assert.equal(previewMode(new URLSearchParams('demo=1&ui_state=typo'), 'overview'), 'demo')
+  assert.equal(previewMode(new URLSearchParams('demo=1&ui_state=unknown'), 'market-data'), 'demo')
+  assert.equal(previewMode(new URLSearchParams('demo=1&ui_state=error&surface=workspace'), 'replay'), 'real')
+  assert.equal(previewMode(new URLSearchParams('demo=1&ui_state=error&intent=order'), 'trade'), 'real')
+  const carried = new URL(buildWorkspaceHref('analytics', 'tenant-a', previewStateHref(original, 'loading').searchParams), original)
+  assert.equal(carried.searchParams.get('ui_state'), 'loading')
+  assert.equal(new URL(buildWorkspaceHref('overview', 'tenant-a', carried.searchParams, { demo: null }), original).searchParams.has('ui_state'), false)
 })

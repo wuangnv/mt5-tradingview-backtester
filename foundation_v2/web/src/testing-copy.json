@@ -5688,5 +5688,149 @@
   "Cách kết thúc phiên": {"vi":"Cách kết thúc phiên","en":"Session end mode"},
   "Các tài sản không có khoảng thời gian chung để replay.": {"vi":"Các tài sản không có khoảng thời gian chung để replay.","en":"The selected assets have no overlapping replay period."},
   "Chọn ngày bắt đầu và kết thúc trong khoảng dữ liệu; ngày kết thúc phải sau ngày bắt đầu.": {"vi":"Chọn ngày bắt đầu và kết thúc trong khoảng dữ liệu; ngày kết thúc phải sau ngày bắt đầu.","en":"Choose dates within the available data; the end date must follow the initial date."},
-  "Thêm mô tả cho phiên": {"vi":"Thêm mô tả cho phiên","en":"Add a session description"}
+  "Thêm mô tả cho phiên": {"vi":"Thêm mô tả cho phiên","en":"Add a session description"},
+  "Chế độ xem dữ liệu": {
+    "vi": "Chế độ xem dữ liệu",
+    "en": "Data view mode"
+  },
+  "Dữ liệu thật": {
+    "vi": "Dữ liệu thật",
+    "en": "Real data"
+  },
+  "Bản xem thử": {
+    "vi": "Bản xem thử",
+    "en": "Preview"
+  },
+  "Đọc dữ liệu hiện tại của workspace.": {
+    "vi": "Đọc dữ liệu hiện tại của workspace.",
+    "en": "Read the current workspace data."
+  },
+  "Có dữ liệu mẫu để xem bố cục và tương tác.": {
+    "vi": "Có dữ liệu mẫu để xem bố cục và tương tác.",
+    "en": "Sample data for viewing layouts and interactions."
+  },
+  "Các trạng thái xem thử dùng dữ liệu mẫu; dữ liệu thật được giữ nguyên.": {
+    "vi": "Các trạng thái xem thử dùng dữ liệu mẫu; dữ liệu thật được giữ nguyên.",
+    "en": "Preview states use sample data; your real data stays unchanged."
+  },
+  "Chưa có mẫu trạng thái này cho trang hiện tại.": {
+    "vi": "Chưa có mẫu trạng thái này cho trang hiện tại.",
+    "en": "This state preview is not available for this page yet."
+  },
+  "Chưa có kết quả; giữ bố cục bằng skeleton.": {
+    "vi": "Chưa có kết quả; giữ bố cục bằng skeleton.",
+    "en": "No result yet; skeletons preserve the layout."
+  },
+  "Đọc thành công nhưng chưa có bản ghi; gợi ý bước đầu tiên.": {
+    "vi": "Đọc thành công nhưng chưa có bản ghi; gợi ý bước đầu tiên.",
+    "en": "Loaded successfully with no records; suggest the first step."
+  },
+  "Lỗi của nguồn này; thử lại tại nơi lỗi.": {
+    "vi": "Lỗi của nguồn này; thử lại tại nơi lỗi.",
+    "en": "This source failed; retry where the failure occurred."
+  },
+  "Chưa có nguồn hoặc tính năng; không giả vờ là dữ liệu trống.": {
+    "vi": "Chưa có nguồn hoặc tính năng; không giả vờ là dữ liệu trống.",
+    "en": "The source or feature is unavailable, rather than empty."
+  },
+  "Giải thích quyền cần có; không lặp nút thử lại vô ích.": {
+    "vi": "Giải thích quyền cần có; không lặp nút thử lại vô ích.",
+    "en": "Explain the required access without an ineffective retry loop."
+  },
+  "Có dữ liệu gốc; cho xoá hoặc sửa bộ lọc.": {
+    "vi": "Có dữ liệu gốc; cho xoá hoặc sửa bộ lọc.",
+    "en": "Original data exists; clear or edit the filters."
+  },
+  "Giữ dữ liệu cùng phạm vi; báo làm mới nhỏ ở tiêu đề.": {
+    "vi": "Giữ dữ liệu cùng phạm vi; báo làm mới nhỏ ở tiêu đề.",
+    "en": "Keep data in the same scope with a small refresh indicator."
+  },
+  "Giữ dữ liệu cũ, ghi rõ cũ và cho làm mới.": {
+    "vi": "Giữ dữ liệu cũ, ghi rõ cũ và cho làm mới.",
+    "en": "Keep previous data, label it as stale and offer refresh."
+  },
+  "Hiện phần đã biết; đánh dấu phần thiếu.": {
+    "vi": "Hiện phần đã biết; đánh dấu phần thiếu.",
+    "en": "Show the known part and identify what is missing."
+  },
+  "Hiện — cho số chưa biết; không đổi thành 0.": {
+    "vi": "Hiện — cho số chưa biết; không đổi thành 0.",
+    "en": "Show — for unknown values, never zero."
+  },
+  "Không tải được dữ liệu": {
+    "vi": "Không tải được dữ liệu",
+    "en": "Data could not be loaded"
+  },
+  "Nguồn chưa khả dụng": {
+    "vi": "Nguồn chưa khả dụng",
+    "en": "Source unavailable"
+  },
+  "Không có quyền xem": {
+    "vi": "Không có quyền xem",
+    "en": "Access denied"
+  },
+  "Không có kết quả khớp bộ lọc": {
+    "vi": "Không có kết quả khớp bộ lọc",
+    "en": "No matching results"
+  },
+  "Đang cập nhật": {
+    "vi": "Đang cập nhật",
+    "en": "Refreshing"
+  },
+  "Dữ liệu chưa cập nhật": {
+    "vi": "Dữ liệu chưa cập nhật",
+    "en": "Stale data"
+  },
+  "Dữ liệu chưa đầy đủ": {
+    "vi": "Dữ liệu chưa đầy đủ",
+    "en": "Partial data"
+  },
+  "Chưa đủ dữ liệu để tính": {
+    "vi": "Chưa đủ dữ liệu để tính",
+    "en": "Unknown values"
+  },
+  "Chưa có phiên. Các kết quả và biểu đồ phụ thuộc phiên sẽ xuất hiện sau khi có dữ liệu.": {
+    "vi": "Chưa có phiên. Các kết quả và biểu đồ phụ thuộc phiên sẽ xuất hiện sau khi có dữ liệu.",
+    "en": "No sessions yet. Dependent results and charts will appear once data is available."
+  },
+  "Chưa có bản ghi. Các kết quả phụ thuộc dữ liệu này chưa thể hiển thị.": {
+    "vi": "Chưa có bản ghi. Các kết quả phụ thuộc dữ liệu này chưa thể hiển thị.",
+    "en": "No records yet. Results depending on this data are not available."
+  },
+  "Không tải được dữ liệu. Thử lại để xem trạng thái có dữ liệu.": {
+    "vi": "Không tải được dữ liệu. Thử lại để xem trạng thái có dữ liệu.",
+    "en": "Data could not be loaded. Retry to preview the ready state."
+  },
+  "Không có quyền xem dữ liệu của workspace này.": {
+    "vi": "Không có quyền xem dữ liệu của workspace này.",
+    "en": "You do not have access to this workspace data."
+  },
+  "Nguồn dữ liệu chưa được kết nối hoặc tính năng chưa khả dụng.": {
+    "vi": "Nguồn dữ liệu chưa được kết nối hoặc tính năng chưa khả dụng.",
+    "en": "The data source is not connected or the feature is unavailable."
+  },
+  "Không có kết quả khớp bộ lọc. Dữ liệu gốc vẫn còn.": {
+    "vi": "Không có kết quả khớp bộ lọc. Dữ liệu gốc vẫn còn.",
+    "en": "No results match the filters. The original data is still available."
+  },
+  "Đang cập nhật… Dữ liệu đã có vẫn được giữ trên màn hình.": {
+    "vi": "Đang cập nhật… Dữ liệu đã có vẫn được giữ trên màn hình.",
+    "en": "Refreshing… Existing data stays on screen."
+  },
+  "Cập nhật thất bại. Dữ liệu đang hiển thị là bản đã đọc trước đó.": {
+    "vi": "Cập nhật thất bại. Dữ liệu đang hiển thị là bản đã đọc trước đó.",
+    "en": "Refresh failed. The displayed data was read previously."
+  },
+  "Chỉ đọc được một phần số phiên mẫu. Thống kê bên dưới chỉ tính phần đã đọc.": {
+    "vi": "Chỉ đọc được một phần số phiên mẫu. Thống kê bên dưới chỉ tính phần đã đọc.",
+    "en": "Only some sample sessions were read. Statistics below cover that part only."
+  },
+  "Có phiên và giao dịch, nhưng chưa biết thời gian luyện tập và replay. Các số chưa biết hiển thị —.": {
+    "vi": "Có phiên và giao dịch, nhưng chưa biết thời gian luyện tập và replay. Các số chưa biết hiển thị —.",
+    "en": "Sessions and trades exist, but practice and replay durations are unknown. Missing values display —."
+  },
+  "Xem ví dụ có dữ liệu": {
+    "vi": "Xem ví dụ có dữ liệu",
+    "en": "View an example with data"
+  }
 }

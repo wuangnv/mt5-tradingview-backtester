@@ -93,7 +93,7 @@ export function navigationScope(query, activeView) {
   const resources = ['dataset', 'prop_session', 'attempt', 'playbook', 'playbook_revision'].map(key => query.get(key) || '')
   return JSON.stringify([
     workspace, activeView, query.get('area') || '', query.get('section') || '', surface,
-    query.get('demo') === '1', query.get('session') || query.get('replay_session') || '',
+    query.get('demo') === '1', query.get('ui_state') || '', query.get('session') || query.get('replay_session') || '',
     [...query.getAll('sessions')].sort(), query.get('job') || query.get('job_id') || '', ...resources,
   ])
 }

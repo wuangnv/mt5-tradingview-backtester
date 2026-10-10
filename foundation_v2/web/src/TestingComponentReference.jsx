@@ -6,6 +6,7 @@ import TestingReadState, { TestingSkeleton } from './TestingReadState.jsx'
 import { useTestingLocale } from './testingLocale.jsx'
 import { useFxReplayContext } from './FxReplayShell.jsx'
 import './component-reference.css'
+import { DATA_STATES as dataStates } from './dataStates.js'
 
 const sizes = [
   ['Nút / ô nhập thường','control','Thon gọn trên máy tính'], ['Nút icon','icon-button','Icon nằm giữa vùng bấm'],
@@ -23,19 +24,6 @@ const sizes = [
 ]
 const motions = [['Hover','hover','Đổi màu, không đổi kích thước'], ['Nhấn','press','Phản hồi ngay, không nảy'], ['Menu','menu','Mờ dần + dịch 4px'], ['Dialog','dialog','Mờ dần + dịch 4px'], ['Drawer','drawer','Trượt 4px từ bên phải'], ['Tiến độ','progress','Nối nhẹ hai số đo'], ['Loading','loading','Nhịp nhẹ, giữ bố cục']]
 const colors = [['action','Cam','Tạo phiên, áp dụng'], ['primary','Xanh biển','Focus, tiến độ, thông tin'], ['positive','Xanh lá','Thành công, lãi'], ['negative','Đỏ chữ','Lỗi, lỗ'], ['danger-action','Đỏ nền','Xoá: chữ trắng'], ['warning','Vàng','Cảnh báo'], ['hover','Hover control','Khác nền dòng'], ['row-hover','Hover dòng','Nhẹ để đọc dữ liệu'], ['row-selected','Dòng đã chọn','Khác hover nút'], ['text','Chữ chính','Nội dung'], ['muted','Chữ phụ','Vẫn đủ tương phản'], ['border','Viền','Phân tách cấu trúc'], ['report-violet','Tím','Chuỗi biểu đồ bổ sung'], ['report-gold','Vàng biểu đồ','Chuỗi so sánh bổ sung']]
-const dataStates = [
-  ['loading','Đang tải','Chưa có kết quả; giữ bố cục bằng skeleton.'],
-  ['ready','Có dữ liệu','Hiện dữ liệu đã xác minh.'],
-  ['empty','Chưa có dữ liệu','Đọc thành công nhưng chưa có bản ghi; gợi ý bước đầu tiên.'],
-  ['error','Không tải được dữ liệu','Lỗi của nguồn này; thử lại tại nơi lỗi.'],
-  ['unavailable','Nguồn chưa khả dụng','Chưa có nguồn hoặc tính năng; không giả vờ là dữ liệu trống.'],
-  ['denied','Không có quyền xem','Giải thích quyền cần có; không lặp nút thử lại vô ích.'],
-  ['filtered','Không có kết quả khớp bộ lọc','Có dữ liệu gốc; cho xoá hoặc sửa bộ lọc.'],
-  ['refreshing','Đang cập nhật','Giữ dữ liệu cùng phạm vi; báo làm mới nhỏ ở tiêu đề.'],
-  ['stale','Dữ liệu chưa cập nhật','Giữ dữ liệu cũ, ghi rõ cũ và cho làm mới.'],
-  ['partial','Dữ liệu chưa đầy đủ','Hiện phần đã biết; đánh dấu phần thiếu.'],
-  ['unknown','Chưa đủ dữ liệu để tính','Hiện — cho số chưa biết; không đổi thành 0.'],
-]
 function ReferenceDataFlow() {
   const [flow,setFlow]=useState('no-sessions')
   const rootStates={loading:'Đang đọc dữ liệu phiên…', 'no-sessions':'Chưa có phiên. Tạo phiên đầu tiên để bắt đầu luyện tập.', error:'Không tải được dữ liệu phiên. Thử lại trước khi xem kết quả.'}

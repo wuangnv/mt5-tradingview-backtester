@@ -17,9 +17,9 @@ const LiveWorkspace = lazy(() => import('./LiveWorkspace.jsx'))
 const SessionPicker = lazy(() => import('./SessionPicker.jsx'))
 const SessionReports = lazy(() => import('./SessionReports.jsx'))
 const DashboardSessions = lazy(() => import('./DashboardSessions.jsx'))
-const DemoPreview = lazy(() => import('./DemoPreview.jsx'))
 const TestingComponentReference = lazy(() => import('./TestingComponentReference.jsx'))
-import { canPreviewDemo, demoToggleHref } from './demoMode.js'
+import { canPreviewDemo, previewMode, previewStateHref } from './demoMode.js'
+import ViewStatePreview, { ViewStateSelect } from './ViewStatePreview.jsx'
 import { buildWorkspaceHref } from './workspaceContext.js'
 import { navigate, navigationScope, navigationSearch, navigationSnapshot, subscribeNavigation } from './clientNavigation.js'
 import './styles.css'
@@ -29,7 +29,6 @@ import './page-layout.css'
 import './component-interactions.css'
 import './testing-standard.css'
 import './compact-system.css'
-import { useTestingLocale } from './testingLocale.jsx'
 import WorkspaceQueryProvider from './WorkspaceQueryProvider.jsx'
 import { startFrontendPerformance } from './frontendPerformance.js'
 import { TestingSkeleton, TestingRouteBoundary } from './TestingReadState.jsx'
@@ -51,15 +50,9 @@ function UnavailableWorkspace({ title, eyebrow, description, next, href }) {
 }
 
 
-function DemoToggle({ demo, onToggle }) {
-  const { t } = useTestingLocale()
-  return <div className="wm-demo-action">{demo && <span className="wm-demo-label" role="status">{t('Dữ liệu mẫu')}</span>}<button type="button" className="fxa-button" aria-pressed={demo} onClick={onToggle}>{t(demo ? 'Show real data' : 'Show demo data')}</button></div>
-}
-
 function App() {
   const route = useSyncExternalStore(subscribeNavigation, navigationSnapshot)
   const query = useMemo(() => new URLSearchParams(navigationSearch()), [route])
-  const demo = query.get('demo') === '1'
   const performanceEnabled = query.get('perf') === '1'
   useLayoutEffect(() => {
     if (!performanceEnabled) return
@@ -134,14 +127,15 @@ function App() {
   }
 
   const demoAvailable = canPreviewDemo(activeView, query)
-  const toggleDemo = () => {
-    navigate(demoToggleHref(window.location.href, !demo), { replace: true })
+  const visualMode = previewMode(query, activeView)
+  const changePreview = value => {
+    navigate(previewStateHref(window.location.href, value))
   }
   // Unmount real data readers during preview; fixtures never reach mutation handlers.
-  if (demo && demoAvailable) content = <DemoPreview key={`${activeView}:${query.get('analytics_source')}:${query.get('section')}`} view={activeView} workspace={workspace} query={query} />
+  if (visualMode !== 'real') content = <ViewStatePreview key={`${activeView}:${query.get('analytics_source')}:${query.get('section')}:${visualMode}`} state={visualMode} view={activeView} workspace={workspace} query={query} onChange={changePreview} />
   if (query.get('ui_reference') === '1') content = <TestingComponentReference />
-  const subnavAction = demoAvailable && <DemoToggle demo={demo} onToggle={toggleDemo} />
-  return <FxReplayShell workspace={workspace} query={query} activeView={activeView} mode={mode} subnavAction={subnavAction}><WorkspaceQueryProvider key={workspace} workspace={workspace} eventsEnabled={!(demo && demoAvailable) && query.get('ui_reference') !== '1'}><TestingRouteBoundary key={scope}><Suspense fallback={<TestingSkeleton />}>{content}</Suspense></TestingRouteBoundary></WorkspaceQueryProvider></FxReplayShell>
+  const subnavAction = demoAvailable && query.get('ui_reference') !== '1' && <ViewStateSelect value={visualMode} view={activeView} onChange={changePreview} />
+  return <FxReplayShell workspace={workspace} query={query} activeView={activeView} mode={mode} subnavAction={subnavAction}><WorkspaceQueryProvider key={workspace} workspace={workspace} eventsEnabled={visualMode === 'real' && query.get('ui_reference') !== '1'}><TestingRouteBoundary key={scope}><Suspense fallback={<TestingSkeleton />}>{content}</Suspense></TestingRouteBoundary></WorkspaceQueryProvider></FxReplayShell>
 }
 
 const rootElement = document.getElementById('root')
