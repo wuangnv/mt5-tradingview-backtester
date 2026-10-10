@@ -214,3 +214,5 @@
   .fx-dashboard-performance-filters .fx-select-chevron { margin-left: 0; }
   .fx-dashboard-list-filters .fx-select { flex: 1 1 120px; }
 }
+
+.fx-dashboard-recent + .fx-dashboard-results { margin-top:var(--ds-space-8,32px); }

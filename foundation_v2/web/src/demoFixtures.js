@@ -5,16 +5,7 @@ export const DEMO_SESSIONS = [
   { record_id: 'demo-gold', name: 'Gold Swing', instrument_id: 'XAUUSD', timeframe: 'M5', status: 'completed', created_at_utc: '2026-09-07T07:00:00Z' },
 ].map((item, i) => ({ ...item, dataset_id: `demo-dataset-${item.instrument_id}`, timeframe_seconds: item.timeframe === 'M5' ? 300 : 60, revision: 1, row_count: 30000, cursor_index: item.status === 'completed' ? 29999 : 1400 + i * 500, updated_at_utc: '2026-10-05T08:00:00Z', dataset_available: true, archived: false }))
 
-// Extra sessions have no ledger rows; paging must not multiply the original trades.
-export const DEMO_MANY_SESSIONS = [...DEMO_SESSIONS, ...Array.from({ length: 9 }, (_, index) => ({
-  ...DEMO_SESSIONS[index % DEMO_SESSIONS.length], record_id: `demo-practice-${index + 4}`, name: `Practice ${index + 4}`,
-  status: 'paused', cursor_index: 0, created_at_utc: `2026-09-${String(index + 8).padStart(2, '0')}T08:00:00Z`,
-}))]
-
-export function demoSessionItems(query) {
-  const extraSession = DEMO_MANY_SESSIONS.slice(DEMO_SESSIONS.length).some(item => item.record_id === query?.get('demo_session'))
-  return query?.get('ui_state') === 'many' || extraSession ? DEMO_MANY_SESSIONS : DEMO_SESSIONS
-}
+export function demoSessionItems() { return DEMO_SESSIONS }
 
 export const DEMO_LEDGER = Array.from({ length: 60 }, (_, i) => {
   const session = DEMO_SESSIONS[i % 3], side = i % 2 ? 'sell' : 'buy'
@@ -57,8 +48,8 @@ export function demoFilterRows(ids, filters = {}) {
     && (!filters.from || row.close_time_utc.slice(0, 10) >= filters.from) && (!filters.to || row.close_time_utc.slice(0, 10) <= filters.to))
 }
 
-export function demoDashboardAnalytics(item, workspace) {
-  const rows = demoFilterRows([item.source_record_id || item.record_id]).map(row => ({ ...row, session_id: item.record_id, session_name: item.name }))
+export function demoDashboardAnalytics(item, workspace, sourceRows = demoFilterRows([item.source_record_id || item.record_id])) {
+  const rows = sourceRows.map(row => ({ ...row, session_id: item.record_id, session_name: item.name }))
   const result = demoResult(rows, item)
   return { schema_version: 'analytics-read-model-v1', analytics_available: true, metrics: result.metrics, ledger: rows,
     scope: { selected_trade_count: rows.length, total_trade_count: rows.length },
@@ -66,7 +57,7 @@ export function demoDashboardAnalytics(item, workspace) {
       playbook_id: item.source_record_id || item.record_id, cutoff_timestamp: rows.length ? Date.parse(rows.at(-1).close_time_utc) / 1000 : null } }
 }
 
-export const DEMO_DATASETS = DEMO_SESSIONS.map(item => ({ dataset_id: item.dataset_id, first_timestamp: Date.UTC(2026, 6, 6) / 1000, last_timestamp: Date.UTC(2026, 9, 5) / 1000 }))
+export const DEMO_DATASETS = DEMO_SESSIONS.map(item => ({ dataset_id: item.dataset_id, instrument_id: item.instrument_id, timeframe_seconds:item.timeframe_seconds, row_count:item.row_count, provider:'Dukascopy', category:item.instrument_id === 'XAUUSD' ? 'metals' : 'forex', first_timestamp: Date.UTC(2026, 6, 6) / 1000, last_timestamp: Date.UTC(2026, 9, 5) / 1000 }))
 
 export function demoReplayContext(item) {
   const source = item.source_record_id || item.record_id

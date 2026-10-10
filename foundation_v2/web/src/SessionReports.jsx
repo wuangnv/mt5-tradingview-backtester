@@ -1,6 +1,8 @@
 import { navigate } from './clientNavigation.js'
 import { useTestingLocale } from './testingLocale.jsx'
-import TestingReadState, { TestingSkeleton } from './TestingReadState.jsx'
+import TestingReadState from './TestingReadState.jsx'
+import { TestingWelcome, TestingPageSkeleton, TestingResourceNotice } from './TestingPageState.jsx'
+import { buildWorkspaceHref } from './workspaceContext.js'
 import { useEffect, useMemo, useState } from 'react'
 import AnalyticsWorkspace, { analyticsQuery, buildAnalyticsModel, ProvenanceInspector, readAnalyticsFilters } from './AnalyticsWorkspace.jsx'
 import { FxAnalyticsFilters } from './FxAnalytics.jsx'
@@ -28,17 +30,17 @@ function AggregateTrades({ workspace, ids, query, sessionControl, onClearSession
   useReadRefresh(() => setReload(value => value + 1))
   useEffect(() => {
     const controller = new AbortController()
-    setState(current => current.params === params && current.workspace === workspace && current.payload ? { ...current, refreshing: true } : { status: 'loading', payload: null, params, workspace, facets: current.payload?.facets || current.facets })
+    setState(current => current.params === params && current.workspace === workspace && current.payload ? { ...current, refreshing: true, error: null } : { status: 'loading', payload: null, params, workspace, facets: current.payload?.facets || current.facets })
     fetch(`/api/v2/replay/trades?${params}`, { headers: { 'X-Workspace-Id': workspace }, signal: controller.signal }).then(async response => {
       const payload = await response.json()
-      if (!response.ok) throw new Error(payload.detail || `HTTP ${response.status}`)
+      if (!response.ok) throw Object.assign(new Error(payload.detail || `HTTP ${response.status}`), { status: response.status })
       validateTradesPagePayload(payload)
       if (!controller.signal.aborted) {
         if (readState.params === params && readState.payload?.snapshot_key && readState.payload.snapshot_key !== payload.snapshot_key && paging.page > 1) { setPaging(current => ({ ...current, page: 1 })); return }
         const signature = JSON.stringify([payload.snapshot_key, payload.pagination, payload.ledger])
-        setState(current => current.signature === signature && current.params === params && current.workspace === workspace ? { ...current, refreshing: false } : { status: payload.status, payload, signature, params, workspace })
+        setState(current => current.signature === signature && current.params === params && current.workspace === workspace ? { ...current, status: payload.status, refreshing: false, error: null } : { status: payload.status, payload, signature, params, workspace })
       }
-    }).catch(error => { if (!controller.signal.aborted) setState({ status: 'error', error: error.message, payload: null, params, workspace }) })
+    }).catch(error => { if (!controller.signal.aborted) setState(current => current.params === params && current.workspace === workspace && current.payload && ![401,403].includes(error.status) ? { ...current, status: 'stale', refreshing: false, error: error.message } : { status: 'error', error: error.message, payload: null, params, workspace }) })
     return () => controller.abort()
   }, [workspace, params, reload])
   useEffect(() => { setSelected('') }, [workspace, params])
@@ -73,7 +75,8 @@ function AggregateTrades({ workspace, ids, query, sessionControl, onClearSession
     return `/?${params}`
   }
   return <section className="as-page fxa-page wm-page" aria-label={t("Trades")} data-testid="aggregate-trades">
-    <FxTradeLedger model={model} extra={extra} selected={selected} onSelect={setSelected} remotePage={{ page: state.payload?.pagination.page || paging.page, pageSize: paging.pageSize, sort: paging.sort, totalCount: state.payload?.pagination.filtered_count ?? null, pending: state.status === 'loading', onChange: patch => setPaging(current => ({ ...current, ...patch })) }} renderFilters={columnControl => <FxAnalyticsFilters filters={filters} onChange={changeFilters} extra={extra} onExtra={changeExtra} rows={model.ledger} facets={state.payload?.facets || state.facets} sessionControl={sessionControl} onClearSessions={onClearSessions} pending={!state.payload} columnControl={columnControl} ledgerOnly />} />
+    <FxTradeLedger emptyMessage={state.payload?.pagination.filtered_count === 0 && state.payload.status !== 'partial' && !Object.values(filters).some(value => value && value !== 'all') && Object.entries(extra).every(([key, value]) => value === DEFAULT_EXTRA_FILTERS[key]) ? 'Chưa có giao dịch đóng trong phạm vi này.' : undefined} model={model} extra={extra} selected={selected} onSelect={setSelected} remotePage={{ page: state.payload?.pagination.page || paging.page, pageSize: paging.pageSize, sort: paging.sort, totalCount: state.payload?.pagination.filtered_count ?? null, pending: state.status === 'loading', onChange: patch => setPaging(current => ({ ...current, ...patch })) }} renderFilters={columnControl => <FxAnalyticsFilters filters={filters} onChange={changeFilters} extra={extra} onExtra={changeExtra} rows={model.ledger} facets={state.payload?.facets || state.facets} sessionControl={sessionControl} onClearSessions={onClearSessions} pending={!state.payload} columnControl={columnControl} ledgerOnly />} />
+    <TestingResourceNotice state={state.refreshing ? 'refreshing' : state.status === 'stale' ? 'stale' : undefined} resource="bảng giao dịch" onRetry={state.status === 'stale' ? () => setReload(value => value + 1) : undefined} />
     {state.status === 'error' && <TestingReadState error message={t('Không đọc được giao dịch: {error}', { error: state.error })} onRetry={() => setReload(value => value + 1)} />}
     {state.payload?.status === 'partial' && <TestingReadState message={t('Một số phiên chưa đủ dữ liệu; bảng chỉ gồm các giao dịch đã đọc được.')} />}
     {state.payload && <>
@@ -85,13 +88,15 @@ function AggregateTrades({ workspace, ids, query, sessionControl, onClearSession
 export default function SessionReports({ workspace, query, ledgerOnly = false }) {
   const { t } = useTestingLocale()
 
-  const [catalog, setCatalog] = useState({ status: 'loading', items: [] })
+  const [catalogState, setCatalog] = useState({ workspace, status: 'loading', items: [] })
+  const catalog = catalogState.workspace === workspace ? catalogState : { status: 'loading', items: [] }
   const [scope, setScope] = useState(() => ledgerOnly ? reportSessions(query) : query.get('session') || query.get('replay_session') || '')
   const [reload, setReload] = useState(0)
   useReadRefresh(() => setReload(value => value + 1))
   useEffect(() => {
     const controller = new AbortController()
-    fetchReplaySessions(workspace, controller.signal).then(items => { if (!controller.signal.aborted) { setCatalog({ status: 'ready', items }); if (!ledgerOnly) setScope(current => defaultSession(items, current, readLastSession(workspace))) } }).catch(error => { if (!controller.signal.aborted) setCatalog({ status: 'error', items: [], error: error.message }) })
+    setCatalog(current => current.workspace === workspace && ['ready','stale'].includes(current.status) ? { ...current, refreshing: true } : { workspace, status: 'loading', items: [] })
+    fetchReplaySessions(workspace, controller.signal).then(items => { if (!controller.signal.aborted) { setCatalog({ workspace, status: 'ready', items }); if (!ledgerOnly) setScope(current => defaultSession(items, current, readLastSession(workspace))) } }).catch(error => { if (!controller.signal.aborted) setCatalog(current => current.workspace === workspace && ['ready','stale'].includes(current.status) && ![401,403].includes(error.status) ? { ...current, status: 'stale', refreshing: false, error: error.message } : { workspace, status: 'error', items: [], error: error.message }) })
     return () => controller.abort()
   }, [workspace, reload, ledgerOnly])
   const change = next => {
@@ -109,9 +114,11 @@ export default function SessionReports({ workspace, query, ledgerOnly = false })
     if (ledgerOnly || !scope || query.get('session') || query.get('replay_session')) return
     const url = new URL(window.location.href); url.searchParams.set('session', scope); navigate(url, { replace: true })
   }, [scope, ledgerOnly])
+  if (catalog.status === 'loading') return <TestingPageSkeleton view={ledgerOnly ? 'trade' : 'analytics'} label="Đang tải danh mục phiên…" />
+  if (catalog.status === 'error') return <TestingReadState error message={t('Không tải được danh mục phiên:') + ' ' + t(catalog.error)} onRetry={() => setReload(value => value + 1)} />
+  if (!catalog.items.length && !query.get('session') && !query.get('replay_session')) return <TestingWelcome backtestHref={buildWorkspaceHref('overview', workspace, query)} propHref={buildWorkspaceHref('testing', workspace, query)} />
   return <>
-    {catalog.status === 'loading' && <TestingSkeleton label="Đang tải danh mục phiên…" />}
-    {catalog.status === 'error' && <TestingReadState error message={t('Không tải được danh mục phiên:') + ' ' + t(catalog.error)} onRetry={() => setReload(value => value + 1)} />}
+    {catalog.status === 'stale' && <TestingReadState message="Dữ liệu danh mục phiên chưa cập nhật." onRetry={() => setReload(value => value + 1)} />}
     {ledgerOnly && !(sessionId && ['cursor', 'cursor_index', 'cutoff', 'decision_cutoff', 'event_sequence', 'trade', 'trade_id'].some(key => new URLSearchParams(window.location.search).has(key))) ? <AggregateTrades workspace={workspace} ids={scope} query={query} sessionControl={control} onClearSessions={() => change(null)} /> : <AnalyticsWorkspace key={`${workspace}:${sessionId}`} workspace={workspace} query={scopedQuery} ledgerOnly={ledgerOnly} sessionName={item?.name || ''} sessionControl={control} />}
   </>
 }

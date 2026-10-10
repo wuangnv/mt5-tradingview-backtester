@@ -35,6 +35,7 @@ Financial colors, chart cutoffs, navigation context and dataset source are uncha
 | `TimeFilter`, `DateFilter` | Native typed input plus calendar; ISO values and IANA timezone IDs |
 | `SessionSettingsDrawer`, `SessionActionDialog` | Focus management, cancel, immutable facts, duplicate/delete confirmation |
 | `TestingSkeleton`, `TestingReadState` | Initial read, unavailable/error/retry and route load failure |
+| `TestingWelcome`, `TestingPageSkeleton`, `TestingResourceNotice` | Shared viewport onboarding/loading and resource-scoped refresh/stale/error |
 | `TestingIcon`, `ChartIcon` | SVG icons; do not replace them with font glyphs |
 | `TestingComponentReference` | Internal reference at `?area=testing&ui_reference=1` |
 
@@ -93,11 +94,38 @@ Prop-linked-session refusal. Demo mutations affect local component state only.
 
 ## Paging contract
 
-Dashboard places Recent Sessions before Performance and shows at most three
-sessions per page using the shared pagination footer. Actual mode requests three
-summaries from the server; preview pages its fixture locally. Search and filters
-apply to the full catalog. Performance keeps its own scope, independent of the
-current recent-session page.
+Dashboard places Recent Sessions before Performance with a 32px section gap.
+Search, asset/strategy filters and sorting apply to the whole catalog, then show
+only the first three matching sessions. There is no Dashboard pager or many-session
+preview. Actual mode requests page=1/page_size=3; preview applies the same order
+and cap locally. Performance uses its independent full analytics scope.
+
+## Per-page state previews
+
+Preview states describe resources, not a universal page replacement. The selector
+retains the requested state across Testing navigation, but each route interprets
+it using its dependencies; unsupported states fall back to demo. Preview never
+reads/writes the real API. Real mode never falls back to fixtures.
+
+| Page | Empty | Error preview | Provider unavailable | Filtered / no trades |
+| --- | --- | --- | --- | --- |
+| Overview | No sessions: centered Testing welcome with two start actions | Performance fails; saved Recent Sessions remain | Saved sessions and Performance remain | Search has no matches, Performance unchanged / sessions with 0 closed trades |
+| Sessions | No sessions: same welcome | Selected session results fail; selector, description and metadata remain | Saved session and report remain | Search inside session dropdown / selected session has 0 closed trades |
+| Trades | No sessions: same welcome | Ledger fails; session and trade filters remain | Saved ledger remains | Date filter gives 0 matches / sessions exist with no closed trades |
+| Analytics | No sessions: same welcome | Report fails; session and report filters remain | Persisted report remains; experiments are a separate capability | Date filter gives 0 matches / no closed trades to analyze |
+| Market Data | No downloaded datasets; import/source guidance in library | Local library read fails; toolbar remains | Provider catalog update/download unavailable, saved datasets remain | Asset search gives 0 matches; clearing search restores data |
+
+Loading fills the remaining content viewport with a page-shaped skeleton. Loading
+and welcome components are reused by the real resource readers. A missing catalog
+must not mount dependent Trades/Analytics or imply a known zero. Overview catalog
+and Performance errors remain independent. Preview errors have no redundant retry;
+actual resource retry stays where it can recover a read.
+
+Refreshing retains same-scope data while a new request is pending; only a successful
+read replaces numbers. Failed refresh becomes stale. Scope changes hide old results;
+401/403 is denied, not stale. Preview refreshing/stale are deterministic snapshots,
+not timers or live requests. Partial reports disclose the reduced readable scope;
+unknown durations stay `—`, while known zero trades stay `0`.
 
 Aggregate actual Trades uses opt-in `GET /api/v2/replay/trades?page=1&page_size=10`
 with `replay-trades-page-v1`. Existing unpaged consumers remain compatible.
@@ -154,8 +182,11 @@ darker expanded surface. The existing chevron supplies keyboard activation and
 Empty expanded reports use a single left-aligned message; known balance curves
 remain visible even if no full ledger is available. The peach list count uses
 prose (e.g. "1 phiên trong tổng số 6") for filtered matches against the entire
-catalog, independent of page size. It is local catalog
-filtering, not server paging. Popup search fields share transparent background
+catalog, independent of the three displayed records. Actual Dashboard requests
+the first three matches from the full server catalog; preview filters its complete
+fixture catalog locally. A cold profit sort can still require summaries for many
+sessions before selecting three; the small response does not guarantee constant
+backend work. Popup search fields share transparent background
 against the raised menu surface and the same underline/focus treatment.
 
 Dashboard presets **Tuần trước / Last week** and **Tháng trước / Last month**

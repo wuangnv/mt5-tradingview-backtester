@@ -1,6 +1,7 @@
 import { Suspense, lazy } from 'react'
 import FxSelect from './FxSelect.jsx'
-import TestingReadState, { TestingSkeleton } from './TestingReadState.jsx'
+import TestingReadState from './TestingReadState.jsx'
+import { TestingPageSkeleton } from './TestingPageState.jsx'
 import { previewOptions } from './demoMode.js'
 import { useTestingLocale } from './testingLocale.jsx'
 import './view-state-preview.css'
@@ -21,26 +22,8 @@ export function ViewStateSelect({ value, view, onChange }) {
 
 export default function ViewStatePreview({ state, view, workspace, query, onChange }) {
   const { t } = useTestingLocale()
-  const label = previewOptions(view).find(option => option.value === state)?.label || 'Dữ liệu mẫu'
-  const hasData = ['demo', 'many', 'refreshing', 'stale', 'partial', 'unknown'].includes(state)
-  const messages = {
-    empty: view === 'overview' || view === 'replay' ? 'Chưa có phiên. Các kết quả và biểu đồ phụ thuộc phiên sẽ xuất hiện sau khi có dữ liệu.' : 'Chưa có bản ghi. Các kết quả phụ thuộc dữ liệu này chưa thể hiển thị.',
-    error: 'Không tải được dữ liệu. Thử lại để xem trạng thái có dữ liệu.',
-    denied: 'Không có quyền xem dữ liệu của workspace này.',
-    unavailable: 'Nguồn dữ liệu chưa được kết nối hoặc tính năng chưa khả dụng.',
-    filtered: 'Không có kết quả khớp bộ lọc. Dữ liệu gốc vẫn còn.',
-    refreshing: 'Đang cập nhật… Dữ liệu đã có vẫn được giữ trên màn hình.',
-    stale: 'Cập nhật thất bại. Dữ liệu đang hiển thị là bản đã đọc trước đó.',
-    partial: 'Chỉ đọc được một phần số phiên mẫu. Thống kê bên dưới chỉ tính phần đã đọc.',
-    unknown: 'Có phiên và giao dịch, nhưng chưa biết thời gian luyện tập và replay. Các số chưa biết hiển thị —.',
-  }
-  return <>
-    {state === 'loading' ? <section className="wm-view-state-placeholder" aria-label={t(label)}><TestingSkeleton rows={6} /></section>
-      : !hasData ? <section className="wm-view-state-placeholder"><TestingReadState error={state === 'error' || state === 'denied'} message={messages[state]} onRetry={state === 'error' ? () => onChange('demo') : undefined} />
-        {['empty', 'filtered'].includes(state) && <button className="fxa-button" type="button" onClick={() => onChange('demo')}>{t(state === 'filtered' ? 'Xóa bộ lọc' : 'Xem ví dụ có dữ liệu')}</button>}
-      </section> : <>
-        {messages[state] && <div className="wm-view-state-update" aria-busy={state === 'refreshing'}><TestingReadState message={messages[state]} onRetry={state === 'stale' ? () => onChange('demo') : undefined} /></div>}
-        <Suspense fallback={<TestingSkeleton />}><DemoPreview key={`${view}:${state}`} view={view} workspace={workspace} query={query} state={state} /></Suspense>
-      </>}
-  </>
+  if (state === 'loading') return <TestingPageSkeleton view={view} />
+  if (!['overview', 'replay', 'trade', 'analytics', 'market-data'].includes(view) && ['empty', 'error', 'unavailable', 'filtered'].includes(state)) return <section className="wm-viewport-state wm-testing-welcome"><TestingReadState error={state === 'error'} message={state === 'empty' ? 'Chưa có bản ghi.' : state === 'filtered' ? 'Không có kết quả khớp bộ lọc.' : state === 'error' ? 'Không tải được dữ liệu.' : 'Tính năng chưa khả dụng.'} /></section>
+  if (state === 'denied') return <section className="wm-viewport-state wm-testing-welcome"><TestingReadState error message="Không có quyền xem dữ liệu của workspace này." /></section>
+  return <Suspense fallback={<TestingPageSkeleton view={view} />}><DemoPreview key={`${view}:${state}`} view={view} workspace={workspace} query={query} state={state} onChange={onChange} /></Suspense>
 }

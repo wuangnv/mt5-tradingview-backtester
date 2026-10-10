@@ -6,9 +6,10 @@ export function previewOptions(view) {
   return [
     { value: 'real', label: 'Dữ liệu thật', detail: 'Đọc dữ liệu hiện tại của workspace.' },
     { value: 'demo', label: 'Dữ liệu mẫu', detail: 'Có dữ liệu mẫu để xem bố cục và tương tác.' },
-    { value: 'many', label: 'Nhiều phiên mẫu', detail: '12 phiên để thử tìm kiếm và phân trang; mỗi trang tối đa 3 phiên.', disabled: view !== 'overview' },
-    ...DATA_STATES.filter(([state]) => state !== 'ready').map(([value, label, detail]) => ({ value, label, detail,
-      disabled: ['partial', 'unknown'].includes(value) && view !== 'overview' })),
+    { value: 'no-trades', label: 'Chưa có giao dịch', detail: 'Có phiên đã lưu, chưa có giao dịch đóng.', disabled: !['overview', 'replay', 'trade', 'analytics'].includes(view) },
+    ...DATA_STATES.filter(([state]) => state !== 'ready').map(([value, label, detail]) => ({ value, label: value === 'unavailable' && ['overview', 'replay', 'trade', 'analytics', 'market-data'].includes(view) ? 'Nguồn tải chưa kết nối' : label,
+      detail: value === 'empty' && ['overview', 'replay', 'trade', 'analytics'].includes(view) ? 'Workspace chưa có phiên; hiển thị màn hình bắt đầu luyện tập.' : value === 'unavailable' ? (view === 'market-data' ? 'Nguồn tải chưa kết nối; dữ liệu đã lưu vẫn đọc được.' : 'Nguồn tải chưa kết nối; phiên và báo cáo đã lưu vẫn dùng được.') : detail,
+      disabled: value === 'filtered' && view === 'replay' || value === 'unknown' && view !== 'overview' || value === 'partial' && !['overview', 'trade', 'analytics'].includes(view) })),
   ]
 }
 
@@ -20,7 +21,7 @@ export function previewMode(query, view) {
 
 export function previewStateHref(href, state) {
   const url = demoToggleHref(href, state !== 'real')
-  if (state === 'many' || DATA_STATES.some(([value]) => value === state && value !== 'ready')) url.searchParams.set('ui_state', state)
+  if (state === 'no-trades' || DATA_STATES.some(([value]) => value === state && value !== 'ready')) url.searchParams.set('ui_state', state)
   else url.searchParams.delete('ui_state')
   return url
 }

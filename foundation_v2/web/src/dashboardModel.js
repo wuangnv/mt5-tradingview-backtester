@@ -113,7 +113,7 @@ export async function readDashboardOverview(workspace, filters, signal) {
 export async function readDashboardAnalytics(workspace, session, signal) {
   const response = await scopedRead(`/api/v2/replay/sessions/${encodeURIComponent(session)}/analytics`, workspace, signal)
   const payload = await response.json().catch(() => ({}))
-  if (!response.ok) throw new Error(typeof payload.detail === 'string' ? payload.detail : `HTTP ${response.status}`)
+  if (!response.ok) throw Object.assign(new Error(typeof payload.detail === 'string' ? payload.detail : `HTTP ${response.status}`), { status: response.status })
   const count = payload.scope?.selected_trade_count
   const total = payload.scope?.total_trade_count
   const readyShape = payload.analytics_available === false || (payload.provenance?.session_id === session && payload.provenance?.workspace_id === workspace

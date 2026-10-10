@@ -70,7 +70,7 @@ function SymbolChart({ items }) {
   return <div className="fx-dashboard-chart-panel is-purple"><h3>{t("Trades by symbol")}</h3>{valid.length ? <div className="fx-dashboard-symbol-chart" role="img" aria-label={t('Giao dịch theo symbol: {values}', { values: valid.map(item => `${item.symbol}: ${dashboardNumber(item.closed_trade_count)}`).join('; ') })}>{valid.map(item => <div className="fx-dashboard-symbol-row" key={item.symbol}><span>{item.symbol}</span><div className="fx-dashboard-symbol-track"><div className="fx-dashboard-symbol-bar" style={{ width: `${item.closed_trade_count / max * 100}%` }} /></div><strong>{dashboardNumber(item.closed_trade_count)}</strong></div>)}<div className="fx-dashboard-symbol-axis"><span>0</span><span>{dashboardNumber(max / 2)}</span><span>{dashboardNumber(max)}</span></div></div> : <div className="fx-dashboard-empty-chart">{t("Chưa có giao dịch theo symbol.")}</div>}</div>
 }
 
-export default function DashboardPerformance({ workspace, filters, reload, controls, dateControls, sourceHeading, previewPayload }) {
+export default function DashboardPerformance({ workspace, filters, reload, controls, dateControls, sourceHeading, previewPayload, previewState }) {
   const dashboardNumber = (value, suffix = '') => value == null || value === '' || typeof value === 'boolean' || !Number.isFinite(Number(value)) ? '—' : `${new Intl.NumberFormat(locale, { maximumFractionDigits: 1 }).format(Number(value))}${suffix}`
 
   const { t, locale } = useTestingLocale()
@@ -81,7 +81,7 @@ export default function DashboardPerformance({ workspace, filters, reload, contr
   const filterError = dashboardFilterError(filters)
   useEffect(() => {
     if (filterError) return
-    if (previewPayload) { setState({ status: 'ready', payload: previewPayload, error: '', key }); return }
+    if (previewPayload) { setState({ status: previewState === 'error' ? 'error' : previewState === 'stale' ? 'stale' : 'ready', refreshing: previewState === 'refreshing', payload: previewState === 'error' ? null : previewPayload, error: '', key }); return }
     const controller = new AbortController()
     setState(current => current.key === key && current.payload ? { ...current, refreshing: true, error: '' } : { status: 'loading', payload: null, error: '', key })
     readDashboardOverview(workspace, filters, controller.signal).then(payload => {
@@ -90,7 +90,7 @@ export default function DashboardPerformance({ workspace, filters, reload, contr
       if (!controller.signal.aborted) setState(current => current.key === key && current.payload && ![401, 403].includes(error.status) ? { ...current, status: 'stale', refreshing: false, error: error.message } : { status: 'error', payload: null, error: error.message, httpStatus: error.status, key })
     })
     return () => controller.abort()
-  }, [key, reload, retry, filterError, previewPayload])
+  }, [key, reload, retry, filterError, previewPayload, previewState])
   // Hide results immediately when scope changes, before its request completes.
   const performance = !filterError && state.key === key ? state.payload?.performance : null
   const metrics = performance?.metrics
@@ -109,9 +109,9 @@ export default function DashboardPerformance({ workspace, filters, reload, contr
   return <section className="fx-dashboard-results" aria-label={t("Performance")} aria-busy={loading || (!filterError && state.key === key && Boolean(state.refreshing))} aria-description={partialNotice || undefined}>
     <div className="fx-dashboard-section-head"><h2 className="fx-dashboard-performance-heading">{t("Performance")}</h2><div className="fx-dashboard-performance-filters">{controls}{dateControls}</div></div>
     {sourceHeading && <h3 className="fx-dashboard-source-heading">{sourceHeading}</h3>}
-    {(notice || partialNotice) && !groupMessage && <div className={`fx-dashboard-data-state${partial || state.status === 'stale' ? ' is-warning' : ''}`} data-testid="dashboard-data-state" role="status"><span>{t(notice)}{notice && partialNotice ? ' ' : ''}{partialNotice}</span>{state.status === 'stale' && <button type="button" className="fxa-button" onClick={() => setRetry(value => value + 1)}>{t('Thử lại')}</button>}</div>}
+    {(notice || partialNotice) && !groupMessage && <div className={`fx-dashboard-data-state${partial || state.status === 'stale' ? ' is-warning' : ''}`} data-testid="dashboard-data-state" role="status"><span>{t(notice)}{notice && partialNotice ? ' ' : ''}{partialNotice}</span>{state.status === 'stale' && !previewPayload && <button type="button" className="fxa-button" onClick={() => setRetry(value => value + 1)}>{t('Thử lại')}</button>}</div>}
     <div data-testid="dashboard-result-group" data-state={groupState}>
-    {loading ? <TestingSkeleton label="Đang tải Performance…" /> : groupMessage ? <TestingReadState message={groupMessage} error={Boolean(filterError || failed)} onRetry={failed && !denied ? () => setRetry(value => value + 1) : undefined} /> : <><div className={`fx-dashboard-performance-layout${noTrades ? ' has-no-trades' : ''}`} data-testid="dashboard-performance"><div className="fx-dashboard-performance">
+    {loading ? <TestingSkeleton label="Đang tải Performance…" /> : groupMessage ? <TestingReadState message={groupMessage} error={Boolean(filterError || failed)} onRetry={!previewPayload && failed && !denied ? () => setRetry(value => value + 1) : undefined} /> : <><div className={`fx-dashboard-performance-layout${noTrades ? ' has-no-trades' : ''}`} data-testid="dashboard-performance"><div className="fx-dashboard-performance">
       <Metric title={t("Time invested")} value={<Duration seconds={performance?.time_invested_seconds} />} detail={dashboardDurationParts(performance?.time_invested_seconds) ? previewPayload ? t("Thời gian luyện tập mẫu") : timingDetail(performance, 'practice', t) : t("Chưa có dữ liệu thời gian luyện tập")} icon="clock" />
       <Metric title={t("Historical time replayed")} value={<Duration seconds={performance?.historical_time_replayed_seconds} />} detail={dashboardDurationParts(performance?.historical_time_replayed_seconds) ? previewPayload ? t("Thời gian replay mẫu") : timingDetail(performance, 'historical', t) : t("Chưa có dữ liệu thời gian replay")} icon="history" />
       <Metric title={t("Trades taken")} value={dashboardNumber(metrics?.closed_trade_count)} icon="trades">

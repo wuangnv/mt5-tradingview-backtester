@@ -1,0 +1,71 @@
+{
+  "scope": "Actual local GET smoke; explicit intercepted response fixtures for failure/empty/refresh of real components; no writes",
+  "cases": [
+    {
+      "actualGET": true,
+      "case": "Dashboard requests first three after full catalog filters; ignores old pager query"
+    },
+    {
+      "actualGET": true,
+      "interceptedFixture": true,
+      "case": "Same session refresh retains prior results while pending and after503"
+    },
+    {
+      "interceptedFixture": true,
+      "case": "403 clears prior session report"
+    },
+    {
+      "interceptedFixture": true,
+      "case": "Stale catalog retry preserves session content while pending"
+    },
+    {
+      "interceptedFixture": true,
+      "view": "trade",
+      "case": "Catalog failure blocks dependent data, never masquerades as empty"
+    },
+    {
+      "interceptedFixture": true,
+      "view": "analytics",
+      "case": "Catalog failure blocks dependent data, never masquerades as empty"
+    },
+    {
+      "interceptedFixture": true,
+      "view": "replay",
+      "case": "No sessions renders shared centered welcome"
+    },
+    {
+      "interceptedFixture": true,
+      "view": "trade",
+      "case": "No sessions renders shared centered welcome"
+    },
+    {
+      "interceptedFixture": true,
+      "view": "analytics",
+      "case": "No sessions renders shared centered welcome"
+    },
+    {
+      "interceptedFixture": true,
+      "case": "Actual aggregate contract distinguishes verified zero from filtered zero without inventing scope fields"
+    },
+    {
+      "interceptedFixture": true,
+      "case": "Aggregate background503 retains previous scope; retry403 clears it"
+    },
+    {
+      "actualGET": true,
+      "interceptedFixture": true,
+      "case": "Disconnected provider and503 library reread retain saved dataset rows; no provider refresh or mutation"
+    },
+    {
+      "interceptedFixture": true,
+      "case": "Actual no-session Dashboard welcome opens shared creation form, cancel without writes"
+    },
+    {
+      "fixtureOnly": true,
+      "case": "No-trades card balances10000 agree with zero ledger and Performance"
+    }
+  ],
+  "errors": [],
+  "writes": [],
+  "result": "PASS"
+}

@@ -5,11 +5,6 @@
 .wm-view-state-note { display:flex; align-items:center; gap:8px; max-width:min(300px,22vw); color:var(--wm-content-muted); font-size:12px; white-space:nowrap; }
 .wm-view-state-note > span { flex-shrink:0; }
 .wm-view-state-note strong { min-width:0; overflow:hidden; text-overflow:ellipsis; color:var(--project-highlight); font-weight:500; }
-.wm-view-state-placeholder { padding:8px 0 var(--wm-page-gutter); }
-.wm-view-state-placeholder > .fxa-button { margin-top:12px; }
-.wm-view-state-update { padding:0; }
-.wm-view-state-update .wm-read-state { margin:0; }
-.wm-view-state-placeholder .wm-read-state button, .wm-view-state-update .wm-read-state button { flex-shrink:0; white-space:nowrap; }
 @media(max-width:600px) {
   .fx-app.fx-shell-story:not(.is-chart-workspace) .fx-subnav:has(.wm-view-state-select) { flex-wrap:wrap; row-gap:0; }
   .fx-app.fx-shell-story:not(.is-chart-workspace) .fx-subnav:has(.wm-view-state-select) .fx-subnav-primary { flex:1 0 100%; min-width:0; }

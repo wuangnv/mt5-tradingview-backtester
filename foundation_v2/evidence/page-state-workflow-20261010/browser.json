@@ -1,0 +1,1485 @@
+{
+  "scope": "Shared product components with deterministic fixtures; real data untouched; all writes/external requests blocked",
+  "cases": [
+    {
+      "view": "overview",
+      "state": "demo",
+      "width": 1710,
+      "theme": "dark",
+      "fixtureOnly": true
+    },
+    {
+      "view": "overview",
+      "state": "no-trades",
+      "width": 1710,
+      "theme": "dark",
+      "fixtureOnly": true
+    },
+    {
+      "view": "overview",
+      "state": "loading",
+      "width": 1710,
+      "theme": "dark",
+      "fixtureOnly": true
+    },
+    {
+      "view": "overview",
+      "state": "empty",
+      "width": 1710,
+      "theme": "dark",
+      "fixtureOnly": true
+    },
+    {
+      "view": "overview",
+      "state": "error",
+      "width": 1710,
+      "theme": "dark",
+      "fixtureOnly": true
+    },
+    {
+      "view": "overview",
+      "state": "unavailable",
+      "width": 1710,
+      "theme": "dark",
+      "fixtureOnly": true
+    },
+    {
+      "view": "overview",
+      "state": "denied",
+      "width": 1710,
+      "theme": "dark",
+      "fixtureOnly": true
+    },
+    {
+      "view": "overview",
+      "state": "filtered",
+      "width": 1710,
+      "theme": "dark",
+      "fixtureOnly": true
+    },
+    {
+      "view": "overview",
+      "state": "refreshing",
+      "width": 1710,
+      "theme": "dark",
+      "fixtureOnly": true
+    },
+    {
+      "view": "overview",
+      "state": "stale",
+      "width": 1710,
+      "theme": "dark",
+      "fixtureOnly": true
+    },
+    {
+      "view": "overview",
+      "state": "partial",
+      "width": 1710,
+      "theme": "dark",
+      "fixtureOnly": true
+    },
+    {
+      "view": "overview",
+      "state": "unknown",
+      "width": 1710,
+      "theme": "dark",
+      "fixtureOnly": true
+    },
+    {
+      "view": "replay",
+      "state": "demo",
+      "width": 1710,
+      "theme": "dark",
+      "fixtureOnly": true
+    },
+    {
+      "view": "replay",
+      "state": "no-trades",
+      "width": 1710,
+      "theme": "dark",
+      "fixtureOnly": true
+    },
+    {
+      "view": "replay",
+      "state": "loading",
+      "width": 1710,
+      "theme": "dark",
+      "fixtureOnly": true
+    },
+    {
+      "view": "replay",
+      "state": "empty",
+      "width": 1710,
+      "theme": "dark",
+      "fixtureOnly": true
+    },
+    {
+      "view": "replay",
+      "state": "error",
+      "width": 1710,
+      "theme": "dark",
+      "fixtureOnly": true
+    },
+    {
+      "view": "replay",
+      "state": "unavailable",
+      "width": 1710,
+      "theme": "dark",
+      "fixtureOnly": true
+    },
+    {
+      "view": "replay",
+      "state": "denied",
+      "width": 1710,
+      "theme": "dark",
+      "fixtureOnly": true
+    },
+    {
+      "view": "replay",
+      "state": "refreshing",
+      "width": 1710,
+      "theme": "dark",
+      "fixtureOnly": true
+    },
+    {
+      "view": "replay",
+      "state": "stale",
+      "width": 1710,
+      "theme": "dark",
+      "fixtureOnly": true
+    },
+    {
+      "view": "trade",
+      "state": "demo",
+      "width": 1710,
+      "theme": "dark",
+      "fixtureOnly": true
+    },
+    {
+      "view": "trade",
+      "state": "no-trades",
+      "width": 1710,
+      "theme": "dark",
+      "fixtureOnly": true
+    },
+    {
+      "view": "trade",
+      "state": "loading",
+      "width": 1710,
+      "theme": "dark",
+      "fixtureOnly": true
+    },
+    {
+      "view": "trade",
+      "state": "empty",
+      "width": 1710,
+      "theme": "dark",
+      "fixtureOnly": true
+    },
+    {
+      "view": "trade",
+      "state": "error",
+      "width": 1710,
+      "theme": "dark",
+      "fixtureOnly": true
+    },
+    {
+      "view": "trade",
+      "state": "unavailable",
+      "width": 1710,
+      "theme": "dark",
+      "fixtureOnly": true
+    },
+    {
+      "view": "trade",
+      "state": "denied",
+      "width": 1710,
+      "theme": "dark",
+      "fixtureOnly": true
+    },
+    {
+      "view": "trade",
+      "state": "filtered",
+      "width": 1710,
+      "theme": "dark",
+      "fixtureOnly": true
+    },
+    {
+      "view": "trade",
+      "state": "refreshing",
+      "width": 1710,
+      "theme": "dark",
+      "fixtureOnly": true
+    },
+    {
+      "view": "trade",
+      "state": "stale",
+      "width": 1710,
+      "theme": "dark",
+      "fixtureOnly": true
+    },
+    {
+      "view": "trade",
+      "state": "partial",
+      "width": 1710,
+      "theme": "dark",
+      "fixtureOnly": true
+    },
+    {
+      "view": "analytics",
+      "state": "demo",
+      "width": 1710,
+      "theme": "dark",
+      "fixtureOnly": true
+    },
+    {
+      "view": "analytics",
+      "state": "no-trades",
+      "width": 1710,
+      "theme": "dark",
+      "fixtureOnly": true
+    },
+    {
+      "view": "analytics",
+      "state": "loading",
+      "width": 1710,
+      "theme": "dark",
+      "fixtureOnly": true
+    },
+    {
+      "view": "analytics",
+      "state": "empty",
+      "width": 1710,
+      "theme": "dark",
+      "fixtureOnly": true
+    },
+    {
+      "view": "analytics",
+      "state": "error",
+      "width": 1710,
+      "theme": "dark",
+      "fixtureOnly": true
+    },
+    {
+      "view": "analytics",
+      "state": "unavailable",
+      "width": 1710,
+      "theme": "dark",
+      "fixtureOnly": true
+    },
+    {
+      "view": "analytics",
+      "state": "denied",
+      "width": 1710,
+      "theme": "dark",
+      "fixtureOnly": true
+    },
+    {
+      "view": "analytics",
+      "state": "filtered",
+      "width": 1710,
+      "theme": "dark",
+      "fixtureOnly": true
+    },
+    {
+      "view": "analytics",
+      "state": "refreshing",
+      "width": 1710,
+      "theme": "dark",
+      "fixtureOnly": true
+    },
+    {
+      "view": "analytics",
+      "state": "stale",
+      "width": 1710,
+      "theme": "dark",
+      "fixtureOnly": true
+    },
+    {
+      "view": "analytics",
+      "state": "partial",
+      "width": 1710,
+      "theme": "dark",
+      "fixtureOnly": true
+    },
+    {
+      "view": "market-data",
+      "state": "demo",
+      "width": 1710,
+      "theme": "dark",
+      "fixtureOnly": true
+    },
+    {
+      "view": "market-data",
+      "state": "loading",
+      "width": 1710,
+      "theme": "dark",
+      "fixtureOnly": true
+    },
+    {
+      "view": "market-data",
+      "state": "empty",
+      "width": 1710,
+      "theme": "dark",
+      "fixtureOnly": true
+    },
+    {
+      "view": "market-data",
+      "state": "error",
+      "width": 1710,
+      "theme": "dark",
+      "fixtureOnly": true
+    },
+    {
+      "view": "market-data",
+      "state": "unavailable",
+      "width": 1710,
+      "theme": "dark",
+      "fixtureOnly": true
+    },
+    {
+      "view": "market-data",
+      "state": "denied",
+      "width": 1710,
+      "theme": "dark",
+      "fixtureOnly": true
+    },
+    {
+      "view": "market-data",
+      "state": "filtered",
+      "width": 1710,
+      "theme": "dark",
+      "fixtureOnly": true
+    },
+    {
+      "view": "market-data",
+      "state": "refreshing",
+      "width": 1710,
+      "theme": "dark",
+      "fixtureOnly": true
+    },
+    {
+      "view": "market-data",
+      "state": "stale",
+      "width": 1710,
+      "theme": "dark",
+      "fixtureOnly": true
+    },
+    {
+      "width": 1710,
+      "theme": "dark",
+      "journey": "filtered restore, selector, shell preservation, history/reload"
+    },
+    {
+      "view": "overview",
+      "state": "demo",
+      "width": 1710,
+      "theme": "light",
+      "fixtureOnly": true
+    },
+    {
+      "view": "overview",
+      "state": "no-trades",
+      "width": 1710,
+      "theme": "light",
+      "fixtureOnly": true
+    },
+    {
+      "view": "overview",
+      "state": "loading",
+      "width": 1710,
+      "theme": "light",
+      "fixtureOnly": true
+    },
+    {
+      "view": "overview",
+      "state": "empty",
+      "width": 1710,
+      "theme": "light",
+      "fixtureOnly": true
+    },
+    {
+      "view": "overview",
+      "state": "error",
+      "width": 1710,
+      "theme": "light",
+      "fixtureOnly": true
+    },
+    {
+      "view": "overview",
+      "state": "unavailable",
+      "width": 1710,
+      "theme": "light",
+      "fixtureOnly": true
+    },
+    {
+      "view": "overview",
+      "state": "denied",
+      "width": 1710,
+      "theme": "light",
+      "fixtureOnly": true
+    },
+    {
+      "view": "overview",
+      "state": "filtered",
+      "width": 1710,
+      "theme": "light",
+      "fixtureOnly": true
+    },
+    {
+      "view": "overview",
+      "state": "refreshing",
+      "width": 1710,
+      "theme": "light",
+      "fixtureOnly": true
+    },
+    {
+      "view": "overview",
+      "state": "stale",
+      "width": 1710,
+      "theme": "light",
+      "fixtureOnly": true
+    },
+    {
+      "view": "overview",
+      "state": "partial",
+      "width": 1710,
+      "theme": "light",
+      "fixtureOnly": true
+    },
+    {
+      "view": "overview",
+      "state": "unknown",
+      "width": 1710,
+      "theme": "light",
+      "fixtureOnly": true
+    },
+    {
+      "view": "replay",
+      "state": "demo",
+      "width": 1710,
+      "theme": "light",
+      "fixtureOnly": true
+    },
+    {
+      "view": "replay",
+      "state": "no-trades",
+      "width": 1710,
+      "theme": "light",
+      "fixtureOnly": true
+    },
+    {
+      "view": "replay",
+      "state": "loading",
+      "width": 1710,
+      "theme": "light",
+      "fixtureOnly": true
+    },
+    {
+      "view": "replay",
+      "state": "empty",
+      "width": 1710,
+      "theme": "light",
+      "fixtureOnly": true
+    },
+    {
+      "view": "replay",
+      "state": "error",
+      "width": 1710,
+      "theme": "light",
+      "fixtureOnly": true
+    },
+    {
+      "view": "replay",
+      "state": "unavailable",
+      "width": 1710,
+      "theme": "light",
+      "fixtureOnly": true
+    },
+    {
+      "view": "replay",
+      "state": "denied",
+      "width": 1710,
+      "theme": "light",
+      "fixtureOnly": true
+    },
+    {
+      "view": "replay",
+      "state": "refreshing",
+      "width": 1710,
+      "theme": "light",
+      "fixtureOnly": true
+    },
+    {
+      "view": "replay",
+      "state": "stale",
+      "width": 1710,
+      "theme": "light",
+      "fixtureOnly": true
+    },
+    {
+      "view": "trade",
+      "state": "demo",
+      "width": 1710,
+      "theme": "light",
+      "fixtureOnly": true
+    },
+    {
+      "view": "trade",
+      "state": "no-trades",
+      "width": 1710,
+      "theme": "light",
+      "fixtureOnly": true
+    },
+    {
+      "view": "trade",
+      "state": "loading",
+      "width": 1710,
+      "theme": "light",
+      "fixtureOnly": true
+    },
+    {
+      "view": "trade",
+      "state": "empty",
+      "width": 1710,
+      "theme": "light",
+      "fixtureOnly": true
+    },
+    {
+      "view": "trade",
+      "state": "error",
+      "width": 1710,
+      "theme": "light",
+      "fixtureOnly": true
+    },
+    {
+      "view": "trade",
+      "state": "unavailable",
+      "width": 1710,
+      "theme": "light",
+      "fixtureOnly": true
+    },
+    {
+      "view": "trade",
+      "state": "denied",
+      "width": 1710,
+      "theme": "light",
+      "fixtureOnly": true
+    },
+    {
+      "view": "trade",
+      "state": "filtered",
+      "width": 1710,
+      "theme": "light",
+      "fixtureOnly": true
+    },
+    {
+      "view": "trade",
+      "state": "refreshing",
+      "width": 1710,
+      "theme": "light",
+      "fixtureOnly": true
+    },
+    {
+      "view": "trade",
+      "state": "stale",
+      "width": 1710,
+      "theme": "light",
+      "fixtureOnly": true
+    },
+    {
+      "view": "trade",
+      "state": "partial",
+      "width": 1710,
+      "theme": "light",
+      "fixtureOnly": true
+    },
+    {
+      "view": "analytics",
+      "state": "demo",
+      "width": 1710,
+      "theme": "light",
+      "fixtureOnly": true
+    },
+    {
+      "view": "analytics",
+      "state": "no-trades",
+      "width": 1710,
+      "theme": "light",
+      "fixtureOnly": true
+    },
+    {
+      "view": "analytics",
+      "state": "loading",
+      "width": 1710,
+      "theme": "light",
+      "fixtureOnly": true
+    },
+    {
+      "view": "analytics",
+      "state": "empty",
+      "width": 1710,
+      "theme": "light",
+      "fixtureOnly": true
+    },
+    {
+      "view": "analytics",
+      "state": "error",
+      "width": 1710,
+      "theme": "light",
+      "fixtureOnly": true
+    },
+    {
+      "view": "analytics",
+      "state": "unavailable",
+      "width": 1710,
+      "theme": "light",
+      "fixtureOnly": true
+    },
+    {
+      "view": "analytics",
+      "state": "denied",
+      "width": 1710,
+      "theme": "light",
+      "fixtureOnly": true
+    },
+    {
+      "view": "analytics",
+      "state": "filtered",
+      "width": 1710,
+      "theme": "light",
+      "fixtureOnly": true
+    },
+    {
+      "view": "analytics",
+      "state": "refreshing",
+      "width": 1710,
+      "theme": "light",
+      "fixtureOnly": true
+    },
+    {
+      "view": "analytics",
+      "state": "stale",
+      "width": 1710,
+      "theme": "light",
+      "fixtureOnly": true
+    },
+    {
+      "view": "analytics",
+      "state": "partial",
+      "width": 1710,
+      "theme": "light",
+      "fixtureOnly": true
+    },
+    {
+      "view": "market-data",
+      "state": "demo",
+      "width": 1710,
+      "theme": "light",
+      "fixtureOnly": true
+    },
+    {
+      "view": "market-data",
+      "state": "loading",
+      "width": 1710,
+      "theme": "light",
+      "fixtureOnly": true
+    },
+    {
+      "view": "market-data",
+      "state": "empty",
+      "width": 1710,
+      "theme": "light",
+      "fixtureOnly": true
+    },
+    {
+      "view": "market-data",
+      "state": "error",
+      "width": 1710,
+      "theme": "light",
+      "fixtureOnly": true
+    },
+    {
+      "view": "market-data",
+      "state": "unavailable",
+      "width": 1710,
+      "theme": "light",
+      "fixtureOnly": true
+    },
+    {
+      "view": "market-data",
+      "state": "denied",
+      "width": 1710,
+      "theme": "light",
+      "fixtureOnly": true
+    },
+    {
+      "view": "market-data",
+      "state": "filtered",
+      "width": 1710,
+      "theme": "light",
+      "fixtureOnly": true
+    },
+    {
+      "view": "market-data",
+      "state": "refreshing",
+      "width": 1710,
+      "theme": "light",
+      "fixtureOnly": true
+    },
+    {
+      "view": "market-data",
+      "state": "stale",
+      "width": 1710,
+      "theme": "light",
+      "fixtureOnly": true
+    },
+    {
+      "width": 1710,
+      "theme": "light",
+      "journey": "filtered restore, selector, shell preservation, history/reload"
+    },
+    {
+      "view": "overview",
+      "state": "demo",
+      "width": 390,
+      "theme": "dark",
+      "fixtureOnly": true
+    },
+    {
+      "view": "overview",
+      "state": "no-trades",
+      "width": 390,
+      "theme": "dark",
+      "fixtureOnly": true
+    },
+    {
+      "view": "overview",
+      "state": "loading",
+      "width": 390,
+      "theme": "dark",
+      "fixtureOnly": true
+    },
+    {
+      "view": "overview",
+      "state": "empty",
+      "width": 390,
+      "theme": "dark",
+      "fixtureOnly": true
+    },
+    {
+      "view": "overview",
+      "state": "error",
+      "width": 390,
+      "theme": "dark",
+      "fixtureOnly": true
+    },
+    {
+      "view": "overview",
+      "state": "unavailable",
+      "width": 390,
+      "theme": "dark",
+      "fixtureOnly": true
+    },
+    {
+      "view": "overview",
+      "state": "denied",
+      "width": 390,
+      "theme": "dark",
+      "fixtureOnly": true
+    },
+    {
+      "view": "overview",
+      "state": "filtered",
+      "width": 390,
+      "theme": "dark",
+      "fixtureOnly": true
+    },
+    {
+      "view": "overview",
+      "state": "refreshing",
+      "width": 390,
+      "theme": "dark",
+      "fixtureOnly": true
+    },
+    {
+      "view": "overview",
+      "state": "stale",
+      "width": 390,
+      "theme": "dark",
+      "fixtureOnly": true
+    },
+    {
+      "view": "overview",
+      "state": "partial",
+      "width": 390,
+      "theme": "dark",
+      "fixtureOnly": true
+    },
+    {
+      "view": "overview",
+      "state": "unknown",
+      "width": 390,
+      "theme": "dark",
+      "fixtureOnly": true
+    },
+    {
+      "view": "replay",
+      "state": "demo",
+      "width": 390,
+      "theme": "dark",
+      "fixtureOnly": true
+    },
+    {
+      "view": "replay",
+      "state": "no-trades",
+      "width": 390,
+      "theme": "dark",
+      "fixtureOnly": true
+    },
+    {
+      "view": "replay",
+      "state": "loading",
+      "width": 390,
+      "theme": "dark",
+      "fixtureOnly": true
+    },
+    {
+      "view": "replay",
+      "state": "empty",
+      "width": 390,
+      "theme": "dark",
+      "fixtureOnly": true
+    },
+    {
+      "view": "replay",
+      "state": "error",
+      "width": 390,
+      "theme": "dark",
+      "fixtureOnly": true
+    },
+    {
+      "view": "replay",
+      "state": "unavailable",
+      "width": 390,
+      "theme": "dark",
+      "fixtureOnly": true
+    },
+    {
+      "view": "replay",
+      "state": "denied",
+      "width": 390,
+      "theme": "dark",
+      "fixtureOnly": true
+    },
+    {
+      "view": "replay",
+      "state": "refreshing",
+      "width": 390,
+      "theme": "dark",
+      "fixtureOnly": true
+    },
+    {
+      "view": "replay",
+      "state": "stale",
+      "width": 390,
+      "theme": "dark",
+      "fixtureOnly": true
+    },
+    {
+      "view": "trade",
+      "state": "demo",
+      "width": 390,
+      "theme": "dark",
+      "fixtureOnly": true
+    },
+    {
+      "view": "trade",
+      "state": "no-trades",
+      "width": 390,
+      "theme": "dark",
+      "fixtureOnly": true
+    },
+    {
+      "view": "trade",
+      "state": "loading",
+      "width": 390,
+      "theme": "dark",
+      "fixtureOnly": true
+    },
+    {
+      "view": "trade",
+      "state": "empty",
+      "width": 390,
+      "theme": "dark",
+      "fixtureOnly": true
+    },
+    {
+      "view": "trade",
+      "state": "error",
+      "width": 390,
+      "theme": "dark",
+      "fixtureOnly": true
+    },
+    {
+      "view": "trade",
+      "state": "unavailable",
+      "width": 390,
+      "theme": "dark",
+      "fixtureOnly": true
+    },
+    {
+      "view": "trade",
+      "state": "denied",
+      "width": 390,
+      "theme": "dark",
+      "fixtureOnly": true
+    },
+    {
+      "view": "trade",
+      "state": "filtered",
+      "width": 390,
+      "theme": "dark",
+      "fixtureOnly": true
+    },
+    {
+      "view": "trade",
+      "state": "refreshing",
+      "width": 390,
+      "theme": "dark",
+      "fixtureOnly": true
+    },
+    {
+      "view": "trade",
+      "state": "stale",
+      "width": 390,
+      "theme": "dark",
+      "fixtureOnly": true
+    },
+    {
+      "view": "trade",
+      "state": "partial",
+      "width": 390,
+      "theme": "dark",
+      "fixtureOnly": true
+    },
+    {
+      "view": "analytics",
+      "state": "demo",
+      "width": 390,
+      "theme": "dark",
+      "fixtureOnly": true
+    },
+    {
+      "view": "analytics",
+      "state": "no-trades",
+      "width": 390,
+      "theme": "dark",
+      "fixtureOnly": true
+    },
+    {
+      "view": "analytics",
+      "state": "loading",
+      "width": 390,
+      "theme": "dark",
+      "fixtureOnly": true
+    },
+    {
+      "view": "analytics",
+      "state": "empty",
+      "width": 390,
+      "theme": "dark",
+      "fixtureOnly": true
+    },
+    {
+      "view": "analytics",
+      "state": "error",
+      "width": 390,
+      "theme": "dark",
+      "fixtureOnly": true
+    },
+    {
+      "view": "analytics",
+      "state": "unavailable",
+      "width": 390,
+      "theme": "dark",
+      "fixtureOnly": true
+    },
+    {
+      "view": "analytics",
+      "state": "denied",
+      "width": 390,
+      "theme": "dark",
+      "fixtureOnly": true
+    },
+    {
+      "view": "analytics",
+      "state": "filtered",
+      "width": 390,
+      "theme": "dark",
+      "fixtureOnly": true
+    },
+    {
+      "view": "analytics",
+      "state": "refreshing",
+      "width": 390,
+      "theme": "dark",
+      "fixtureOnly": true
+    },
+    {
+      "view": "analytics",
+      "state": "stale",
+      "width": 390,
+      "theme": "dark",
+      "fixtureOnly": true
+    },
+    {
+      "view": "analytics",
+      "state": "partial",
+      "width": 390,
+      "theme": "dark",
+      "fixtureOnly": true
+    },
+    {
+      "view": "market-data",
+      "state": "demo",
+      "width": 390,
+      "theme": "dark",
+      "fixtureOnly": true
+    },
+    {
+      "view": "market-data",
+      "state": "loading",
+      "width": 390,
+      "theme": "dark",
+      "fixtureOnly": true
+    },
+    {
+      "view": "market-data",
+      "state": "empty",
+      "width": 390,
+      "theme": "dark",
+      "fixtureOnly": true
+    },
+    {
+      "view": "market-data",
+      "state": "error",
+      "width": 390,
+      "theme": "dark",
+      "fixtureOnly": true
+    },
+    {
+      "view": "market-data",
+      "state": "unavailable",
+      "width": 390,
+      "theme": "dark",
+      "fixtureOnly": true
+    },
+    {
+      "view": "market-data",
+      "state": "denied",
+      "width": 390,
+      "theme": "dark",
+      "fixtureOnly": true
+    },
+    {
+      "view": "market-data",
+      "state": "filtered",
+      "width": 390,
+      "theme": "dark",
+      "fixtureOnly": true
+    },
+    {
+      "view": "market-data",
+      "state": "refreshing",
+      "width": 390,
+      "theme": "dark",
+      "fixtureOnly": true
+    },
+    {
+      "view": "market-data",
+      "state": "stale",
+      "width": 390,
+      "theme": "dark",
+      "fixtureOnly": true
+    },
+    {
+      "width": 390,
+      "theme": "dark",
+      "journey": "filtered restore, selector, shell preservation, history/reload"
+    },
+    {
+      "view": "overview",
+      "state": "demo",
+      "width": 390,
+      "theme": "light",
+      "fixtureOnly": true
+    },
+    {
+      "view": "overview",
+      "state": "no-trades",
+      "width": 390,
+      "theme": "light",
+      "fixtureOnly": true
+    },
+    {
+      "view": "overview",
+      "state": "loading",
+      "width": 390,
+      "theme": "light",
+      "fixtureOnly": true
+    },
+    {
+      "view": "overview",
+      "state": "empty",
+      "width": 390,
+      "theme": "light",
+      "fixtureOnly": true
+    },
+    {
+      "view": "overview",
+      "state": "error",
+      "width": 390,
+      "theme": "light",
+      "fixtureOnly": true
+    },
+    {
+      "view": "overview",
+      "state": "unavailable",
+      "width": 390,
+      "theme": "light",
+      "fixtureOnly": true
+    },
+    {
+      "view": "overview",
+      "state": "denied",
+      "width": 390,
+      "theme": "light",
+      "fixtureOnly": true
+    },
+    {
+      "view": "overview",
+      "state": "filtered",
+      "width": 390,
+      "theme": "light",
+      "fixtureOnly": true
+    },
+    {
+      "view": "overview",
+      "state": "refreshing",
+      "width": 390,
+      "theme": "light",
+      "fixtureOnly": true
+    },
+    {
+      "view": "overview",
+      "state": "stale",
+      "width": 390,
+      "theme": "light",
+      "fixtureOnly": true
+    },
+    {
+      "view": "overview",
+      "state": "partial",
+      "width": 390,
+      "theme": "light",
+      "fixtureOnly": true
+    },
+    {
+      "view": "overview",
+      "state": "unknown",
+      "width": 390,
+      "theme": "light",
+      "fixtureOnly": true
+    },
+    {
+      "view": "replay",
+      "state": "demo",
+      "width": 390,
+      "theme": "light",
+      "fixtureOnly": true
+    },
+    {
+      "view": "replay",
+      "state": "no-trades",
+      "width": 390,
+      "theme": "light",
+      "fixtureOnly": true
+    },
+    {
+      "view": "replay",
+      "state": "loading",
+      "width": 390,
+      "theme": "light",
+      "fixtureOnly": true
+    },
+    {
+      "view": "replay",
+      "state": "empty",
+      "width": 390,
+      "theme": "light",
+      "fixtureOnly": true
+    },
+    {
+      "view": "replay",
+      "state": "error",
+      "width": 390,
+      "theme": "light",
+      "fixtureOnly": true
+    },
+    {
+      "view": "replay",
+      "state": "unavailable",
+      "width": 390,
+      "theme": "light",
+      "fixtureOnly": true
+    },
+    {
+      "view": "replay",
+      "state": "denied",
+      "width": 390,
+      "theme": "light",
+      "fixtureOnly": true
+    },
+    {
+      "view": "replay",
+      "state": "refreshing",
+      "width": 390,
+      "theme": "light",
+      "fixtureOnly": true
+    },
+    {
+      "view": "replay",
+      "state": "stale",
+      "width": 390,
+      "theme": "light",
+      "fixtureOnly": true
+    },
+    {
+      "view": "trade",
+      "state": "demo",
+      "width": 390,
+      "theme": "light",
+      "fixtureOnly": true
+    },
+    {
+      "view": "trade",
+      "state": "no-trades",
+      "width": 390,
+      "theme": "light",
+      "fixtureOnly": true
+    },
+    {
+      "view": "trade",
+      "state": "loading",
+      "width": 390,
+      "theme": "light",
+      "fixtureOnly": true
+    },
+    {
+      "view": "trade",
+      "state": "empty",
+      "width": 390,
+      "theme": "light",
+      "fixtureOnly": true
+    },
+    {
+      "view": "trade",
+      "state": "error",
+      "width": 390,
+      "theme": "light",
+      "fixtureOnly": true
+    },
+    {
+      "view": "trade",
+      "state": "unavailable",
+      "width": 390,
+      "theme": "light",
+      "fixtureOnly": true
+    },
+    {
+      "view": "trade",
+      "state": "denied",
+      "width": 390,
+      "theme": "light",
+      "fixtureOnly": true
+    },
+    {
+      "view": "trade",
+      "state": "filtered",
+      "width": 390,
+      "theme": "light",
+      "fixtureOnly": true
+    },
+    {
+      "view": "trade",
+      "state": "refreshing",
+      "width": 390,
+      "theme": "light",
+      "fixtureOnly": true
+    },
+    {
+      "view": "trade",
+      "state": "stale",
+      "width": 390,
+      "theme": "light",
+      "fixtureOnly": true
+    },
+    {
+      "view": "trade",
+      "state": "partial",
+      "width": 390,
+      "theme": "light",
+      "fixtureOnly": true
+    },
+    {
+      "view": "analytics",
+      "state": "demo",
+      "width": 390,
+      "theme": "light",
+      "fixtureOnly": true
+    },
+    {
+      "view": "analytics",
+      "state": "no-trades",
+      "width": 390,
+      "theme": "light",
+      "fixtureOnly": true
+    },
+    {
+      "view": "analytics",
+      "state": "loading",
+      "width": 390,
+      "theme": "light",
+      "fixtureOnly": true
+    },
+    {
+      "view": "analytics",
+      "state": "empty",
+      "width": 390,
+      "theme": "light",
+      "fixtureOnly": true
+    },
+    {
+      "view": "analytics",
+      "state": "error",
+      "width": 390,
+      "theme": "light",
+      "fixtureOnly": true
+    },
+    {
+      "view": "analytics",
+      "state": "unavailable",
+      "width": 390,
+      "theme": "light",
+      "fixtureOnly": true
+    },
+    {
+      "view": "analytics",
+      "state": "denied",
+      "width": 390,
+      "theme": "light",
+      "fixtureOnly": true
+    },
+    {
+      "view": "analytics",
+      "state": "filtered",
+      "width": 390,
+      "theme": "light",
+      "fixtureOnly": true
+    },
+    {
+      "view": "analytics",
+      "state": "refreshing",
+      "width": 390,
+      "theme": "light",
+      "fixtureOnly": true
+    },
+    {
+      "view": "analytics",
+      "state": "stale",
+      "width": 390,
+      "theme": "light",
+      "fixtureOnly": true
+    },
+    {
+      "view": "analytics",
+      "state": "partial",
+      "width": 390,
+      "theme": "light",
+      "fixtureOnly": true
+    },
+    {
+      "view": "market-data",
+      "state": "demo",
+      "width": 390,
+      "theme": "light",
+      "fixtureOnly": true
+    },
+    {
+      "view": "market-data",
+      "state": "loading",
+      "width": 390,
+      "theme": "light",
+      "fixtureOnly": true
+    },
+    {
+      "view": "market-data",
+      "state": "empty",
+      "width": 390,
+      "theme": "light",
+      "fixtureOnly": true
+    },
+    {
+      "view": "market-data",
+      "state": "error",
+      "width": 390,
+      "theme": "light",
+      "fixtureOnly": true
+    },
+    {
+      "view": "market-data",
+      "state": "unavailable",
+      "width": 390,
+      "theme": "light",
+      "fixtureOnly": true
+    },
+    {
+      "view": "market-data",
+      "state": "denied",
+      "width": 390,
+      "theme": "light",
+      "fixtureOnly": true
+    },
+    {
+      "view": "market-data",
+      "state": "filtered",
+      "width": 390,
+      "theme": "light",
+      "fixtureOnly": true
+    },
+    {
+      "view": "market-data",
+      "state": "refreshing",
+      "width": 390,
+      "theme": "light",
+      "fixtureOnly": true
+    },
+    {
+      "view": "market-data",
+      "state": "stale",
+      "width": 390,
+      "theme": "light",
+      "fixtureOnly": true
+    },
+    {
+      "width": 390,
+      "theme": "light",
+      "journey": "filtered restore, selector, shell preservation, history/reload"
+    }
+  ],
+  "errors": [],
+  "previewRequests": [],
+  "writes": [],
+  "result": "PASS"
+}

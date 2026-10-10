@@ -1,5 +1,6 @@
 import { displayDate } from './dateFormat.js'
 import TestingReadState, { TestingSkeleton } from './TestingReadState.jsx'
+import { TestingPageSkeleton } from './TestingPageState.jsx'
 import { useTestingLocale } from './testingLocale.jsx'
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import './analytics-story.css'
@@ -455,11 +456,11 @@ function AnalyticsStoryWorkspace({ workspace = 'tenant-a', query = new URLSearch
     {exportError && <p role="alert" className="fxa-error">{t(exportError)}</p>}
     {result?.historical_view && <p className="as-message" data-testid="analytics-historical-scope">{t("Kết quả tới nến #")}{result.cursor_index}{t(". Phiên hiện ở nến #")}{result.canonical_cursor_index}{t("; báo cáo không gồm giao dịch sau mốc đang xem.")}</p>}
     {!resourceId && <p className="fxa-empty">{t("Chọn một phiên replay hoặc research job để xem kết quả.")}</p>}
-    {state.status === 'loading' && <TestingSkeleton label="Đang tải kết quả…" />}
+    {state.status === 'loading' && <TestingPageSkeleton view={ledgerOnly ? 'trade' : 'analytics'} label="Đang tải kết quả…" />}
     {state.refreshing && <TestingReadState message="Đang cập nhật…" />}
     {state.status === 'error' && <TestingReadState error message={t('Không đọc được kết quả:') + ' ' + t(state.error)} onRetry={() => load()} />}
     {state.status === 'blocked_by_data' && <section className="as-empty-state" data-testid="analytics-blocked"><h2>{t("Chưa đủ dữ liệu để tính analytics")}</h2><p>{state.payload?.blocked_by_data?.map(reason => t(reason)).join(' · ') || t(state.error) || t("Nguồn chưa có kết quả đã phát hành.")}</p></section>}
-    {state.status === 'empty' && !journalFilterPending && <p className="as-message" data-testid="analytics-empty">{t("Không có giao dịch đóng khớp bộ lọc.")}</p>}
+    {state.status === 'empty' && !journalFilterPending && <p className="as-message" data-testid="analytics-empty">{t(state.payload?.scope?.total_trade_count === 0 ? 'Phiên chưa có giao dịch đóng.' : 'Không có giao dịch đóng khớp bộ lọc.')}</p>}
     {state.status === 'stale' && <p className="as-stale-banner" role="status">{t("Dữ liệu có thể đã cũ. Giữ nguyên nguồn và kiểm tra lại khi quay về ứng dụng.")}</p>}
     {!ledgerOnly && state.status === 'partial' && <p className="as-stale-banner" role="status">{t("Dữ liệu một phần. Chỉ tính trên các giao dịch có trong nguồn đã đọc.")}</p>}
     {result && !journalFilterPending && ['ready', 'stale', 'partial', 'empty'].includes(state.status) && <>

@@ -157,6 +157,11 @@ test('replay context uses metadata-only route and verifies catalog revision', as
   await assert.rejects(readDashboardReplayContext('w', item), /revision_mismatch/)
 })
 
+test('session analytics preserves HTTP denial for readers that must clear cached data', async context => {
+  context.mock.method(globalThis, 'fetch', async () => new Response(JSON.stringify({ detail: 'forbidden' }), { status: 403 }))
+  await assert.rejects(readDashboardAnalytics('w', 's'), error => error.status === 403)
+})
+
 
 test('bounded dashboard list validates workspace, revision, summary and request page', async context => {
   const item = { record_id: 'session-a', revision: 2, detail: { status: 'ready', revision: 2, analytics_available: true,

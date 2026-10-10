@@ -2,6 +2,7 @@ import React from 'react'
 
 export default function TestingIcon({ kind = 'info', size = 18 }) {
   const paths = {
+    trophy: <><path d="M8 3h8v7a4 4 0 0 1-8 0ZM8 5H4v3a4 4 0 0 0 4 4M16 5h4v3a4 4 0 0 1-4 4M12 14v6M8 21h8" /></>,
     pause: <><path d="M8 5v14M16 5v14" /></>,
     stop: <rect x="5" y="5" width="14" height="14" rx="1" />,
     close: <path d="m6 6 12 12M18 6 6 18" />,
