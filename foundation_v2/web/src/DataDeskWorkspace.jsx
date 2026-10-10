@@ -662,7 +662,7 @@ export default function DataDeskWorkspace({ workspace = 'tenant-a', query = new 
                   <tbody>
                     {pageItems.map((dataset) => {
                       const range = datasetRange(dataset)
-                      const active = Boolean(dataset.dataset_id && dataset.dataset_id === selected?.dataset_id)
+                      const active = Boolean(detailsOpen && dataset.dataset_id && dataset.dataset_id === selected?.dataset_id)
                       const job = jobForAsset(dataset)
                       const downloading = job && ['queued','running','pausing'].includes(job.status)
                       const retrySeconds = job ? downloadRetrySeconds(job,downloads.receivedAt,clockNow) : 0

@@ -6,7 +6,7 @@ import { SessionActions } from './SessionActions.jsx'
 import SessionPerformance from './SessionPerformance.jsx'
 import { canResumeSession } from './sessionCatalog.js'
 
-import { sessionRemainingDays } from './sessionSettingsModel.js'
+import { sessionRemainingDays, sessionSettingsFacts } from './sessionSettingsModel.js'
 import './dashboard-session.css'
 
 const date = value => Number.isFinite(Number(value)) && value != null ? displayDate(new Date(Number(value) * 1000)) : '—'
@@ -22,8 +22,11 @@ export default function DashboardSessionCard({ item, detail, dataset, href, onMa
   const { t, locale, fmt } = useTestingLocale()
 
   const [expanded, setExpanded] = useState(false)
+  const [visited, setVisited] = useState(false)
   const panelId = useId()
   const model = detail?.model, payload = detail?.payload || {}
+  const facts = sessionSettingsFacts(item, dataset, payload, model, detail?.replayRecord)
+  const toggleExpanded = () => { setVisited(true); setExpanded(value => !value) }
   const name = item.name || item.record_id
   const knownProgress = Number.isInteger(item.row_count) && item.row_count > 0 && Number.isInteger(item.cursor_index)
   const remaining = knownProgress ? Math.max(0, item.row_count - item.cursor_index - 1) : null
@@ -31,11 +34,12 @@ export default function DashboardSessionCard({ item, detail, dataset, href, onMa
   const disabledCopy = item.archived || item.dataset_available !== true
   return <article className={`fx-dashboard-session-card${expanded ? ' is-expanded' : ''}`} data-session-id={item.record_id}>
     <div className="fx-dashboard-session-card-head" onClick={event => {
-      if (event.target.closest('a, button, input, select, textarea') || window.getSelection()?.toString()) return
-      setExpanded(value => !value)
+      const selection = window.getSelection()
+      if (event.target.closest('a, button, input, select, textarea') || (selection?.toString() && event.currentTarget.contains(selection.anchorNode))) return
+      toggleExpanded()
     }}>
       {preview ? <button type="button" className="fx-dashboard-card-play" disabled aria-label={t("Tiếp tục {name}", { name: name })} title={t("Chart cần phiên thật")}><SessionIcon kind="play" /></button> : canResumeSession(item) ? <a className="fx-dashboard-card-play" href={href('replay', { select: null, surface: 'workspace' })} onClick={onRemember} aria-label={t("Tiếp tục {name}", { name: name })}><SessionIcon kind="play" /></a> : <span className="fx-dashboard-card-play is-unavailable" title={t("Phiên hoặc dataset chưa sẵn sàng")}><SessionIcon kind="play" /></span>}
-      <div className="fx-dashboard-card-info"><h3>{name}{days !== null && <span className="fx-dashboard-days" title={t("Số ngày lịch còn lại từ vị trí replay đến cuối dataset")}><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" aria-hidden="true"><path d="m11 2-7 9h5l-1 7 8-10h-5Z" /></svg>{t("{count} days", { count: days })}</span>}{item.archived && <small>{t("Đã lưu trữ")}</small>}</h3><div className="fx-dashboard-card-facts"><span title={t("Phạm vi dataset · UTC")}><SessionIcon kind="calendar" />{date(dataset?.first_timestamp)} – {date(dataset?.last_timestamp)}</span><span title={t("Số dư từ lệnh đóng")}><SessionIcon kind="balance" />{dashboardMoney(model?.endingBalance, model?.result?.account_currency)}</span></div><span className="fx-dashboard-card-asset">{item.instrument_id || '—'}</span></div>
+      <div className="fx-dashboard-card-info"><h3>{name}{days !== null && <span className="fx-dashboard-days" title={t("Số ngày lịch còn lại từ vị trí replay đến cuối dataset")}><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" aria-hidden="true"><path d="m11 2-7 9h5l-1 7 8-10h-5Z" /></svg>{t("{count} days", { count: days })}</span>}{item.archived && <small>{t("Đã lưu trữ")}</small>}</h3><div className="fx-dashboard-card-facts"><span title={t("Phạm vi dataset · UTC")}><SessionIcon kind="calendar" />{date(dataset?.first_timestamp)} – {date(dataset?.last_timestamp)}</span><span title={t("Account balance")}><SessionIcon kind="balance" />{dashboardMoney(facts.balance, facts.currency)}</span></div><span className="fx-dashboard-card-asset">{item.instrument_id || '—'}</span></div>
       <div className="fx-dashboard-card-progress">{knownProgress && <progress aria-label={t("Tiến độ {name}", { name: name })} value={Math.min(item.row_count, item.cursor_index + 1)} max={item.row_count} />}<small>{days !== null ? t("Remaining {count} days", { count: days.toLocaleString(locale) }) : remaining !== null ? t("Còn {count} nến", { count: remaining.toLocaleString(locale) }) : '—'}</small></div>
       <div className="fx-dashboard-card-actions">
         <SessionActions item={item} onAction={onManage} disabled={actionsDisabled} />
@@ -43,9 +47,13 @@ export default function DashboardSessionCard({ item, detail, dataset, href, onMa
         <a className="fx-dashboard-card-icon" aria-label={t("Analytics {name}", { name: name })} title={t("Analytics")} href={href('analytics')}><SessionIcon kind="analytics" /></a>
         <button type="button" className="fx-dashboard-card-icon" aria-label={t("Tạo bản sao {name}", { name: name })} title={t("Tạo bản sao")} disabled={disabledCopy || actionsDisabled} onClick={() => onManage('duplicate', item)}><SessionIcon kind="duplicate" /></button>
         <a className="fx-dashboard-card-summary" aria-label={t("Summary {name}", { name: name })} href={href('replay')} onClick={preview ? undefined : onRemember}><SessionIcon kind="summary" />{t("Summary")}</a>
-        <button type="button" className="fx-dashboard-card-icon fx-dashboard-card-expand" aria-label={t(expanded ? 'Thu gọn {name}' : 'Mở rộng {name}', { name })} aria-expanded={expanded} aria-controls={panelId} onClick={() => setExpanded(!expanded)}><SessionIcon /></button>
+        <button type="button" className="fx-dashboard-card-icon fx-dashboard-card-expand" aria-label={t(expanded ? 'Thu gọn {name}' : 'Mở rộng {name}', { name })} aria-expanded={expanded} aria-controls={panelId} onClick={toggleExpanded}><SessionIcon /></button>
       </div>
     </div>
-    {expanded && <div className="fx-dashboard-card-charts" id={panelId}>{detail?.status === 'loading' || !detail ? <p role="status">{t("Đang tải kết quả phiên…")}</p> : detail.status === 'error' ? <div role="alert"><p>{t("Chưa đọc được kết quả phiên.")}</p>{onRetryDetail && <button type="button" className="fxa-button" onClick={onRetryDetail}>{t('Thử lại')}</button>}</div> : <SessionPerformance chartsOnly model={model} payload={payload} item={item} href={href} />}</div>}
+    <div className="fx-dashboard-card-disclosure" id={panelId} aria-hidden={!expanded} inert={!expanded}>
+      <div className="fx-dashboard-card-disclosure-inner">
+        {visited && <div className="fx-dashboard-card-charts">{detail?.status === 'loading' || !detail ? <p role="status">{t("Đang tải kết quả phiên…")}</p> : detail.status === 'error' ? <div role="alert"><p>{t("Chưa đọc được kết quả phiên.")}</p>{onRetryDetail && <button type="button" className="fxa-button" onClick={onRetryDetail}>{t('Thử lại')}</button>}</div> : <SessionPerformance chartsOnly model={model} payload={payload} item={item} href={href} />}</div>}
+      </div>
+    </div>
   </article>
 }

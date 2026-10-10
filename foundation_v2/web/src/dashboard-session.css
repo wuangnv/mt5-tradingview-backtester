@@ -1,7 +1,7 @@
 .fx-dashboard-session-card { border: 1px solid var(--wm-border); border-radius: 16px; background: var(--wm-surface); min-width: 0; }
 .fx-dashboard-session-card { overflow: hidden; transition: background-color var(--ds-motion-hover) var(--ds-ease-standard); }
 .fx-dashboard-session-card-head { cursor: pointer; transition: background-color var(--ds-motion-hover) var(--ds-ease-standard); }
-.fx-dashboard-session-card-head:hover, .fx-dashboard-session-card.is-expanded { background: var(--project-canvas); }
+.fx-dashboard-session-card-head:hover { background: var(--wm-hover); }
 .fx-dashboard-session-count { display: flex; justify-content: flex-end; align-items: center; gap: 12px; margin: 12px 0; color: var(--project-highlight); font-size: 12px; font-variant-numeric: tabular-nums; }
 .fx-dashboard-session-count progress { appearance: none; width: clamp(80px, 14vw, 180px); height: 6px; border: 0; border-radius: 999px; overflow: hidden; background: var(--wm-control-open); }
 .fx-dashboard-session-count progress::-webkit-progress-bar { background: var(--wm-control-open); }
@@ -34,6 +34,9 @@
 .fx-app .fx-dashboard .fx-dashboard-card-summary { display: inline-flex; align-items: center; justify-content: center; gap: 6px; min-height: 32px; padding: 0 12px; border: 0; border-radius: 999px; background: var(--wm-control-open); color: var(--wm-content); text-decoration: none; white-space: nowrap; font-size: 12px; }
 .fx-dashboard-card-expand svg { transition: rotate var(--ds-motion-hover); }
 .fx-dashboard-card-expand[aria-expanded='true'] svg { rotate: 180deg; }
+.fx-dashboard-card-disclosure { display:grid; grid-template-rows:0fr; opacity:0; transition:grid-template-rows var(--ds-motion-dialog) var(--ds-ease-standard), opacity var(--ds-motion-dialog) var(--ds-ease-standard); }
+.fx-dashboard-session-card.is-expanded .fx-dashboard-card-disclosure { grid-template-rows:1fr; opacity:1; }
+.fx-dashboard-card-disclosure-inner { min-height:0; overflow:hidden; }
 .fx-dashboard-card-charts { padding: 0 20px 20px; }
 .fx-dashboard-card-charts .fxs-performance { margin: 0; }
 .fx-dashboard-card-charts .fxs-no-analytics { min-height: 0; padding-block: 0; line-height: 1.5; }
@@ -70,4 +73,4 @@
   .fx-dashboard-dialog { padding: 16px; }
 }
 @media (pointer: coarse) { .fx-app .fx-dashboard :is(.fx-dashboard-card-icon, .fx-dashboard-card-play, .fx-dashboard-card-summary) { min-height: 44px; min-width: 44px; } }
-@media (prefers-reduced-motion: reduce) { .fx-dashboard-card-expand svg { transition: none; } }
+@media (prefers-reduced-motion: reduce) { .fx-dashboard-card-expand svg, .fx-dashboard-card-disclosure, .fx-dashboard-session-card-head { transition: none; } }

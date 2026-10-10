@@ -1,0 +1,104 @@
+{
+  "scope": "Actual local GET APIs; session card and library interactions; writes blocked",
+  "cases": [
+    {
+      "width": 1710,
+      "theme": "dark",
+      "balance": "100000",
+      "currency": "USD",
+      "expandedHeight": 39.5,
+      "transition": "0.22s, 0.22s",
+      "collapseHeights": [
+        37.34375,
+        31.140625,
+        23.8125,
+        17.625
+      ],
+      "reducedMotion": true,
+      "noImplicitSelection": true
+    },
+    {
+      "width": 1710,
+      "theme": "light",
+      "balance": "100000",
+      "currency": "USD",
+      "expandedHeight": 39.5,
+      "transition": "0.22s, 0.22s",
+      "collapseHeights": [
+        37.328125,
+        31.078125,
+        23.796875,
+        17.609375
+      ],
+      "reducedMotion": true,
+      "noImplicitSelection": true
+    },
+    {
+      "width": 1440,
+      "theme": "dark",
+      "balance": "100000",
+      "currency": "USD",
+      "expandedHeight": 39.5,
+      "transition": "0.22s, 0.22s",
+      "collapseHeights": [
+        37.328125,
+        31.109375,
+        23.828125,
+        17.609375
+      ],
+      "reducedMotion": true,
+      "noImplicitSelection": true
+    },
+    {
+      "width": 1440,
+      "theme": "light",
+      "balance": "100000",
+      "currency": "USD",
+      "expandedHeight": 39.5,
+      "transition": "0.22s, 0.22s",
+      "collapseHeights": [
+        39.5,
+        37.359375,
+        31.0625,
+        23.796875
+      ],
+      "reducedMotion": true,
+      "noImplicitSelection": true
+    },
+    {
+      "width": 390,
+      "theme": "dark",
+      "balance": "100000",
+      "currency": "USD",
+      "expandedHeight": 33.5,
+      "transition": "0.22s, 0.22s",
+      "collapseHeights": [
+        26.359375,
+        20.1875,
+        14.953125,
+        10.890625
+      ],
+      "reducedMotion": true,
+      "noImplicitSelection": true
+    },
+    {
+      "width": 390,
+      "theme": "light",
+      "balance": "100000",
+      "currency": "USD",
+      "expandedHeight": 33.5,
+      "transition": "0.22s, 0.22s",
+      "collapseHeights": [
+        31.65625,
+        26.375,
+        20.203125,
+        14.953125
+      ],
+      "reducedMotion": true,
+      "noImplicitSelection": true
+    }
+  ],
+  "errors": [],
+  "writes": [],
+  "result": "PASS"
+}
